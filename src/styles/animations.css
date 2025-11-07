@@ -1,0 +1,183 @@
+/* Modern Home Page Animations */
+
+/* Gradient Animation for Hero Background */
+@keyframes gradient {
+  0%, 100% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+}
+
+/* Floating Animation for Decorative Elements */
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-20px); 
+  }
+}
+
+/* Delayed Floating Animation */
+@keyframes float-delayed {
+  0%, 100% { 
+    transform: translateY(0px) translateX(0px); 
+  }
+  50% { 
+    transform: translateY(-30px) translateX(10px); 
+  }
+}
+
+/* Scan Line Effect for Images */
+@keyframes scan-line {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* Pulse Animation for Icons */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Fade In Up Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glow Animation */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(220, 181, 87, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(220, 181, 87, 0.6);
+  }
+}
+
+/* Utility Classes */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 15s ease infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 8s ease-in-out infinite;
+}
+
+.animate-scan-line {
+  animation: scan-line 2s ease-in-out;
+}
+
+.animate-pulse-soft {
+  animation: pulse 3s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+/* Perspective Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1500 {
+  perspective: 1500px;
+}
+
+/* Transform Utilities */
+.transform-gpu {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Glassmorphism Base */
+.glass {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-strong {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-ultra {
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+}
+
+/* Gradient Text Utility */
+.gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Smooth Transitions */
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.transition-smooth-slow {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover Scale Effect */
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Card Shadow Effects */
+.shadow-glow-gold {
+  box-shadow: 0 10px 40px rgba(220, 181, 87, 0.2);
+}
+
+.shadow-glow-gold-strong {
+  box-shadow: 0 20px 60px rgba(220, 181, 87, 0.4);
+}
+
+.shadow-glow-green {
+  box-shadow: 0 10px 40px rgba(31, 67, 51, 0.2);
+}
+
+/* Grid Pattern Background */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(220, 181, 87, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(220, 181, 87, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
