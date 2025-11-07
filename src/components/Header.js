@@ -17,7 +17,7 @@ const Header = () => {
     { path: '/articles', label: t('nav.articles') },
     { path: '/projects', label: t('nav.projects') },
     { path: '/offices', label: t('nav.offices') },
-    { path: '/my-info', label: t('nav.myInfo') }
+    // { path: '/my-info', label: t('nav.myInfo') }
   ];
 
   // Convert navLinks to GooeyNav items format
