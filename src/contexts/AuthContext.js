@@ -17,6 +17,11 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
@@ -37,6 +42,10 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const signUp = async (email, password, username, metadata = {}) => {
+    if (!supabase) {
+      return { error: { message: 'Database not configured' } };
+    }
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -69,6 +78,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signIn = async (username, password) => {
+    if (!supabase) {
+      return { error: { message: 'Database not configured' } };
+    }
+
     // First, try to get email by username from user_profiles
     let email = username;
     let usernameNotFound = false;
@@ -110,11 +123,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   const signOut = async () => {
+    if (!supabase) {
+      return { error: null };
+    }
     const { error } = await supabase.auth.signOut();
     return { error };
   };
 
   const resetPassword = async (email) => {
+    if (!supabase) {
+      return { error: { message: 'Database not configured' } };
+    }
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/reset-password`,
     });
