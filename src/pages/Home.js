@@ -579,14 +579,28 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Bottom Row - 1 Logo Centered */}
-          <div className="flex justify-center">
+          {/* Bottom Row - 2 Logos Centered */}
+          <div className="flex justify-center items-center gap-8 flex-wrap">
             <div className="flex items-center justify-center w-full max-w-xs h-40">
               <img
                 src="/assets/IsuLogo.png"
                 alt="Istanbul University"
                 className="max-h-32 w-auto object-contain transition-transform duration-300 hover:scale-110 cursor-pointer"
               />
+            </div>
+            <div className="flex items-center justify-center w-full max-w-xs h-40">
+              <a
+                href="https://www.qk-dev.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-full h-full"
+              >
+                <img
+                  src="/assets/Qk-dev-no-bg -partner-logo.png"
+                  alt="Qk-dev Software Services"
+                  className="max-h-32 w-auto object-contain transition-transform duration-300 hover:scale-110 cursor-pointer"
+                />
+              </a>
             </div>
           </div>
         </div>

@@ -190,10 +190,24 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-12 pt-6">
           <p 
-            className="text-base text-gray-500 text-center"
+            className="text-base text-gray-500 text-center mb-2"
             style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
           >
             © {currentYear} {language === 'ar' ? 'اتحاد الطلبة السوريين. جميع الحقوق محفوظة.' : language === 'en' ? 'Syrian Students Union. All rights reserved.' : 'Suriyeli Öğrenciler Birliği. Tüm hakları saklıdır.'}
+          </p>
+          <p 
+            className="text-sm text-gray-600 text-center"
+            style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
+          >
+            {language === 'ar' ? 'تم تطوير هذا الموقع بواسطة' : language === 'en' ? 'Website developed by' : 'Web sitesi geliştirici'} {' '}
+            <a
+              href="https://www.qk-dev.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-gray-300 transition-colors font-medium"
+            >
+              QK-dev Software Services
+            </a>
           </p>
         </div>
       </div>
