@@ -91,12 +91,13 @@ const Home = () => {
       {/* Modal */}
       {selectedUnion && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedUnion(null)}>
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl mx-4" onClick={(e) => e.stopPropagation()}>
             {/* Modal Header with Image */}
-            <div className="relative h-64 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center">
+            <div className="relative h-48 md:h-64 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center">
               <button
                 onClick={() => setSelectedUnion(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100 transition-all z-10"
+                className="absolute top-3 md:top-4 right-3 md:right-4 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100 transition-all z-10 min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Close"
               >
                 <X size={24} style={{ color: '#1f4333' }} />
               </button>
@@ -108,27 +109,27 @@ const Home = () => {
             </div>
 
             {/* Modal Content */}
-            <div className="p-8">
+            <div className="p-4 md:p-6 lg:p-8">
               {/* Title and City Badge */}
-              <div className="mb-6">
-                <div className="inline-block px-4 py-1 rounded-full text-sm font-semibold text-white mb-3" style={{ backgroundColor: '#dcb557' }}>
-                  <MapPin size={14} className="inline mr-1" />
+              <div className="mb-4 md:mb-6">
+                <div className="inline-block px-3 md:px-4 py-1 rounded-full text-xs md:text-sm font-semibold text-white mb-2 md:mb-3" style={{ backgroundColor: '#dcb557' }}>
+                  <MapPin size={12} className="inline mr-1 md:w-3.5 md:h-3.5" />
                   {selectedUnion.city}
                 </div>
-                <h2 className="text-3xl font-bold mb-2" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
                   {selectedUnion.name}
                 </h2>
-                <p className="text-gray-600" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                <p className="text-sm md:text-base text-gray-600" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
                   {selectedUnion.location}
                 </p>
               </div>
 
               {/* Description */}
-              <div className="mb-6">
-                <h3 className="text-xl font-bold mb-3" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+              <div className="mb-4 md:mb-6">
+                <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
                   {language === 'ar' ? 'نبذة عن الاتحاد' : language === 'tr' ? 'Birlik Hakkında' : 'About the Union'}
                 </h3>
-                <p className="text-gray-700 leading-relaxed" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                <p className="text-sm md:text-base text-gray-700 leading-relaxed" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
                   {language === 'ar'
                     ? 'يمثل هذا الاتحاد الطلبة السوريين في الجامعة ويعمل على تقديم الدعم الأكاديمي والاجتماعي والثقافي لهم. تأسس الاتحاد بمبادرة من الطلاب لتوحيد جهودهم وتمثيل مصالحهم داخل الجامعة وخارجها، وتنظيم الفعاليات والأنشطة التي تعزز الهوية الوطنية والتواصل بين الطلبة.'
                     : language === 'tr'
@@ -138,23 +139,23 @@ const Home = () => {
               </div>
 
               {/* Info Grid */}
-              <div className="grid md:grid-cols-2 gap-4 mb-6">
-                <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                  <Calendar size={20} style={{ color: '#dcb557' }} className="mt-1" />
+              <div className="grid md:grid-cols-2 gap-3 md:gap-4 mb-4 md:mb-6">
+                <div className="flex items-start gap-2 md:gap-3 p-3 md:p-4 bg-gray-50 rounded-lg">
+                  <Calendar size={18} className="w-[18px] h-[18px] md:w-5 md:h-5 flex-shrink-0 mt-1" style={{ color: '#dcb557' }} />
                   <div>
-                    <p className="text-sm font-semibold text-gray-600">
+                    <p className="text-xs md:text-sm font-semibold text-gray-600">
                       {language === 'ar' ? 'تاريخ التأسيس' : language === 'tr' ? 'Kuruluş Tarihi' : 'Established'}
                     </p>
-                    <p className="text-gray-800 font-bold">2024</p>
+                    <p className="text-sm md:text-base text-gray-800 font-bold">2024</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                  <Users size={20} style={{ color: '#dcb557' }} className="mt-1" />
+                <div className="flex items-start gap-2 md:gap-3 p-3 md:p-4 bg-gray-50 rounded-lg">
+                  <Users size={18} className="w-[18px] h-[18px] md:w-5 md:h-5 flex-shrink-0 mt-1" style={{ color: '#dcb557' }} />
                   <div>
-                    <p className="text-sm font-semibold text-gray-600">
+                    <p className="text-xs md:text-sm font-semibold text-gray-600">
                       {language === 'ar' ? 'الحالة' : language === 'tr' ? 'Durum' : 'Status'}
                     </p>
-                    <p className="text-gray-800 font-bold">
+                    <p className="text-sm md:text-base text-gray-800 font-bold">
                       {language === 'ar' ? 'نشط' : language === 'tr' ? 'Aktif' : 'Active'}
                     </p>
                   </div>
@@ -162,19 +163,19 @@ const Home = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 flex-wrap">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <button
-                  className="flex-1 px-6 py-3 rounded-lg text-base font-semibold transition-all hover:opacity-90 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 md:px-6 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-all hover:opacity-90 flex items-center justify-center gap-2 min-h-[44px]"
                   style={{ backgroundColor: '#1f4333', color: 'white' }}
                 >
-                  <ExternalLink size={18} />
+                  <ExternalLink size={16} className="md:w-[18px] md:h-[18px]" />
                   {language === 'ar' ? 'زيارة الموقع' : language === 'tr' ? 'Siteyi Ziyaret Et' : 'Visit Website'}
                 </button>
                 <button
-                  className="px-6 py-3 rounded-lg text-base font-semibold transition-all hover:opacity-90 flex items-center justify-center gap-2"
+                  className="flex-1 sm:flex-none px-4 md:px-6 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-all hover:opacity-90 flex items-center justify-center gap-2 min-h-[44px]"
                   style={{ backgroundColor: '#dcb557', color: '#1f4333' }}
                 >
-                  <Mail size={18} />
+                  <Mail size={16} className="md:w-[18px] md:h-[18px]" />
                   {language === 'ar' ? 'تواصل معنا' : language === 'tr' ? 'Bize Ulaşın' : 'Contact Us'}
                 </button>
               </div>
@@ -185,19 +186,28 @@ const Home = () => {
 
       {/* Hero Section with Background Image */}
       <section 
-        className="relative py-64 px-4 bg-cover bg-center overflow-hidden flex items-center"
+        className="relative py-32 md:py-48 lg:py-64 px-4 bg-cover overflow-hidden flex items-center hero-section"
         style={{ 
           backgroundImage: 'url(/assets/galata.png)',
-          minHeight: '700px',
+          backgroundPosition: '15% center',
+          minHeight: '400px',
           border: 'none',
           outline: 'none'
         }}
       >
+        {/* Background Image Positioning - Mobile: right, Desktop: center */}
+        <style>{`
+          @media (min-width: 768px) {
+            .hero-section {
+              background-position: center center !important;
+            }
+          }
+        `}</style>
         {/* Animated Gradient Overlay */}
         <div 
           className="absolute inset-0 animate-gradient" 
           style={{ 
-            background: 'linear-gradient(135deg, rgba(31, 67, 51, 0.6), rgba(220, 181, 87, 0.3), rgba(31, 67, 51, 0.6))'
+            background: 'linear-gradient(135deg, rgba(31, 67, 51, 0.1), rgba(220, 181, 87, 0.2), rgba(31, 67, 51, 0.3))'
           }}
         ></div>
         
@@ -216,16 +226,18 @@ const Home = () => {
         ></div>
         
         {/* Glassmorphism Content Container */}
-        <div className="relative z-10 max-w-4xl ml-auto mr-24 pr-8">
+        <div className="relative z-10 max-w-4xl mx-auto md:ml-auto md:mr-24 px-4 md:pr-8">
           <div 
-            className="glass-ultra rounded-3xl p-8 md:p-12 shadow-2xl"
+            className="glass-ultra rounded-3xl p-6 md:p-8 lg:p-12 shadow-2xl"
             style={{ 
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              border: 'none'
+              border: 'none',
+              backdropFilter: 'blur(2px)',
+              WebkitBackdropFilter: 'blur(2px)'
             }}
           >
             <h1 
-              className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight text-white"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight text-white"
               style={{
                 textShadow: '0 0 20px rgba(31, 67, 51, 0.8), 0 0 40px rgba(31, 67, 51, 0.4)'
               }}
@@ -233,9 +245,10 @@ const Home = () => {
               {t('home.hero.title')}
             </h1>
             <p 
-              className="text-sm md:text-base lg:text-lg font-bold text-white mb-10 max-w-xl leading-relaxed"
+              className="text-xs sm:text-sm md:text-base lg:text-lg font-bold mb-6 md:mb-10 max-w-xl leading-relaxed"
               style={{
-                textShadow: '0 0 20px rgba(31, 67, 51, 0.8), 0 0 40px rgba(31, 67, 51, 0.4)'
+                color: '#1f4333',
+                textShadow: '0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.5)'
               }}
             >
               {t('home.hero.subtitle')}
@@ -243,14 +256,14 @@ const Home = () => {
             <Link to="/login">
               <Button 
                 size="lg" 
-                className="group relative overflow-hidden text-lg px-12 py-8 rounded-2xl font-bold transition-all hover:scale-105 shadow-glow-gold"
+                className="group relative overflow-hidden text-base md:text-lg px-8 md:px-12 py-6 md:py-8 rounded-2xl font-bold transition-all hover:scale-105 shadow-glow-gold w-full sm:w-auto"
                 style={{ backgroundColor: '#dcb557', color: '#1f4333' }}
               >
-                <span className="relative z-10 flex items-center group-hover:text-white transition-colors">
+                <span className="relative z-10 flex items-center justify-center group-hover:text-white transition-colors">
                   {t('home.hero.cta')}
                   <ArrowRight 
-                    className={`${direction === 'rtl' ? 'mr-2 rotate-180' : 'ml-2'} group-hover:translate-x-2 transition-transform`} 
-                    size={24} 
+                    className={`${direction === 'rtl' ? 'mr-2 rotate-180' : 'ml-2'} group-hover:translate-x-2 transition-transform w-5 h-5 md:w-6 md:h-6`} 
+                    size={20} 
                   />
                 </span>
                 <span 
@@ -264,12 +277,12 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 px-4 relative overflow-hidden" style={{ backgroundColor: '#0a1f1a', border: 'none', outline: 'none' }}>
+      <section className="py-12 md:py-20 px-4 relative overflow-hidden" style={{ backgroundColor: '#0a1f1a', border: 'none', outline: 'none' }}>
         {/* Animated Background Grid */}
         <div className="absolute inset-0 opacity-10 grid-pattern"></div>
         
         <div className="max-w-[1600px] mx-auto relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
@@ -313,12 +326,12 @@ const Home = () => {
                       </div>
                     </div>
                     <div 
-                      className="text-4xl md:text-5xl font-bold mb-3"
+                      className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 md:mb-3"
                       style={{ color: '#dcb557' }}
                     >
                       {stat.value}
                     </div>
-                    <div className="text-sm md:text-base text-white opacity-80">
+                    <div className="text-xs sm:text-sm md:text-base text-white opacity-80">
                       {stat.label}
                     </div>
                   </div>
@@ -330,34 +343,34 @@ const Home = () => {
       </section>
 
       {/* About Section */}
-      <section className="py-32 px-4 relative overflow-hidden">
+      <section className="py-16 md:py-24 lg:py-32 px-4 relative overflow-hidden">
         {/* Decorative Elements */}
         <div 
-          className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl"
+          className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 rounded-full blur-3xl"
           style={{ backgroundColor: 'rgba(220, 181, 87, 0.1)' }}
         ></div>
         <div 
-          className="absolute bottom-0 left-0 w-96 h-96 rounded-full blur-3xl"
+          className="absolute bottom-0 left-0 w-64 md:w-96 h-64 md:h-96 rounded-full blur-3xl"
           style={{ backgroundColor: 'rgba(31, 67, 51, 0.1)' }}
         ></div>
         
         <div className="max-w-[1600px] mx-auto relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Left: Text Content */}
             <div>
               <span 
-                className="inline-block px-4 py-2 rounded-full text-sm font-semibold mb-4"
+                className="inline-block px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-semibold mb-3 md:mb-4"
                 style={{ backgroundColor: '#dcb557', color: '#1f4333' }}
               >
                 {language === 'ar' ? 'من نحن' : language === 'en' ? 'About Us' : 'Hakkımızda'}
               </span>
               <h2 
-                className="text-6xl md:text-5xl font-bold mb-6"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6"
                 style={{ color: '#1f4333' }}
               >
                 {t('home.about.title')}
               </h2>
-              <p className="text-sm md:text-base lg:text-lg font-bold text-gray-700 leading-relaxed mb-6">
+              <p className="text-sm md:text-base lg:text-lg font-bold text-gray-700 leading-relaxed mb-4 md:mb-6">
                 {t('home.about.description')}
               </p>
               {/* <Link to="/about">
@@ -372,7 +385,7 @@ const Home = () => {
             </div>
             
             {/* Right: Status Image */}
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center mt-6 md:mt-0">
               <img
                 src="/assets/status.png"
                 alt={language === 'ar' ? 'إحصائيات الاتحاد' : language === 'en' ? 'Union Statistics' : 'Birlik İstatistikleri'}
@@ -384,18 +397,18 @@ const Home = () => {
       </section>
 
       {/* Goals/Objectives Section */}
-      <section className="py-32 px-4" style={{ backgroundColor: '#0a1f1a' }}>
+      <section className="py-16 md:py-24 lg:py-32 px-4" style={{ backgroundColor: '#0a1f1a' }}>
         <div className="max-w-[1600px] mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4 text-white">
               {language === 'ar' ? 'أهدافنا' : language === 'en' ? 'Our Goals' : 'Hedeflerimiz'}
             </h2>
-            <p className="text-lg text-white/70">
+            <p className="text-base md:text-lg text-white/70 px-4">
               {language === 'ar' ? 'نسعى لتحقيق أهداف طموحة لخدمة الطلبة السوريين' : language === 'en' ? 'We strive to achieve ambitious goals to serve Syrian students' : 'Suriyeli öğrencilere hizmet etmek için iddialı hedeflere ulaşmaya çalışıyoruz'}
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
             {[
               {
                 number: '01',
@@ -472,30 +485,30 @@ const Home = () => {
       </section>
 
       {/* Vision & Mission Section */}
-      <section className="py-32 px-4 relative overflow-hidden">
+      <section className="py-16 md:py-24 lg:py-32 px-4 relative overflow-hidden">
         <div className="max-w-[1600px] mx-auto">
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             {/* Vision Card */}
             <div 
-              className="relative p-10 rounded-3xl overflow-hidden shadow-2xl"
+              className="relative p-6 md:p-8 lg:p-10 rounded-3xl overflow-hidden shadow-2xl"
               style={{ 
                 background: 'linear-gradient(135deg, rgba(31, 67, 51, 0.95), rgba(44, 95, 74, 0.9))'
               }}
             >
               <div className="absolute top-0 right-0 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
               <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
                   <div 
-                    className="p-3 rounded-xl"
+                    className="p-2 md:p-3 rounded-xl"
                     style={{ backgroundColor: 'rgba(220, 181, 87, 0.2)' }}
                   >
-                    <Eye size={32} style={{ color: '#dcb557' }} />
+                    <Eye size={24} className="md:w-8 md:h-8" style={{ color: '#dcb557' }} />
                   </div>
-                  <h3 className="text-3xl font-bold text-white">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white">
                     {language === 'ar' ? 'رؤيتنا' : language === 'en' ? 'Our Vision' : 'Vizyonumuz'}
                   </h3>
                 </div>
-                <p className="text-lg text-white/90 leading-relaxed">
+                <p className="text-base md:text-lg text-white/90 leading-relaxed">
                   {language === 'ar' 
                     ? 'نطمح إلى أن يكون الاتحاد رائداً في توحيد الطلاب السوريين في تركيا، وأن يكون عنواناً للتعاون والتفاهم بين الثقافات، والمساهمة بفعالية في تعزيز التعليم والاندماج في المجتمع المحلي'
                     : language === 'en'
@@ -507,25 +520,25 @@ const Home = () => {
 
             {/* Mission Card */}
             <div 
-              className="relative p-10 rounded-3xl overflow-hidden shadow-2xl"
+              className="relative p-6 md:p-8 lg:p-10 rounded-3xl overflow-hidden shadow-2xl"
               style={{ 
                 background: 'linear-gradient(135deg, rgba(220, 181, 87, 0.95), rgba(201, 165, 66, 0.9))'
               }}
             >
               <div className="absolute bottom-0 left-0 w-40 h-40 bg-white/5 rounded-full blur-2xl"></div>
               <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-6">
                   <div 
-                    className="p-3 rounded-xl"
+                    className="p-2 md:p-3 rounded-xl"
                     style={{ backgroundColor: 'rgba(31, 67, 51, 0.2)' }}
                   >
-                    <TrendingUp size={32} style={{ color: '#1f4333' }} />
+                    <TrendingUp size={24} className="md:w-8 md:h-8" style={{ color: '#1f4333' }} />
                   </div>
-                  <h3 className="text-3xl font-bold" style={{ color: '#1f4333' }}>
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-bold" style={{ color: '#1f4333' }}>
                     {language === 'ar' ? 'رسالتنا' : language === 'en' ? 'Our Mission' : 'Misyonumuz'}
                   </h3>
                 </div>
-                <p className="text-lg leading-relaxed" style={{ color: '#1f4333' }}>
+                <p className="text-base md:text-lg leading-relaxed" style={{ color: '#1f4333' }}>
                   {language === 'ar'
                     ? 'إنشاء روابط قوية تجمع بين الطلاب السوريين وتعزز من تجربتهم التعليمية والحياتية. من خلال التعاون والتواصل، يهدف إلى تحقيق أهداف مشتركة وبناء جسور التفاهم والأخوة مع المجتمع المحلي'
                     : language === 'en'
@@ -539,16 +552,16 @@ const Home = () => {
       </section>
 
       {/* Partners Section */}
-      <section className="py-32 px-4" style={{ backgroundColor: '#f5f5f5' }}>
+      <section className="py-16 md:py-24 lg:py-32 px-4" style={{ backgroundColor: '#f5f5f5' }}>
         <div className="max-w-[1600px] mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold" style={{ color: '#1f4333' }}>
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold" style={{ color: '#1f4333' }}>
               {language === 'ar' ? 'شركاء النجاح' : language === 'en' ? 'Success Partners' : 'Başarı Ortakları'}
             </h2>
           </div>
 
           {/* Top Row - 4 Logos */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 items-center justify-items-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-8 md:mb-12 items-center justify-items-center">
             <div className="flex items-center justify-center w-full h-40">
               <img
                 src="/assets/KalemLogo.png"
@@ -580,15 +593,15 @@ const Home = () => {
           </div>
 
           {/* Bottom Row - 2 Logos Centered */}
-          <div className="flex justify-center items-center gap-8 flex-wrap">
-            <div className="flex items-center justify-center w-full max-w-xs h-40">
+          <div className="flex justify-center items-center gap-4 md:gap-8 flex-wrap">
+            <div className="flex items-center justify-center w-full sm:w-auto max-w-xs h-32 md:h-40">
               <img
                 src="/assets/IsuLogo.png"
                 alt="Istanbul University"
-                className="max-h-32 w-auto object-contain transition-transform duration-300 hover:scale-110 cursor-pointer"
+                className="max-h-24 md:max-h-32 w-auto object-contain transition-transform duration-300 hover:scale-110 cursor-pointer"
               />
             </div>
-            <div className="flex items-center justify-center w-full max-w-xs h-40">
+            <div className="flex items-center justify-center w-full sm:w-auto max-w-xs h-32 md:h-40">
               <a
                 href="https://www.qk-dev.com/"
                 target="_blank"
@@ -598,7 +611,7 @@ const Home = () => {
                 <img
                   src="/assets/Qk-dev-no-bg -partner-logo.png"
                   alt="Qk-dev Software Services"
-                  className="max-h-32 w-auto object-contain transition-transform duration-300 hover:scale-110 cursor-pointer"
+                  className="max-h-24 md:max-h-32 w-auto object-contain transition-transform duration-300 hover:scale-110 cursor-pointer"
                 />
               </a>
             </div>
@@ -607,18 +620,18 @@ const Home = () => {
       </section>
 
       {/* Recent Projects */}
-      <section className="py-24 px-4" style={{ backgroundColor: '#f9fafb' }}>
+      <section className="py-12 md:py-20 lg:py-24 px-4" style={{ backgroundColor: '#f9fafb' }}>
         <div className="max-w-[1600px] mx-auto">
           {/* Header Section */}
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 md:mb-16">
             <p 
-              className="text-lg font-semibold mb-4"
+              className="text-base md:text-lg font-semibold mb-3 md:mb-4"
               style={{ color: '#dcb557' }}
             >
               {language === 'ar' ? 'مشاريعنا' : language === 'en' ? 'Our Projects' : 'Projelerimiz'}
             </p>
             <h2 
-              className="text-3xl md:text-4xl font-bold mb-6"
+              className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6"
               style={{ color: '#1f4333' }}
             >
               {language === 'ar' 
@@ -628,7 +641,7 @@ const Home = () => {
                 : 'Projeler ve Girişimler'}
             </h2>
             <p 
-              className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed"
+              className="text-sm md:text-base lg:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed px-4"
             >
               {language === 'ar'
                 ? 'نعمل على تطوير وتنفيذ مشاريع متنوعة تهدف إلى دعم الطلاب وتطوير مهاراتهم وتحقيق طموحاتهم الأكاديمية والمهنية'
@@ -639,7 +652,7 @@ const Home = () => {
           </div>
 
           {/* Project Cards */}
-          <div className="grid md:grid-cols-3 gap-6 mb-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-10">
             {recentProjects.map((project, index) => {
               // Determine status badge color based on project status
               let badgeBgColor = '#dcb557'; // default: active/gold (#dcb557)
@@ -726,20 +739,20 @@ const Home = () => {
       </section>
 
       {/* Recent News */}
-      <section className="py-24 px-4" style={{ backgroundColor: '#ffffff' }}>
+      <section className="py-12 md:py-20 lg:py-24 px-4" style={{ backgroundColor: '#ffffff' }}>
         <div className="max-w-[1600px] mx-auto">
           {/* Header Section */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12 gap-4 md:gap-6">
             {/* Title Section - Left */}
             <div className={direction === 'rtl' ? 'text-right' : 'text-left'}>
               <p 
-                className="text-lg font-semibold mb-2"
+                className="text-base md:text-lg font-semibold mb-2"
                 style={{ color: '#dcb557' }}
               >
                 {language === 'ar' ? 'أحدث الأخبار' : language === 'en' ? 'Latest News' : 'Son Haberler'}
               </p>
               <h2 
-                className="text-3xl md:text-4xl font-bold mb-3"
+                className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 md:mb-3"
                 style={{ color: '#1f4333' }}
               >
                 {language === 'ar' 
@@ -749,20 +762,20 @@ const Home = () => {
                   : 'Makaleler ve Haberler'}
               </h2>
               <p 
-                className="text-lg text-gray-600"
+                className="text-sm md:text-base lg:text-lg text-gray-600"
               >
                 {language === 'ar'
                   ? 'تابع آخر المستجدات والفعاليات والأخبار المهمة للطلاب السوريين'
                   : language === 'en'
                   ? 'Follow the latest updates, events, and important news for Syrian students'
-                  : 'Suriyeli öğrenciler için son gelişmeleri, etkinlikleri ve önemli haberleri takip edin'}
+                  : 'Suriyeli öğrenciler için son gelişmeleri, etkinlikleri و önemli haberleri takip edin'}
               </p>
             </div>
             
             {/* View All Button - Right */}
-            <Link to="/articles">
+            <Link to="/articles" className="w-full md:w-auto">
               <Button 
-                className="rounded-full px-6 py-3 font-semibold hover:opacity-90 transition-all"
+                className="rounded-full px-6 py-3 font-semibold hover:opacity-90 transition-all w-full md:w-auto"
                 style={{ backgroundColor: '#dcb557', color: 'white' }}
               >
                 {language === 'ar' ? 'عرض جميع الأخبار' : language === 'en' ? 'View All News' : 'Tüm Haberleri Görüntüle'}
@@ -771,11 +784,11 @@ const Home = () => {
           </div>
 
           {/* Articles Grid */}
-          <div className="grid md:grid-cols-[2fr_1fr] gap-6">
+          <div className="grid md:grid-cols-[2fr_1fr] gap-4 md:gap-6">
             {/* Left: Featured Article */}
             <div className="bg-gray-50 rounded-2xl overflow-hidden">
               {/* Featured Image */}
-              <div className="relative h-80 overflow-hidden bg-transparent flex items-center justify-center rounded-2xl">
+              <div className="relative h-48 md:h-64 lg:h-80 overflow-hidden bg-transparent flex items-center justify-center rounded-2xl">
                 <img 
                   src={recentArticles[featuredArticleIndex].image} 
                   alt={recentArticles[featuredArticleIndex].title[language]} 
@@ -783,7 +796,7 @@ const Home = () => {
                 />
                 {/* Featured Badge */}
                 <div 
-                  className="absolute bottom-4 right-4 px-4 py-2 rounded-full text-sm font-semibold text-white"
+                  className="absolute bottom-2 md:bottom-4 right-2 md:right-4 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-semibold text-white"
                   style={{ backgroundColor: '#dcb557' }}
                 >
                   {language === 'ar' ? 'خبر رئيسي' : language === 'en' ? 'Featured' : 'Öne Çıkan'}
@@ -791,7 +804,7 @@ const Home = () => {
               </div>
               
               {/* Article Content */}
-              <div className="p-8">
+              <div className="p-4 md:p-6 lg:p-8">
                 {/* Date and Category */}
                 <div className="flex items-center gap-2 mb-6 text-sm text-gray-500">
                   <span>
@@ -812,24 +825,24 @@ const Home = () => {
                 
                 {/* Title */}
                 <h3 
-                  className="text-2xl font-bold mb-4 leading-tight"
+                  className="text-xl md:text-2xl font-bold mb-3 md:mb-4 leading-tight"
                   style={{ color: '#1f4333' }}
                 >
                   {recentArticles[featuredArticleIndex].title[language]}
                 </h3>
                 
                 {/* Excerpt */}
-                <p className="text-base text-gray-600 mb-6 leading-relaxed">
+                <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6 leading-relaxed line-clamp-2 md:line-clamp-3">
                   {recentArticles[featuredArticleIndex].excerpt[language]}
                 </p>
                 
                 {/* Read Full Article Link */}
                 <Link to={`/articles/${recentArticles[featuredArticleIndex].id}`}>
-                  <span className="flex items-center text-lg font-semibold hover:translate-x-1 transition-transform group/link" style={{ color: '#dcb557' }}>
+                  <span className="flex items-center text-base md:text-lg font-semibold hover:translate-x-1 transition-transform group/link" style={{ color: '#dcb557' }}>
                     {language === 'ar' ? 'قراءة المقال كاملاً' : language === 'en' ? 'Read Full Article' : 'Makalenin Tamamını Oku'}
                     <ArrowRight 
-                      className={`${direction === 'rtl' ? 'mr-2 rotate-180' : 'ml-2'} group-hover/link:translate-x-1 transition-transform`} 
-                      size={18} 
+                      className={`${direction === 'rtl' ? 'mr-2 rotate-180' : 'ml-2'} group-hover/link:translate-x-1 transition-transform w-4 h-4 md:w-[18px] md:h-[18px]`} 
+                      size={16}
                     />
                   </span>
                 </Link>
@@ -900,20 +913,20 @@ const Home = () => {
       
 
       {/* Branch Unions Section */}
-      <section className="py-20 px-4" style={{ backgroundColor: '#f7fafc' }}>
+      <section className="py-12 md:py-16 lg:py-20 px-4" style={{ backgroundColor: '#f7fafc' }}>
         <div className="max-w-[1600px] mx-auto">
-          <div className="flex justify-between items-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold" style={{ color: '#1f4333' }}>
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 md:mb-10 gap-4">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: '#1f4333' }}>
               {language === 'ar' ? 'اتحاداتنا الفرعية' : language === 'en' ? 'Our Branch Unions' : 'Şube Birliklerimiz'}
             </h2>
-            <Link to="/sub-unions">
+            <Link to="/sub-unions" className="w-full sm:w-auto">
               <Button 
                 variant="outline"
                 style={{ 
                   borderColor: '#dcb557',
                   color: '#dcb557'
                 }}
-                className="hover:bg-opacity-10"
+                className="hover:bg-opacity-10 w-full sm:w-auto"
               >
                 {language === 'ar' ? 'عرض الكل' : language === 'en' ? 'View All' : 'Hepsini Gör'}
                 <ArrowRight className={`${direction === 'rtl' ? 'mr-2 rotate-180' : 'ml-2'}`} size={16} />
@@ -921,7 +934,7 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {(() => {
               // Get first 3 Istanbul subunions
               const istanbulUnions = (subunionsData.unions || [])
@@ -1028,23 +1041,23 @@ const Home = () => {
       </section>
 
       {/* Offices Section */}
-      <section className="py-32 px-4 relative overflow-hidden" style={{ backgroundColor: '#1f4333' }}>
+      <section className="py-16 md:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ backgroundColor: '#1f4333' }}>
         <div className="max-w-[1600px] mx-auto">
           {/* Header */}
-          <div className="text-center mb-16">
+          <div className="text-center mb-8 md:mb-16">
             <p 
-              className="text-lg font-semibold mb-4"
+              className="text-base md:text-lg font-semibold mb-3 md:mb-4"
               style={{ color: '#dcb557' }}
             >
               {language === 'ar' ? 'هيكلنا التنظيمي' : language === 'en' ? 'Our Organizational Structure' : 'Örgütsel Yapımız'}
             </p>
             <h2 
-              className="text-4xl md:text-5xl font-bold mb-6 text-white"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 text-white"
             >
               {language === 'ar' ? 'المكاتب والهيئات' : language === 'en' ? 'Offices and Bodies' : 'Ofisler ve Organlar'}
             </h2>
             <p 
-              className="text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed"
+              className="text-sm md:text-base lg:text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed px-4"
             >
               {language === 'ar'
                 ? 'نعمل من خلال شبكة متكاملة من المكاتب والهيئات المتخصصة لتقديم أفضل الخدمات وتحقيق أهدافنا بكفاءة عالية'
@@ -1055,7 +1068,7 @@ const Home = () => {
           </div>
 
           {/* Category Cards Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
             {[
               {
                 id: 'board',
@@ -1170,44 +1183,44 @@ const Home = () => {
       </section>
 
       {/* Map Section */}
-      <section className="py-20 mx-auto" style={{ backgroundColor: '#f9fafb' }}>
-        <section className="py-16" style={{ backgroundColor: '#f9fafb' }}>
+      <section className="py-12 md:py-16 lg:py-20 mx-auto" style={{ backgroundColor: '#f9fafb' }}>
+        <section className="py-8 md:py-12 lg:py-16" style={{ backgroundColor: '#f9fafb' }}>
           <div className="container mx-auto px-4">
             {/* Title and Golden Banner */}
-            <div className={`flex flex-col-reverse lg:flex-row justify-center items-center lg:items-center mb-12 gap-6 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex flex-col-reverse lg:flex-row justify-center items-center lg:items-center mb-8 md:mb-12 gap-4 md:gap-6 ${language === 'ar' ? 'flex-row-reverse' : ''}`}>
               {/* Title */}
               <h2 
-                className={`text-4xl lg:text-7xl font-bold order-2 lg:order-1 ${language === 'ar' ? 'text-right' : 'text-left'}`}
+                className={`text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-bold order-2 lg:order-1 text-center lg:text-left ${language === 'ar' ? 'text-right' : 'text-left'}`}
                 style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}
               >
                 {language === 'ar' ? (
                   <>
                     خارطة انتشار الاتحاد<br />
-                    <span className="text-4xl lg:text-7xl">فـــــــــــي&nbsp;تــركيـــــــــــــــا</span>
+                    <span className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl">فـــــــــــي&nbsp;تــركيـــــــــــــــا</span>
                   </>
                 ) : language === 'en' ? (
                   <>
                     Union Spread Map<br />
-                    <span className="text-4xl lg:text-7xl">in Turkey</span>
+                    <span className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl">in Turkey</span>
                   </>
                 ) : (
                   <>
                     Birlik Yayılma Haritası<br />
-                    <span className="text-4xl lg:text-7xl">Türkiye'de</span>
+                    <span className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl">Türkiye'de</span>
                   </>
                 )}
               </h2>
 
               {/* Golden Banner */}
               <div 
-                className="px-8 py-6 rounded-2xl flex flex-row items-center gap-4 shadow-lg order-1 lg:order-2"
+                className="px-4 md:px-6 lg:px-8 py-4 md:py-6 rounded-2xl flex flex-row items-center gap-2 md:gap-4 shadow-lg order-1 lg:order-2"
                 style={{ backgroundColor: '#dcb557' }}
               >
-                <MapPin size={64} style={{ color: '#1f4333' }} className="w-16 h-16" />
-                <div className="text-4xl lg:text-8xl font-bold" style={{ color: '#1f4333' }}>
+                <MapPin size={32} className="md:w-12 md:h-12 lg:w-16 lg:h-16" style={{ color: '#1f4333' }} />
+                <div className="text-2xl md:text-3xl lg:text-5xl xl:text-8xl font-bold" style={{ color: '#1f4333' }}>
                   21
                 </div>
-                <div className="text-xl lg:text-4xl font-medium text-center" style={{ color: '#1f4333' }}>
+                <div className="text-sm md:text-base lg:text-xl xl:text-4xl font-medium text-center" style={{ color: '#1f4333' }}>
                   {language === 'ar' ? (
                     <>
                       ولاية<br />
@@ -1231,7 +1244,7 @@ const Home = () => {
             {/* Map */}
             <div className="flex justify-center">
               <Link to="/sub-unions" className="block w-full max-w-4xl">
-                <div className="relative w-full h-96 lg:h-[500px] group cursor-pointer transition-all duration-300 hover:-translate-y-2">
+                <div className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[500px] group cursor-pointer transition-all duration-300 hover:-translate-y-2">
                   <img 
                     src="/assets/map.png" 
                     alt={language === 'ar' ? 'خريطة انتشار الاتحاد في تركيا' : language === 'en' ? 'Union Spread Map in Turkey' : 'Türkiye\'de Birlik Yayılma Haritası'}
@@ -1243,9 +1256,9 @@ const Home = () => {
             </div>
 
             {/* Description */}
-            <div className="text-center mt-8">
+            <div className="text-center mt-6 md:mt-8">
               <p 
-                className="text-xl font-semibold max-w-3xl mx-auto leading-relaxed"
+                className="text-base md:text-lg lg:text-xl font-semibold max-w-3xl mx-auto leading-relaxed px-4"
                 style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}
               >
                 {language === 'ar' 

@@ -49,15 +49,15 @@ const Header = () => {
   return (
     <header className="shadow-sm sticky top-0 z-50" style={{ backgroundColor: '#1f4333' }}>
       <div className="max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+          <Link to="/" className="flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity">
             <img 
               src="/assets/logo.png" 
               alt="Syrian Student Union Logo" 
-              className="h-12 w-auto"
+              className="h-8 md:h-12 w-auto"
             />
-            <span className="text-lg font-bold text-white">
+            <span className="text-sm md:text-lg font-bold text-white sm:inline">
               {language === 'ar' ? 'اتحاد الطلبة السوريين' : language === 'en' ? 'Syrian Student Union' : 'Suriyeli Öğrenciler Birliği'}
             </span>
           </Link>
@@ -109,21 +109,22 @@ const Header = () => {
                 {t('nav.login')}
               </Button>
             </Link>
-            {/* <Link to="/signup">
+            <Link to="/signup">
               <Button 
                 className="transition-all hover:opacity-90"
                 style={{ backgroundColor: '#dcb557', color: '#1f4333' }}
               >
                 {t('nav.signup')}
               </Button>
-            </Link> */}
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2"
+            className="lg:hidden p-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             style={{ color: 'white' }}
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

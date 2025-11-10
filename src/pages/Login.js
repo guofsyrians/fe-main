@@ -71,7 +71,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex relative bg-gray-50" style={{ direction: 'ltr' }}>
       {/* Language Selector */}
-      <div className="absolute top-6 left-6 z-50" style={{ direction: direction }}>
+      <div className="absolute top-4 left-4 md:top-6 md:left-6 z-50" style={{ direction: direction }}>
         <Button
           variant="outline"
           onClick={() => {
@@ -79,27 +79,27 @@ const Login = () => {
             const nextIndex = (currentIndex + 1) % languages.length;
             changeLanguage(languages[nextIndex].code);
           }}
-          className="bg-white border-gray-300 rounded-lg px-4 py-2 h-10 flex items-center gap-2 hover:bg-gray-50"
+          className="bg-white border-gray-300 rounded-lg px-3 md:px-4 py-2 h-9 md:h-10 flex items-center gap-1.5 md:gap-2 hover:bg-gray-50 min-w-[44px] min-h-[44px]"
         >
-          <Globe className="w-4 h-4 text-gray-600" />
-          <span className="text-sm text-gray-600">{currentLanguage.flag}</span>
-          <span className="text-sm text-gray-600">{currentLanguage.name}</span>
-          <ChevronDown className="w-4 h-4 text-gray-600" />
+          <Globe className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-600" />
+          <span className="text-xs md:text-sm text-gray-600 hidden sm:inline">{currentLanguage.flag}</span>
+          <span className="text-xs md:text-sm text-gray-600 hidden md:inline">{currentLanguage.name}</span>
+          <ChevronDown className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-600" />
         </Button>
       </div>
 
       {/* Split Screen Layout */}
-      <div className="flex w-full" style={{ direction: direction }}>
+      <div className="flex flex-col lg:flex-row w-full" style={{ direction: direction }}>
         {/* Left Side - Login Form */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center px-8 py-12" style={{ direction: direction }}>
+        <div className="w-full lg:w-1/2 flex items-center justify-center px-4 sm:px-6 md:px-8 py-8 md:py-12" style={{ direction: direction }}>
           <Card className="w-full max-w-[448px] shadow-lg border-0 rounded-2xl">
-            <CardContent className="p-8">
+            <CardContent className="p-6 md:p-8">
               {/* Header */}
-              <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold mb-2" style={{ color: '#1f4333' }}>
+              <div className="text-center mb-6 md:mb-8">
+                <h1 className="text-2xl sm:text-3xl font-bold mb-2" style={{ color: '#1f4333' }}>
                   {t('login.title')}
                 </h1>
-                <p className="text-base text-gray-600">
+                <p className="text-sm md:text-base text-gray-600">
                   {t('login.welcomeBack')}
                 </p>
               </div>
@@ -317,39 +317,39 @@ const Login = () => {
           </div>
 
           {/* Content Overlay */}
-          <div className="relative z-10 flex flex-col items-center justify-center h-full px-16 text-center" style={{ direction: direction }}>
+          <div className="relative z-10 flex flex-col items-center justify-center h-full px-8 md:px-12 lg:px-16 text-center" style={{ direction: direction }}>
             {/* Logo */}
-            <div className="mb-8">
+            <div className="mb-6 md:mb-8">
               <img
                 src="/assets/logo.png"
                 alt="Logo"
-                className="w-20 h-20 mx-auto object-contain"
+                className="w-16 h-16 md:w-20 md:h-20 mx-auto object-contain"
               />
             </div>
 
             {/* Title */}
-            <h2 className="text-4xl font-bold text-white mb-4" style={{ color: 'white' }}>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 md:mb-4" style={{ color: 'white' }}>
               {t('login.unionTitle')}
             </h2>
 
             {/* Subtitle */}
-            <p className="text-xl text-white opacity-90 mb-12 max-w-md">
+            <p className="text-base md:text-lg lg:text-xl text-white opacity-90 mb-8 md:mb-12 max-w-md px-4">
               {t('login.unionSubtitle')}
             </p>
 
             {/* Stats */}
-            <div className="flex gap-12 mt-8">
+            <div className="flex gap-6 md:gap-8 lg:gap-12 mt-4 md:mt-8">
               <div className="text-center">
-                <div className="text-3xl font-bold text-white mb-1">+50</div>
-                <div className="text-sm text-white opacity-80">{t('login.subUnions')}</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1">+50</div>
+                <div className="text-xs md:text-sm text-white opacity-80">{t('login.subUnions')}</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-white mb-1">15K</div>
-                <div className="text-sm text-white opacity-80">{t('login.memberStudents')}</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1">15K</div>
+                <div className="text-xs md:text-sm text-white opacity-80">{t('login.memberStudents')}</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-white mb-1">+30</div>
-                <div className="text-sm text-white opacity-80">{t('login.countries')}</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1">+30</div>
+                <div className="text-xs md:text-sm text-white opacity-80">{t('login.countries')}</div>
               </div>
             </div>
           </div>

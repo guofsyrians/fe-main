@@ -18,18 +18,18 @@ const Projects = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative w-full h-[650px] md:h-[750px] overflow-hidden">
+      <section className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[900px] overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-top"
           style={{ backgroundImage: 'url(/assets/projectsHeroImage.png)' }}
         />
         <div className="absolute inset-0 bg-gray-500/20" />
       </section>
 
       {/* Stats Section */}
-      <section className="pt-4 pb-16 px-4" style={{ backgroundColor: '#ffffff' }}>
+      <section className="pt-4 pb-12 md:pb-16 px-4" style={{ backgroundColor: '#ffffff' }}>
         <div className="max-w-[1600px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {/* Card 1: Active Projects */}
             <div 
               className="bg-white rounded-2xl p-8 text-center"
@@ -44,12 +44,12 @@ const Projects = () => {
                 </div>
               </div>
               <h3 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl sm:text-3xl font-bold mb-2"
                 style={{ color: '#1f4333' }}
               >
                 24
               </h3>
-              <p className="text-base text-gray-600">
+              <p className="text-sm md:text-base text-gray-600">
                 {language === 'ar' ? 'مشروع نشط' : language === 'en' ? 'Active Projects' : 'Aktif Proje'}
               </p>
             </div>
@@ -68,12 +68,12 @@ const Projects = () => {
                 </div>
               </div>
               <h3 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl sm:text-3xl font-bold mb-2"
                 style={{ color: '#1f4333' }}
               >
                 87
               </h3>
-              <p className="text-base text-gray-600">
+              <p className="text-sm md:text-base text-gray-600">
                 {language === 'ar' ? 'مشروع مكتمل' : language === 'en' ? 'Completed Projects' : 'Tamamlanan Proje'}
               </p>
             </div>
@@ -92,12 +92,12 @@ const Projects = () => {
                 </div>
               </div>
               <h3 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl sm:text-3xl font-bold mb-2"
                 style={{ color: '#1f4333' }}
               >
                 450+
               </h3>
-              <p className="text-base text-gray-600">
+              <p className="text-sm md:text-base text-gray-600">
                 {language === 'ar' ? 'مشارك' : language === 'en' ? 'Participants' : 'Katılımcı'}
               </p>
             </div>
@@ -116,12 +116,12 @@ const Projects = () => {
                 </div>
               </div>
               <h3 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl sm:text-3xl font-bold mb-2"
                 style={{ color: '#1f4333' }}
               >
                 15
               </h3>
-              <p className="text-base text-gray-600">
+              <p className="text-sm md:text-base text-gray-600">
                 {language === 'ar' ? 'دولة مستفيدة' : language === 'en' ? 'Beneficiary Countries' : 'Yararlanan Ülke'}
               </p>
             </div>
@@ -132,17 +132,17 @@ const Projects = () => {
       <div className="py-12 px-4">
         <div className="max-w-[1600px] mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#1f4333' }}>
+          <div className="text-center mb-8 md:mb-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4" style={{ color: '#1f4333' }}>
               {t('projects.title')}
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               {t('projects.subtitle')}
             </p>
           </div>
 
         {/* Filter Buttons */}
-        <div className="flex justify-center gap-4 mb-12">
+        <div className="flex justify-center gap-2 md:gap-4 mb-8 md:mb-12 flex-wrap px-4">
           <Button
             onClick={() => setFilter('all')}
             variant={filter === 'all' ? 'default' : 'outline'}
@@ -179,7 +179,7 @@ const Projects = () => {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
           {filteredProjects.map((project) => {
             // Get data from project or use defaults
             const progress = project.progress || 55;

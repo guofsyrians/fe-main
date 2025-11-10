@@ -29,7 +29,7 @@ const Articles = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section with Split Buttons */}
-      <section className="relative w-full h-[600px] overflow-hidden flex">
+      <section className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] overflow-hidden flex flex-col md:flex-row">
         {/* Single Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center"
@@ -39,7 +39,7 @@ const Articles = () => {
         {/* Left Section - News */}
         <button
           onClick={() => handleViewModeChange('news')}
-          className={`relative flex-1 overflow-hidden cursor-pointer group transition-all duration-300 z-10 ${
+          className={`relative flex-1 overflow-hidden cursor-pointer group transition-all duration-300 z-10 min-h-[200px] md:min-h-0 ${
             viewMode === 'news' ? 'scale-[1.02]' : ''
           }`}
         >
@@ -57,7 +57,7 @@ const Articles = () => {
           <div className="relative h-full flex flex-col items-center justify-center z-10">
             {/* Text */}
             <span 
-              className={`text-4xl md:text-6xl font-bold transition-all ${
+              className={`text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold transition-all ${
                 viewMode === 'news' ? 'scale-110' : ''
               }`}
               style={{ color: '#ffffff', textShadow: '2px 2px 12px rgba(0,0,0,0.8)' }}
@@ -66,11 +66,11 @@ const Articles = () => {
             </span>
             
             {/* Microphone Image - Bottom Left */}
-            <div className="absolute bottom-4 left-4 opacity-80 group-hover:opacity-100 transition-opacity">
+            <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 opacity-80 group-hover:opacity-100 transition-opacity">
               <img 
                 src="/assets/mic.png" 
                 alt="Microphone" 
-                className="w-24 h-24 object-contain"
+                className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain"
                 style={{ filter: 'drop-shadow(2px 2px 8px rgba(0,0,0,0.8))' }}
               />
             </div>
@@ -80,7 +80,7 @@ const Articles = () => {
         {/* Right Section - Articles */}
         <button
           onClick={() => handleViewModeChange('articles')}
-          className={`relative flex-1 overflow-hidden cursor-pointer group transition-all duration-300 z-10 ${
+          className={`relative flex-1 overflow-hidden cursor-pointer group transition-all duration-300 z-10 min-h-[200px] md:min-h-0 ${
             viewMode === 'articles' ? 'scale-[1.02]' : ''
           }`}
         >
@@ -98,7 +98,7 @@ const Articles = () => {
           <div className="relative h-full flex flex-col items-center justify-center z-10">
             {/* Text */}
             <span 
-              className={`text-4xl md:text-6xl font-bold transition-all ${
+              className={`text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold transition-all ${
                 viewMode === 'articles' ? 'scale-110' : ''
               }`}
               style={{ color: '#ffffff', textShadow: '2px 2px 12px rgba(0,0,0,0.8)' }}
@@ -107,11 +107,11 @@ const Articles = () => {
             </span>
             
             {/* Newspaper Image - Bottom Right */}
-            <div className="absolute bottom-4 right-4 opacity-80 group-hover:opacity-100 transition-opacity">
+            <div className="absolute bottom-2 md:bottom-4 right-2 md:right-4 opacity-80 group-hover:opacity-100 transition-opacity">
               <img 
                 src="/assets/newspaper.png" 
                 alt="Newspaper" 
-                className="w-24 h-24 object-contain"
+                className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 object-contain"
                 style={{ filter: 'drop-shadow(2px 2px 8px rgba(0,0,0,0.8))' }}
               />
             </div>
@@ -120,9 +120,9 @@ const Articles = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-4" style={{ backgroundColor: '#ffffff' }}>
+      <section className="py-12 md:py-16 px-4" style={{ backgroundColor: '#ffffff' }}>
         <div className="max-w-[1600px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {/* Card 1: Published Articles */}
             <div 
               className="bg-white rounded-2xl p-8 text-center"
@@ -137,12 +137,12 @@ const Articles = () => {
                 </div>
               </div>
               <h3 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl sm:text-3xl font-bold mb-2"
                 style={{ color: '#1f4333' }}
               >
                 247
               </h3>
-              <p className="text-base text-gray-600">
+              <p className="text-sm md:text-base text-gray-600">
                 {language === 'ar' ? 'مقالة منشورة' : language === 'en' ? 'Published Articles' : 'Yayınlanmış Makale'}
               </p>
             </div>
@@ -161,12 +161,12 @@ const Articles = () => {
                 </div>
               </div>
               <h3 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl sm:text-3xl font-bold mb-2"
                 style={{ color: '#1f4333' }}
               >
                 125K
               </h3>
-              <p className="text-base text-gray-600">
+              <p className="text-sm md:text-base text-gray-600">
                 {language === 'ar' ? 'مشاهدة شهرية' : language === 'en' ? 'Monthly Views' : 'Aylık Görüntüleme'}
               </p>
             </div>
@@ -185,12 +185,12 @@ const Articles = () => {
                 </div>
               </div>
               <h3 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl sm:text-3xl font-bold mb-2"
                 style={{ color: '#1f4333' }}
               >
                 89
               </h3>
-              <p className="text-base text-gray-600">
+              <p className="text-sm md:text-base text-gray-600">
                 {language === 'ar' ? 'كاتب مساهم' : language === 'en' ? 'Contributing Writers' : 'Katkıda Bulunan Yazar'}
               </p>
             </div>
@@ -209,12 +209,12 @@ const Articles = () => {
                 </div>
               </div>
               <h3 
-                className="text-3xl font-bold mb-2"
+                className="text-2xl sm:text-3xl font-bold mb-2"
                 style={{ color: '#1f4333' }}
               >
                 3
               </h3>
-              <p className="text-base text-gray-600">
+              <p className="text-sm md:text-base text-gray-600">
                 {language === 'ar' ? 'لغات النشر' : language === 'en' ? 'Publishing Languages' : 'Yayın Dilleri'}
               </p>
             </div>
@@ -225,14 +225,14 @@ const Articles = () => {
       <div className="py-12 px-4">
         <div className="max-w-[1600px] mx-auto">
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#1f4333' }}>
+          <div className="text-center mb-8 md:mb-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4" style={{ color: '#1f4333' }}>
               {viewMode === 'news' 
                 ? (language === 'ar' ? 'الأخبار' : language === 'en' ? 'News' : 'Haberler')
                 : (language === 'ar' ? 'المقالات' : language === 'en' ? 'Articles' : 'Makaleler')
               }
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
               {viewMode === 'news' 
                 ? (language === 'ar' ? 'آخر الأخبار والتحديثات' : language === 'en' ? 'Latest news and updates' : 'Son haberler ve güncellemeler')
                 : (language === 'ar' ? 'مقالات متنوعة وشاملة' : language === 'en' ? 'Diverse and comprehensive articles' : 'Çeşitli ve kapsamlı makaleler')
@@ -241,7 +241,7 @@ const Articles = () => {
           </div>
 
           {/* Search Input Only - No Category Filter */}
-          <div className={`flex justify-center mb-12 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex justify-center mb-8 md:mb-12 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
             <div className="relative w-full md:w-96">
               <Search 
                 className={`absolute top-1/2 -translate-y-1/2 ${direction === 'rtl' ? 'right-4' : 'left-4'} text-gray-400`}
@@ -265,12 +265,12 @@ const Articles = () => {
           <div>
             {filteredArticles.map((article, index) => (
               <Link key={article.id} to={`/articles/${article.id}`} className={`block ${index < filteredArticles.length - 1 ? 'mb-20 md:mb-24' : ''}`}>
-                <div className="grid md:grid-cols-2 gap-8">
+                <div className="grid md:grid-cols-2 gap-6 md:gap-8">
                   {/* Content Section - White Card */}
-                  <div className={`bg-white rounded-3xl p-8 md:p-12 flex flex-col justify-center shadow-xl ${direction === 'rtl' ? 'md:order-2' : 'md:order-1'}`}>
+                  <div className={`bg-white rounded-3xl p-6 md:p-8 lg:p-12 flex flex-col justify-center shadow-xl ${direction === 'rtl' ? 'md:order-2' : 'md:order-1'}`}>
                     {/* Title */}
                     <h2 
-                      className={`text-3xl md:text-4xl font-bold mb-6 leading-tight ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
+                      className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 leading-tight ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
                       style={{ color: '#1f4333' }}
                     >
                       {article.title[language]}
@@ -278,7 +278,7 @@ const Articles = () => {
 
                     {/* Description */}
                     <p 
-                      className={`text-lg text-gray-700 mb-8 leading-relaxed line-clamp-3 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
+                      className={`text-base md:text-lg text-gray-700 mb-6 md:mb-8 leading-relaxed line-clamp-3 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
                     >
                       {article.excerpt[language]}
                     </p>
@@ -315,18 +315,18 @@ const Articles = () => {
                   </div>
 
                   {/* Image Section - Separate */}
-                  <div className={`relative overflow-hidden rounded-3xl flex items-center justify-center ${direction === 'rtl' ? 'md:order-1' : 'md:order-2'}`} style={{ backgroundColor: 'transparent' }}>
-                    <div className="relative">
+                  <div className={`relative overflow-hidden rounded-3xl flex items-center justify-center h-64 md:h-96 lg:h-[400px] ${direction === 'rtl' ? 'md:order-1' : 'md:order-2'}`} style={{ backgroundColor: 'transparent' }}>
+                    <div className="relative w-full h-full">
                       <img 
                         src={article.image} 
                         alt={article.title[language]} 
-                        className="w-auto h-auto max-h-96 md:max-h-[400px] object-contain bg-transparent rounded-3xl" 
+                        className="w-full h-full max-h-full object-contain bg-transparent rounded-3xl" 
                         style={{ backgroundColor: 'transparent', borderRadius: '1.5rem', display: 'block' }} 
                       />
                       
                       {/* News Badge - Top Right */}
                       <div 
-                        className="absolute top-2 right-2 px-4 py-2 rounded-full text-sm font-semibold text-white"
+                        className="absolute top-2 md:top-4 right-2 md:right-4 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-semibold text-white"
                         style={{ backgroundColor: '#1f4333' }}
                       >
                         {language === 'ar' ? 'خبر' : language === 'en' ? 'NEWS' : 'HABER'}
@@ -335,12 +335,12 @@ const Articles = () => {
 
                     {/* Read Time Badge - Bottom Left */}
                     <div 
-                      className="absolute bottom-6 left-6 px-4 py-2 rounded-lg bg-white/90 backdrop-blur-sm"
+                      className="absolute bottom-3 md:bottom-6 left-3 md:left-6 px-3 md:px-4 py-1.5 md:py-2 rounded-lg bg-white/90 backdrop-blur-sm"
                       style={{ color: '#1f4333' }}
                     >
                       <div className="flex items-center gap-2">
-                        <Clock size={14} />
-                        <span className="text-sm font-medium">
+                        <Clock size={12} className="w-3 h-3 md:w-3.5 md:h-3.5" />
+                        <span className="text-xs md:text-sm font-medium">
                           {language === 'ar' ? 'قراءة 5 دقائق' : language === 'en' ? '5 min read' : '5 dk okuma'}
                         </span>
                       </div>
@@ -355,13 +355,13 @@ const Articles = () => {
           <>
             {/* Featured Article Card */}
             {filteredArticles.length > 0 && (
-              <div className="mb-24 md:mb-32">
-                <div className="grid md:grid-cols-2 gap-8">
+              <div className="mb-12 md:mb-24 lg:mb-32">
+                <div className="grid md:grid-cols-2 gap-6 md:gap-8">
                   {/* Left: Content */}
-                  <div className={`bg-white rounded-3xl p-8 md:p-12 flex flex-col justify-center shadow-xl ${direction === 'rtl' ? 'md:order-2' : 'md:order-1'}`}>
+                  <div className={`bg-white rounded-3xl p-6 md:p-8 lg:p-12 flex flex-col justify-center shadow-xl ${direction === 'rtl' ? 'md:order-2' : 'md:order-1'}`}>
                     {/* Title */}
                     <h2 
-                      className={`text-3xl md:text-4xl font-bold mb-6 leading-tight ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
+                      className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 leading-tight ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
                       style={{ color: '#1f4333' }}
                     >
                       {filteredArticles[0].title[language]}
@@ -369,7 +369,7 @@ const Articles = () => {
 
                     {/* Description */}
                     <p 
-                      className={`text-lg text-gray-700 mb-8 leading-relaxed line-clamp-3 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
+                      className={`text-base md:text-lg text-gray-700 mb-6 md:mb-8 leading-relaxed line-clamp-3 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
                     >
                       {filteredArticles[0].excerpt[language]}
                     </p>
@@ -408,18 +408,18 @@ const Articles = () => {
                   </div>
 
                   {/* Right: Image */}
-                  <div className={`relative overflow-hidden rounded-3xl flex items-center justify-center ${direction === 'rtl' ? 'md:order-1' : 'md:order-2'}`} style={{ backgroundColor: 'transparent' }}>
-                    <div className="relative">
+                  <div className={`relative overflow-hidden rounded-3xl flex items-center justify-center h-64 md:h-96 lg:h-[400px] ${direction === 'rtl' ? 'md:order-1' : 'md:order-2'}`} style={{ backgroundColor: 'transparent' }}>
+                    <div className="relative w-full h-full">
                       <img 
                         src={filteredArticles[0].image} 
                         alt={filteredArticles[0].title[language]} 
-                        className="w-auto h-auto max-h-96 md:max-h-[400px] object-contain bg-transparent rounded-3xl" 
+                        className="w-full h-full max-h-full object-contain bg-transparent rounded-3xl" 
                         style={{ backgroundColor: 'transparent', borderRadius: '1.5rem', display: 'block' }} 
                       />
                       
                       {/* Category Badge - Top Right */}
                       <div 
-                        className="absolute top-2 right-2 px-4 py-2 rounded-full text-sm font-semibold text-white"
+                        className="absolute top-2 md:top-4 right-2 md:right-4 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-semibold text-white"
                         style={{ backgroundColor: '#dcb557' }}
                       >
                         {language === 'ar' ? 'مقال مميز' : language === 'en' ? 'Featured' : 'Öne Çıkan'}
@@ -428,12 +428,12 @@ const Articles = () => {
 
                     {/* Read Time Badge - Bottom Left */}
                     <div 
-                      className="absolute bottom-6 left-6 px-4 py-2 rounded-lg bg-white/90 backdrop-blur-sm"
+                      className="absolute bottom-3 md:bottom-6 left-3 md:left-6 px-3 md:px-4 py-1.5 md:py-2 rounded-lg bg-white/90 backdrop-blur-sm"
                       style={{ color: '#1f4333' }}
                     >
                       <div className="flex items-center gap-2">
-                        <Clock size={14} />
-                        <span className="text-sm font-medium">
+                        <Clock size={12} className="w-3 h-3 md:w-3.5 md:h-3.5" />
+                        <span className="text-xs md:text-sm font-medium">
                           {language === 'ar' ? 'قراءة 8 دقائق' : language === 'en' ? '8 min read' : '8 dk okuma'}
                         </span>
                       </div>
@@ -444,7 +444,7 @@ const Articles = () => {
             )}
 
             {/* Articles Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
               {filteredArticles.slice(1).map((article) => (
                 <Link key={article.id} to={`/articles/${article.id}`}>
                   <Card className="hover:shadow-xl transition-all overflow-hidden group cursor-pointer h-full">
