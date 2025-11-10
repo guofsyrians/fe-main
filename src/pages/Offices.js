@@ -48,23 +48,23 @@ const Offices = () => {
     <div className="min-h-screen py-12 px-4">
       <div className="max-w-[2000px] mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#1f4333' }}>
+        <div className="text-center mb-8 md:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4" style={{ color: '#1f4333' }}>
             {t('offices.title')}
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
             {t('offices.subtitle')}
           </p>
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="mb-12 overflow-x-auto">
-          <div className="flex gap-3 justify-center flex-wrap min-w-max px-4">
+        <div className="mb-8 md:mb-12 overflow-x-auto">
+          <div className="flex gap-2 md:gap-3 justify-center flex-wrap md:flex-nowrap min-w-max px-4">
             {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 whitespace-nowrap ${
+                className={`px-4 md:px-6 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-all duration-300 whitespace-nowrap min-h-[44px] ${
                   selectedCategory === category.id
                     ? 'text-white shadow-lg transform scale-105'
                     : 'bg-white text-gray-700 border-2 hover:border-opacity-60 hover:shadow-md'
@@ -82,15 +82,15 @@ const Offices = () => {
         </div>
 
         {/* Category Title */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold" style={{ color: '#1f4333' }}>
+        <div className="text-center mb-6 md:mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold" style={{ color: '#1f4333' }}>
             {categories.find(c => c.id === selectedCategory)?.name[language]}
           </h2>
         </div>
 
         {/* Secretary General Section - Centered and Prominent */}
         {secretaryGeneral && (
-          <div className="mb-16">
+          <div className="mb-12 md:mb-16">
             {/* <div className="text-center mb-6">
               <h3 className="text-2xl font-semibold" style={{ color: '#dcb557' }}>
                 {secretaryGeneral.position[language]}
@@ -121,32 +121,65 @@ const Offices = () => {
           </div>
         )}
 
-        {/* Other Members Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 justify-items-center">
-          {otherMembers.map((office) => {
-            return (
-              <ProfileCard
-                key={office.id}
-                name={office.head[language]}
-                title={office.position ? office.position[language] : office.name[language]}
-                handle={getHandle(office)}
-                status={office.email || office.phone ? t('offices.available') || 'Available' : 'N/A'}
-                contactText={t('offices.contact') || 'Contact'}
-                avatarUrl={office.image}
-                miniAvatarUrl={office.image}
-                showUserInfo={true}
-                enableTilt={true}
-                enableMobileTilt={false}
-                showBehindGradient={false}
-                behindGradient="none"
-                innerGradient="none"
-                iconUrl=""
-                grainUrl=""
-                className={language !== 'ar' ? 'smaller-text' : ''}
-                onContactClick={() => handleContactClick(office)}
-              />
-            );
-          })}
+        {/* Other Members - Two Rows: 2 cards then 3 cards */}
+        <div className="space-y-6 md:space-y-8">
+          {/* First Row: 2 cards */}
+          {firstRowMembers.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8">
+              {firstRowMembers.map((office) => (
+                <div key={office.id} className="flex-shrink-0">
+                  <ProfileCard
+                    name={office.head[language]}
+                    title={office.position ? office.position[language] : office.name[language]}
+                    handle={getHandle(office)}
+                    status={office.email || office.phone ? t('offices.available') || 'Available' : 'N/A'}
+                    contactText={t('offices.contact') || 'Contact'}
+                    avatarUrl={office.image}
+                    miniAvatarUrl={office.image}
+                    showUserInfo={true}
+                    enableTilt={true}
+                    enableMobileTilt={false}
+                    showBehindGradient={false}
+                    behindGradient="none"
+                    innerGradient="none"
+                    iconUrl=""
+                    grainUrl=""
+                    className={language !== 'ar' ? 'smaller-text' : ''}
+                    onContactClick={() => handleContactClick(office)}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Second Row: 3 cards */}
+          {secondRowMembers.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8">
+              {secondRowMembers.map((office) => (
+                <div key={office.id} className="flex-shrink-0">
+                  <ProfileCard
+                    name={office.head[language]}
+                    title={office.position ? office.position[language] : office.name[language]}
+                    handle={getHandle(office)}
+                    status={office.email || office.phone ? t('offices.available') || 'Available' : 'N/A'}
+                    contactText={t('offices.contact') || 'Contact'}
+                    avatarUrl={office.image}
+                    miniAvatarUrl={office.image}
+                    showUserInfo={true}
+                    enableTilt={true}
+                    enableMobileTilt={false}
+                    showBehindGradient={false}
+                    behindGradient="none"
+                    innerGradient="none"
+                    iconUrl=""
+                    grainUrl=""
+                    className={language !== 'ar' ? 'smaller-text' : ''}
+                    onContactClick={() => handleContactClick(office)}
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

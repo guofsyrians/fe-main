@@ -84,23 +84,23 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4" style={{ backgroundColor: '#f7fafc' }}>
+    <div className="min-h-screen flex items-center justify-center py-8 md:py-12 px-4" style={{ backgroundColor: '#f7fafc' }}>
       <Card className="w-full max-w-md shadow-xl border-2" style={{ borderColor: '#dcb557' }}>
         <CardHeader className="space-y-1 text-center">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-3 md:mb-4">
             <img 
               src="/assets/logo.png" 
               alt="Logo" 
-              className="h-20 w-auto"
+              className="h-16 md:h-20 w-auto"
             />
           </div>
-          <CardTitle className="text-3xl font-bold" style={{ color: '#1f4333' }}>
+          <CardTitle className="text-2xl sm:text-3xl font-bold" style={{ color: '#1f4333' }}>
             {t('signup.title')}
           </CardTitle>
         </CardHeader>
         
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-5">
+        <CardContent className="p-4 md:p-6">
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5">
             <div className="space-y-2">
               <Label htmlFor="name" style={{ color: '#1f4333' }}>{t('signup.name')}</Label>
               <Input
@@ -171,7 +171,7 @@ const Signup = () => {
             <Button 
               type="submit"
               disabled={isLoading}
-              className="w-full py-6 text-lg font-semibold transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-4 md:py-6 text-base md:text-lg font-semibold transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px]"
               style={{ backgroundColor: '#1f4333', color: 'white' }}
             >
               {isLoading 

@@ -150,12 +150,13 @@ const SubUnions = () => {
       {/* Modal */}
       {selectedUnion && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4" onClick={() => setSelectedUnion(null)}>
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl mx-4" onClick={(e) => e.stopPropagation()}>
             {/* Modal Header with Image */}
-            <div className="relative h-64 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center">
+            <div className="relative h-48 md:h-64 bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center">
               <button
                 onClick={() => setSelectedUnion(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100 transition-all z-10"
+                className="absolute top-3 md:top-4 right-3 md:right-4 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100 transition-all z-10 min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Close"
               >
                 <X size={24} style={{ color: '#1f4333' }} />
               </button>
@@ -167,27 +168,27 @@ const SubUnions = () => {
             </div>
 
             {/* Modal Content */}
-            <div className="p-8">
+            <div className="p-4 md:p-6 lg:p-8">
               {/* Title and City Badge */}
-              <div className="mb-6">
-                <div className="inline-block px-4 py-1 rounded-full text-sm font-semibold text-white mb-3" style={{ backgroundColor: '#dcb557' }}>
-                  <MapPin size={14} className="inline mr-1" />
+              <div className="mb-4 md:mb-6">
+                <div className="inline-block px-3 md:px-4 py-1 rounded-full text-xs md:text-sm font-semibold text-white mb-2 md:mb-3" style={{ backgroundColor: '#dcb557' }}>
+                  <MapPin size={12} className="inline mr-1 w-3 h-3 md:w-3.5 md:h-3.5" />
                   {selectedUnion.city}
                 </div>
-                <h2 className="text-3xl font-bold mb-2" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
                   {selectedUnion.name}
                 </h2>
-                <p className="text-gray-600" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                <p className="text-sm md:text-base text-gray-600" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
                   {selectedUnion.location}
                 </p>
               </div>
 
               {/* Description */}
-              <div className="mb-6">
-                <h3 className="text-xl font-bold mb-3" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+              <div className="mb-4 md:mb-6">
+                <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
                   {language === 'ar' ? 'نبذة عن الاتحاد' : language === 'tr' ? 'Birlik Hakkında' : 'About the Union'}
                 </h3>
-                <p className="text-gray-700 leading-relaxed" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                <p className="text-sm md:text-base text-gray-700 leading-relaxed" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
                   {language === 'ar'
                     ? 'يمثل هذا الاتحاد الطلبة السوريين في الجامعة ويعمل على تقديم الدعم الأكاديمي والاجتماعي والثقافي لهم. تأسس الاتحاد بمبادرة من الطلاب لتوحيد جهودهم وتمثيل مصالحهم داخل الجامعة وخارجها، وتنظيم الفعاليات والأنشطة التي تعزز الهوية الوطنية والتواصل بين الطلبة.'
                     : language === 'tr'
@@ -221,19 +222,19 @@ const SubUnions = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 flex-wrap">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <button
-                  className="flex-1 px-6 py-3 rounded-lg text-base font-semibold transition-all hover:opacity-90 flex items-center justify-center gap-2"
+                  className="flex-1 px-4 md:px-6 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-all hover:opacity-90 flex items-center justify-center gap-2 min-h-[44px]"
                   style={{ backgroundColor: '#1f4333', color: 'white' }}
                 >
-                  <ExternalLink size={18} />
+                  <ExternalLink size={16} className="md:w-[18px] md:h-[18px]" />
                   {language === 'ar' ? 'زيارة الموقع' : language === 'tr' ? 'Siteyi Ziyaret Et' : 'Visit Website'}
                 </button>
                 <button
-                  className="px-6 py-3 rounded-lg text-base font-semibold transition-all hover:opacity-90 flex items-center justify-center gap-2"
+                  className="flex-1 sm:flex-none px-4 md:px-6 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-all hover:opacity-90 flex items-center justify-center gap-2 min-h-[44px]"
                   style={{ backgroundColor: '#dcb557', color: '#1f4333' }}
                 >
-                  <Mail size={18} />
+                  <Mail size={16} className="md:w-[18px] md:h-[18px]" />
                   {language === 'ar' ? 'تواصل معنا' : language === 'tr' ? 'Bize Ulaşın' : 'Contact Us'}
                 </button>
               </div>
@@ -244,25 +245,25 @@ const SubUnions = () => {
 
       <div className="max-w-[1600px] mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ color: '#1f4333' }}>
+        <div className="text-center mb-8 md:mb-12">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4" style={{ color: '#1f4333' }}>
             {t('subUnions.title')}
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm md:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto px-4">
             {t('subUnions.subtitle')}
           </p>
         </div>
 
         {/* Turkey Map Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-center" style={{ color: '#1f4333' }}>
+        <div className="mb-8 md:mb-12">
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 md:mb-6 text-center" style={{ color: '#1f4333' }}>
             {t('subUnions.mapTitle')}
           </h2>
 
           <Card className="overflow-hidden border-2" style={{ borderColor: '#1f4333' }}>
             <CardContent className="p-0">
               {/* Map Container */}
-              <div className="relative w-full bg-gradient-to-br from-blue-50 to-blue-100 h-[350px] md:h-[550px] lg:h-[600px]">
+              <div className="relative w-full bg-gradient-to-br from-blue-50 to-blue-100 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[550px] xl:h-[600px]">
                 {/* Detailed Turkey Map with all 81 provinces from tr-04.svg - clickable provinces */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <TurkeyMap
@@ -296,7 +297,7 @@ const SubUnions = () => {
                 {unionsForCity.length === 0 ? (
                   <p className="text-gray-600">{language === 'ar' ? 'لا توجد اتحادات في هذه المدينة حالياً' : language === 'tr' ? 'Şu anda bu şehirde birlik yok' : 'No unions in this city yet'}</p>
                 ) : (
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                     {unionsForCity.map((u, idx) => {
                       // Mock data for member count and tags - can be replaced with real data
                       const memberCount = Math.floor(Math.random() * 1000) + 100;
@@ -434,11 +435,11 @@ const SubUnions = () => {
         </div>
 
         {/* All Subunions (scraped) */}
-        <div className="mt-40">
-          <h2 className="text-4xl md:text-5xl font-bold mb-20 text-center" style={{ color: '#1f4333' }}>
+        <div className="mt-16 md:mt-24 lg:mt-40">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-12 md:mb-16 lg:mb-20 text-center" style={{ color: '#1f4333' }}>
             {language === 'ar' ? 'جميع الاتحادات الفرعية' : language === 'tr' ? 'Tüm Alt Birlikler' : 'All Subunions'}
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {subunionsData.unions.map((u, idx) => {
               // Mock data for member count and tags - can be replaced with real data
               const memberCount = Math.floor(Math.random() * 1000) + 100;

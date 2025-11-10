@@ -23,22 +23,22 @@ const Footer = () => {
 
   return (
     <footer className="mt-auto" style={{ backgroundColor: '#111827', color: 'white' }}>
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className={`grid grid-cols-1 md:grid-cols-3 gap-12 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        <div className={`grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
           {/* Left Column: About & Social Media */}
           <div className={`${direction === 'rtl' ? 'md:order-3' : 'md:order-1'}`}>
             {/* Logo */}
-            <div className="mb-8">
+            <div className="mb-6 md:mb-8">
               <img 
                 src="/assets/logo.png" 
                 alt="Logo" 
-                className="h-16 w-auto brightness-0 invert"
+                className="h-12 md:h-16 w-auto brightness-0 invert"
               />
             </div>
             
             {/* About Text */}
             <p 
-              className="text-lg text-gray-400 mb-8 leading-relaxed"
+              className="text-sm md:text-base lg:text-lg text-gray-400 mb-6 md:mb-8 leading-relaxed"
               style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
             >
               {language === 'ar' 
@@ -72,17 +72,17 @@ const Footer = () => {
           {/* Middle Column: Quick Links */}
           <div className={`${direction === 'rtl' ? 'md:order-2' : 'md:order-2'}`}>
             <h3 
-              className="text-xl font-bold mb-6"
+              className="text-lg md:text-xl font-bold mb-4 md:mb-6"
               style={{ color: '#dcb557', direction: language === 'ar' ? 'rtl' : 'ltr' }}
             >
               {language === 'ar' ? 'روابط سريعة' : language === 'en' ? 'Quick Links' : 'Hızlı Bağlantılar'}
             </h3>
-            <ul className="space-y-4">
+            <ul className="space-y-3 md:space-y-4">
               {quickLinks.map((link) => (
                 <li key={link.path}>
                   <Link 
                     to={link.path} 
-                    className="text-base text-gray-400 hover:text-white transition-colors block"
+                    className="text-sm md:text-base text-gray-400 hover:text-white transition-colors block min-h-[44px] flex items-center"
                     style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                   >
                     {link.label}
@@ -95,19 +95,19 @@ const Footer = () => {
           {/* Right Column: Contact & Language */}
           <div className={`${direction === 'rtl' ? 'md:order-1' : 'md:order-3'}`}>
             <h3 
-              className="text-xl font-bold mb-6"
+              className="text-lg md:text-xl font-bold mb-4 md:mb-6"
               style={{ color: '#dcb557', direction: language === 'ar' ? 'rtl' : 'ltr' }}
             >
               {language === 'ar' ? 'معلومات التواصل' : language === 'en' ? 'Contact Information' : 'İletişim Bilgileri'}
             </h3>
             
             {/* Contact Info */}
-            <div className="space-y-4 mb-8">
+            <div className="space-y-3 md:space-y-4 mb-6 md:mb-8">
               <div className={`flex items-center gap-3 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
                 <Mail size={16} style={{ color: '#9ca3af' }} />
                 <a 
                   href="mailto:info@syrianstudentunion.org" 
-                  className="text-base text-gray-400 hover:text-white transition-colors"
+                  className="text-sm md:text-base text-gray-400 hover:text-white transition-colors break-all"
                   style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                 >
                   guofsysrians@gmail.com
@@ -117,16 +117,16 @@ const Footer = () => {
                 <Phone size={16} style={{ color: '#9ca3af' }} />
                 <a 
                   href="tel:+905075308810" 
-                  className="text-base text-gray-400 hover:text-white transition-colors"
+                  className="text-sm md:text-base text-gray-400 hover:text-white transition-colors"
                   dir="ltr"
                 >
                   +90 507 530 88 10
                 </a>
               </div>
               <div className={`flex items-start gap-3 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
-                <MapPin size={16} style={{ color: '#9ca3af' }} className="mt-1" />
+                <MapPin size={16} style={{ color: '#9ca3af' }} className="mt-1 flex-shrink-0" />
                 <p 
-                  className="text-base text-gray-400"
+                  className="text-sm md:text-base text-gray-400"
                   style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                 >
                   Atatürk mahallesi şehit AHMETUĞUR edeoğlu sokak no 11 Kilis Merkez
@@ -137,7 +137,7 @@ const Footer = () => {
             {/* Language Selector */}
             <div>
               <p 
-                className="text-base font-semibold mb-4"
+                className="text-sm md:text-base font-semibold mb-3 md:mb-4"
                 style={{ color: '#dcb557', direction: language === 'ar' ? 'rtl' : 'ltr' }}
               >
                 {language === 'ar' ? 'اللغة' : language === 'en' ? 'Language' : 'Dil'}
@@ -145,7 +145,7 @@ const Footer = () => {
               <div className={`flex gap-2 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
                 <button
                   onClick={() => changeLanguage('ar')}
-                  className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
+                  className={`px-3 md:px-4 py-2 rounded text-xs md:text-sm font-medium transition-colors min-h-[44px] ${
                     language === 'ar' 
                       ? 'text-white' 
                       : 'text-gray-400 hover:text-white'
@@ -158,7 +158,7 @@ const Footer = () => {
                 </button>
                 <button
                   onClick={() => changeLanguage('en')}
-                  className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
+                  className={`px-3 md:px-4 py-2 rounded text-xs md:text-sm font-medium transition-colors min-h-[44px] ${
                     language === 'en' 
                       ? 'text-white' 
                       : 'text-gray-400 hover:text-white'
@@ -171,7 +171,7 @@ const Footer = () => {
                 </button>
                 <button
                   onClick={() => changeLanguage('tr')}
-                  className={`px-4 py-2 rounded text-sm font-medium transition-colors ${
+                  className={`px-3 md:px-4 py-2 rounded text-xs md:text-sm font-medium transition-colors min-h-[44px] ${
                     language === 'tr' 
                       ? 'text-white' 
                       : 'text-gray-400 hover:text-white'
@@ -188,12 +188,26 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-12 pt-6">
+        <div className="border-t border-gray-800 mt-8 md:mt-12 pt-4 md:pt-6">
           <p 
-            className="text-base text-gray-500 text-center"
+            className="text-xs md:text-sm lg:text-base text-gray-500 text-center mb-2 px-4"
             style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
           >
             © {currentYear} {language === 'ar' ? 'اتحاد الطلبة السوريين. جميع الحقوق محفوظة.' : language === 'en' ? 'Syrian Students Union. All rights reserved.' : 'Suriyeli Öğrenciler Birliği. Tüm hakları saklıdır.'}
+          </p>
+          <p 
+            className="text-xs md:text-sm text-gray-600 text-center px-4"
+            style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
+          >
+            {language === 'ar' ? 'تم تطوير هذا الموقع بواسطة' : language === 'en' ? 'Website developed by' : 'Web sitesi geliştirici'} {' '}
+            <a
+              href="https://www.qk-dev.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-gray-300 transition-colors font-medium"
+            >
+              QK-dev Software Services
+            </a>
           </p>
         </div>
       </div>

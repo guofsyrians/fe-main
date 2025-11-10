@@ -11,15 +11,15 @@ const MyInfo = () => {
     <div className="min-h-screen py-12 px-4" style={{ backgroundColor: '#f9fafb' }}>
       <div className="max-w-4xl mx-auto">
         {/* Page Header */}
-        <div className="mb-8">
+        <div className="mb-6 md:mb-8">
           <h1 
-            className="text-4xl md:text-5xl font-bold mb-4"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4"
             style={{ color: '#1f4333', direction: direction }}
           >
             {language === 'ar' ? 'معلوماتي' : language === 'en' ? 'My Info' : 'Bilgilerim'}
           </h1>
           <p 
-            className="text-lg text-gray-600"
+            className="text-sm md:text-base lg:text-lg text-gray-600"
             style={{ direction: direction }}
           >
             {language === 'ar' 
@@ -31,28 +31,28 @@ const MyInfo = () => {
         </div>
 
         {/* Profile Card */}
-        <Card className="shadow-lg border-0 rounded-2xl mb-6">
-          <CardContent className="p-8">
+        <Card className="shadow-lg border-0 rounded-2xl mb-4 md:mb-6">
+          <CardContent className="p-4 md:p-6 lg:p-8">
             {/* Profile Header */}
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mb-8">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 mb-6 md:mb-8">
               {/* Avatar */}
               <div 
-                className="w-24 h-24 rounded-full flex items-center justify-center"
+                className="w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: '#dcb557' }}
               >
-                <User size={48} style={{ color: '#1f4333' }} />
+                <User size={40} className="md:w-12 md:h-12" style={{ color: '#1f4333' }} />
               </div>
               
               {/* Name and Title */}
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <h2 
-                  className="text-2xl font-bold mb-2"
+                  className="text-xl md:text-2xl font-bold mb-2"
                   style={{ color: '#1f4333', direction: direction }}
                 >
                   {language === 'ar' ? 'اسم المستخدم' : language === 'en' ? 'User Name' : 'Kullanıcı Adı'}
                 </h2>
                 <p 
-                  className="text-gray-600"
+                  className="text-sm md:text-base text-gray-600"
                   style={{ direction: direction }}
                 >
                   {language === 'ar' ? 'عضو في الاتحاد العام للطلبة السوريين' : language === 'en' ? 'Member of Syrian Students Union' : 'Suriyeli Öğrenciler Birliği Üyesi'}
@@ -61,19 +61,19 @@ const MyInfo = () => {
 
               {/* Edit Button */}
               <Button
-                className="rounded-lg px-6 py-2"
+                className="rounded-lg px-4 md:px-6 py-2 w-full md:w-auto min-h-[44px]"
                 style={{ backgroundColor: '#dcb557', color: '#1f4333' }}
               >
-                <Edit size={18} className="mr-2" />
+                <Edit size={16} className="md:w-[18px] md:h-[18px] mr-2" />
                 {language === 'ar' ? 'تعديل' : language === 'en' ? 'Edit' : 'Düzenle'}
               </Button>
             </div>
 
             {/* Divider */}
-            <div className="border-t border-gray-200 mb-8"></div>
+            <div className="border-t border-gray-200 mb-6 md:mb-8"></div>
 
             {/* Information Grid */}
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid md:grid-cols-2 gap-4 md:gap-6">
               {/* Email */}
               <div className="flex items-start gap-4">
                 <div 
@@ -178,15 +178,15 @@ const MyInfo = () => {
 
         {/* Additional Info Section */}
         <Card className="shadow-lg border-0 rounded-2xl">
-          <CardContent className="p-8">
+          <CardContent className="p-4 md:p-6 lg:p-8">
             <h2 
-              className="text-2xl font-bold mb-6"
+              className="text-xl md:text-2xl font-bold mb-4 md:mb-6"
               style={{ color: '#1f4333', direction: direction }}
             >
               {language === 'ar' ? 'معلومات إضافية' : language === 'en' ? 'Additional Information' : 'Ek Bilgiler'}
             </h2>
             
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <div>
                 <p 
                   className="text-sm font-semibold text-gray-600 mb-2"

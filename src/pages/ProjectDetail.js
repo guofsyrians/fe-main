@@ -50,11 +50,11 @@ const ProjectDetail = () => {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#f9fafb' }}>
       {/* Back Button */}
-      <div className="max-w-[1600px] mx-auto px-4 py-8">
+      <div className="max-w-[1600px] mx-auto px-4 py-4 md:py-8">
         <Button
           onClick={() => navigate('/projects')}
           variant="ghost"
-          className="mb-6 hover:bg-gray-100 transition-all"
+          className="mb-4 md:mb-6 hover:bg-gray-100 transition-all min-h-[44px]"
           style={{ color: '#1f4333' }}
         >
           <ArrowLeft 
@@ -66,11 +66,11 @@ const ProjectDetail = () => {
       </div>
 
       {/* Project Content */}
-      <div className="max-w-[1200px] mx-auto px-4 pb-16">
+      <div className="max-w-[1200px] mx-auto px-4 pb-8 md:pb-16">
         {/* Project Header */}
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-6 md:mb-8">
           {/* Featured Image */}
-          <div className="relative h-[500px] overflow-hidden bg-transparent flex items-center justify-center rounded-3xl">
+          <div className="relative h-48 sm:h-64 md:h-80 lg:h-[500px] overflow-hidden bg-transparent flex items-center justify-center rounded-3xl">
             <img 
               src={project.image} 
               alt={project.title[language]} 
@@ -78,7 +78,7 @@ const ProjectDetail = () => {
             />
             {/* Status Badge */}
             <div 
-              className="absolute top-6 left-6 px-4 py-2 rounded-full text-sm font-semibold text-white"
+              className="absolute top-3 md:top-6 left-3 md:left-6 px-3 md:px-4 py-1.5 md:py-2 rounded-full text-xs md:text-sm font-semibold text-white"
               style={{ backgroundColor: badgeBgColor }}
             >
               {badgeText}
@@ -86,7 +86,7 @@ const ProjectDetail = () => {
           </div>
           
           {/* Project Meta */}
-          <div className="p-8">
+          <div className="p-4 md:p-6 lg:p-8">
             {/* Status and Category */}
             <div className={`flex items-center gap-4 mb-6 text-sm text-gray-500 flex-wrap ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
               <div className="flex items-center gap-2">
@@ -110,7 +110,7 @@ const ProjectDetail = () => {
             
             {/* Title */}
             <h1 
-              className={`text-4xl md:text-5xl font-bold mb-6 leading-tight ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
+              className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 leading-tight ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
               style={{ color: '#1f4333' }}
             >
               {project.title[language]}
@@ -119,13 +119,13 @@ const ProjectDetail = () => {
         </div>
 
         {/* Project Body */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 md:p-12">
+        <div className="bg-white rounded-3xl shadow-xl p-4 md:p-8 lg:p-12">
           <div 
-            className={`prose prose-lg max-w-none ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
+            className={`prose prose-lg max-w-none text-sm md:text-base lg:text-lg ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
             style={{ 
               color: '#374151',
               lineHeight: '1.8',
-              fontSize: '18px'
+              fontSize: '16px'
             }}
           >
             {/* Project Content - Using description as full content for now */}
@@ -140,7 +140,7 @@ const ProjectDetail = () => {
           </div>
 
           {/* Project Footer */}
-          <div className={`mt-12 pt-8 border-t border-gray-200 flex items-center justify-between flex-wrap gap-4 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
+          <div className={`mt-8 md:mt-12 pt-6 md:pt-8 border-t border-gray-200 flex items-center justify-between flex-wrap gap-4 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
             <div className="flex items-center gap-2 text-gray-500">
               <Clock size={16} />
               <span className="text-sm">
@@ -169,14 +169,14 @@ const ProjectDetail = () => {
         </div>
 
         {/* Related Projects Section */}
-        <div className="mt-16">
+        <div className="mt-8 md:mt-12 lg:mt-16">
           <h2 
-            className={`text-3xl font-bold mb-8 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
+            className={`text-2xl md:text-3xl font-bold mb-6 md:mb-8 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
             style={{ color: '#1f4333' }}
           >
             {language === 'ar' ? 'مشاريع أخرى' : language === 'en' ? 'Other Projects' : 'Diğer Projeler'}
           </h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {projects
               .filter(p => p.id !== project.id)
               .slice(0, 3)
