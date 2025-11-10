@@ -26,6 +26,10 @@ const Offices = () => {
   const otherMembers = secretaryGeneral 
     ? filteredOffices.filter(office => office.id !== secretaryGeneral.id)
     : filteredOffices;
+  
+  // Split members into two rows: first 2, then next 3
+  const firstRowMembers = otherMembers.slice(0, 2);
+  const secondRowMembers = otherMembers.slice(2, 5);
 
   // Helper function to extract handle from email or name
   const getHandle = (office) => {
