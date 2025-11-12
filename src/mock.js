@@ -8,8 +8,10 @@ export const translations = {
       articles: 'المقالات والأخبار',
       projects: 'المشاريع',
       offices: 'المكاتب والهيئات',
+      graduates: 'الخريجون',
       myInfo: 'معلوماتي',
       login: 'تسجيل الدخول',
+      logout: 'تسجيل الخروج',
       signup: 'إنشاء حساب'
     },
     home: {
@@ -104,8 +106,10 @@ export const translations = {
       articles: 'Articles & News',
       projects: 'Projects',
       offices: 'Offices & Committees',
+      graduates: 'Graduates',
       myInfo: 'My Info',
       login: 'Login',
+      logout: 'Logout',
       signup: 'Sign Up'
     },
     home: {
@@ -200,8 +204,10 @@ export const translations = {
       articles: 'Makaleler ve Haberler',
       projects: 'Projeler',
       offices: 'Ofisler ve Komiteler',
+      graduates: 'Mezunlar',
       myInfo: 'Bilgilerim',
       login: 'Giriş Yap',
+      logout: 'Çıkış Yap',
       signup: 'Kayıt Ol'
     },
     home: {

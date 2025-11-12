@@ -17,6 +17,8 @@ import Offices from './pages/Offices';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import MyInfo from './pages/MyInfo';
+import Graduates from './pages/Graduates';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
   return (
@@ -38,6 +40,14 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/my-info" element={<MyInfo />} />
+                <Route 
+                  path="/graduates" 
+                  element={
+                    <ProtectedRoute>
+                      <Graduates />
+                    </ProtectedRoute>
+                  } 
+                />
               </Routes>
             </main>
             <Footer />

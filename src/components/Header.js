@@ -1,15 +1,51 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
-import { Menu, X } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { Menu, X, LogOut } from 'lucide-react';
 import { Button } from './ui/button';
 import GooeyNav from './GooeyNav';
+import { toast } from 'sonner';
 
 const Header = () => {
   const { language, changeLanguage, t, direction } = useLanguage();
+  const { user, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await signOut();
+      if (error) {
+        toast.error(
+          language === 'ar' 
+            ? 'حدث خطأ أثناء تسجيل الخروج' 
+            : language === 'en' 
+            ? 'Error logging out' 
+            : 'Çıkış yapılırken hata oluştu'
+        );
+      } else {
+        toast.success(
+          language === 'ar' 
+            ? 'تم تسجيل الخروج بنجاح' 
+            : language === 'en' 
+            ? 'Logged out successfully' 
+            : 'Başarıyla çıkış yapıldı'
+        );
+        navigate('/');
+        setMobileMenuOpen(false);
+      }
+    } catch (error) {
+      toast.error(
+        language === 'ar' 
+          ? 'حدث خطأ غير متوقع' 
+          : language === 'en' 
+          ? 'An unexpected error occurred' 
+          : 'Beklenmeyen bir hata oluştu'
+      );
+    }
+  };
 
   const navLinks = [
     { path: '/', label: t('nav.home') },
@@ -17,6 +53,7 @@ const Header = () => {
     { path: '/articles', label: t('nav.articles') },
     { path: '/projects', label: t('nav.projects') },
     { path: '/offices', label: t('nav.offices') },
+    { path: '/graduates', label: t('nav.graduates') },
     // { path: '/my-info', label: t('nav.myInfo') }
   ];
 
@@ -100,23 +137,27 @@ const Header = () => {
             </div>
 
             {/* Auth Buttons */}
-            <Link to="/login">
+            {user ? (
               <Button 
+                onClick={handleLogout}
                 variant="outline" 
-                className="border-2 hover:bg-opacity-10 transition-all"
+                className="border-2 hover:bg-opacity-10 transition-all flex items-center gap-2"
                 style={{ borderColor: 'white', color: 'white' }}
               >
-                {t('nav.login')}
+                <LogOut className="w-4 h-4" />
+                {t('nav.logout')}
               </Button>
-            </Link>
-            <Link to="/signup">
-              <Button 
-                className="transition-all hover:opacity-90"
-                style={{ backgroundColor: '#dcb557', color: '#1f4333' }}
-              >
-                {t('nav.signup')}
-              </Button>
-            </Link>
+            ) : (
+              <Link to="/login">
+                <Button 
+                  variant="outline" 
+                  className="border-2 hover:bg-opacity-10 transition-all"
+                  style={{ borderColor: 'white', color: 'white' }}
+                >
+                  {t('nav.login')}
+                </Button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -185,23 +226,37 @@ const Header = () => {
               </div>
               
               <div className="flex flex-col gap-3 px-4 mt-2">
-                <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                {user ? (
                   <Button 
+                    onClick={handleLogout}
                     variant="outline" 
-                    className="w-full border-2"
+                    className="w-full border-2 flex items-center justify-center gap-2"
                     style={{ borderColor: 'white', color: 'white' }}
                   >
-                    {t('nav.login')}
+                    <LogOut className="w-4 h-4" />
+                    {t('nav.logout')}
                   </Button>
-                </Link>
-                <Link to="/signup" onClick={() => setMobileMenuOpen(false)}>
-                  <Button 
-                    className="w-full"
-                    style={{ backgroundColor: '#dcb557', color: '#1f4333' }}
-                  >
-                    {t('nav.signup')}
-                  </Button>
-                </Link>
+                ) : (
+                  <>
+                    <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
+                      <Button 
+                        variant="outline" 
+                        className="w-full border-2"
+                        style={{ borderColor: 'white', color: 'white' }}
+                      >
+                        {t('nav.login')}
+                      </Button>
+                    </Link>
+                    <Link to="/signup" onClick={() => setMobileMenuOpen(false)}>
+                      <Button 
+                        className="w-full"
+                        style={{ backgroundColor: '#dcb557', color: '#1f4333' }}
+                      >
+                        {t('nav.signup')}
+                      </Button>
+                    </Link>
+                  </>
+                )}
               </div>
             </nav>
           </div>
