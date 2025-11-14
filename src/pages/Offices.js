@@ -27,9 +27,7 @@ const Offices = () => {
     ? filteredOffices.filter(office => office.id !== secretaryGeneral.id)
     : filteredOffices;
   
-  // Split members into two rows: first 2, then next 3
-  const firstRowMembers = otherMembers.slice(0, 2);
-  const secondRowMembers = otherMembers.slice(2, 5);
+  // All other members will be displayed in a grid (2 per row)
 
   // Helper function to extract handle from email or name
   const getHandle = (office) => {
@@ -62,15 +60,15 @@ const Offices = () => {
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="mb-8 md:mb-12 overflow-x-auto">
-          <div className="flex gap-2 md:gap-3 justify-center flex-wrap md:flex-nowrap min-w-max px-4">
+        <div className="mb-8 md:mb-12">
+          <div className="grid grid-cols-2 sm:flex sm:gap-2 md:gap-3 sm:justify-center sm:flex-nowrap gap-2 px-2 sm:px-4">
             {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 md:px-6 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-all duration-300 whitespace-nowrap min-h-[44px] ${
+                className={`px-2 sm:px-3 md:px-6 py-2 sm:py-2.5 md:py-3 rounded-lg text-xs sm:text-sm md:text-base font-semibold transition-all duration-300 whitespace-nowrap min-h-[40px] sm:min-h-[44px] ${
                   selectedCategory === category.id
-                    ? 'text-white shadow-lg transform scale-105'
+                    ? 'text-white shadow-lg md:transform md:scale-105'
                     : 'bg-white text-gray-700 border-2 hover:border-opacity-60 hover:shadow-md'
                 }`}
                 style={
@@ -125,66 +123,34 @@ const Offices = () => {
           </div>
         )}
 
-        {/* Other Members - Two Rows: 2 cards then 3 cards */}
-        <div className="space-y-6 md:space-y-8">
-          {/* First Row: 2 cards */}
-          {firstRowMembers.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8">
-              {firstRowMembers.map((office) => (
-                <div key={office.id} className="flex-shrink-0">
-                  <ProfileCard
-                    name={office.head[language]}
-                    title={office.position ? office.position[language] : office.name[language]}
-                    handle={getHandle(office)}
-                    status={office.email || office.phone ? t('offices.available') || 'Available' : 'N/A'}
-                    contactText={t('offices.contact') || 'Contact'}
-                    avatarUrl={office.image}
-                    miniAvatarUrl={office.image}
-                    showUserInfo={true}
-                    enableTilt={true}
-                    enableMobileTilt={false}
-                    showBehindGradient={false}
-                    behindGradient="none"
-                    innerGradient="none"
-                    iconUrl=""
-                    grainUrl=""
-                    className={language !== 'ar' ? 'smaller-text' : ''}
-                    onContactClick={() => handleContactClick(office)}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Second Row: 3 cards */}
-          {secondRowMembers.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6 lg:gap-8">
-              {secondRowMembers.map((office) => (
-                <div key={office.id} className="flex-shrink-0">
-                  <ProfileCard
-                    name={office.head[language]}
-                    title={office.position ? office.position[language] : office.name[language]}
-                    handle={getHandle(office)}
-                    status={office.email || office.phone ? t('offices.available') || 'Available' : 'N/A'}
-                    contactText={t('offices.contact') || 'Contact'}
-                    avatarUrl={office.image}
-                    miniAvatarUrl={office.image}
-                    showUserInfo={true}
-                    enableTilt={true}
-                    enableMobileTilt={false}
-                    showBehindGradient={false}
-                    behindGradient="none"
-                    innerGradient="none"
-                    iconUrl=""
-                    grainUrl=""
-                    className={language !== 'ar' ? 'smaller-text' : ''}
-                    onContactClick={() => handleContactClick(office)}
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        {/* Other Members - Grid Layout: 2 per row */}
+        {otherMembers.length > 0 && (
+          <div className="offices-grid grid grid-cols-2 gap-2 sm:gap-4 md:gap-6 lg:gap-8 justify-items-center max-w-6xl mx-auto">
+            {otherMembers.map((office) => (
+              <div key={office.id} className="w-full flex justify-center">
+                <ProfileCard
+                  name={office.head[language]}
+                  title={office.position ? office.position[language] : office.name[language]}
+                  handle={getHandle(office)}
+                  status={office.email || office.phone ? t('offices.available') || 'Available' : 'N/A'}
+                  contactText={t('offices.contact') || 'Contact'}
+                  avatarUrl={office.image}
+                  miniAvatarUrl={office.image}
+                  showUserInfo={true}
+                  enableTilt={true}
+                  enableMobileTilt={false}
+                  showBehindGradient={false}
+                  behindGradient="none"
+                  innerGradient="none"
+                  iconUrl=""
+                  grainUrl=""
+                  className={language !== 'ar' ? 'smaller-text' : ''}
+                  onContactClick={() => handleContactClick(office)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

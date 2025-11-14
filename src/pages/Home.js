@@ -23,7 +23,7 @@ const Home = () => {
   ];
 
   const recentArticles = articles.slice(0, 5);
-  const recentProjects = projects.filter(p => p.status === 'ongoing').slice(0, 3);
+  const recentProjects = projects.filter(p => p.status === 'ongoing').slice(0, 4);
   const [featuredArticleIndex, setFeaturedArticleIndex] = useState(0);
 
   // Start auto-sliding
@@ -226,18 +226,24 @@ const Home = () => {
         ></div>
         
         {/* Glassmorphism Content Container */}
-        <div className="relative z-10 max-w-4xl mx-auto md:ml-auto md:mr-24 px-4 md:pr-8">
+        <div className={`relative z-10 max-w-4xl mx-auto md:ml-auto px-4 overflow-x-hidden ${direction === 'rtl' ? 'md:ml-24 md:mr-8' : 'md:mr-24 md:pr-8'}`}>
           <div 
-            className="glass-ultra rounded-3xl p-6 md:p-8 lg:p-12 shadow-2xl"
+            className="glass-ultra rounded-3xl p-6 md:p-8 lg:p-12 w-full max-w-full"
             style={{ 
               backgroundColor: 'rgba(255, 255, 255, 0.1)',
               border: 'none',
+              outline: 'none',
               backdropFilter: 'blur(2px)',
-              WebkitBackdropFilter: 'blur(2px)'
+              WebkitBackdropFilter: 'blur(2px)',
+              boxShadow: 'none'
             }}
           >
             <h1 
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 leading-tight text-white"
+              className={`font-bold mb-4 md:mb-6 leading-tight text-white whitespace-nowrap ${
+                language === 'tr' 
+                  ? 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl' 
+                  : 'text-3xl sm:text-4xl md:text-5xl lg:text-7xl'
+              }`}
               style={{
                 textShadow: '0 0 20px rgba(31, 67, 51, 0.8), 0 0 40px rgba(31, 67, 51, 0.4)'
               }}
@@ -397,7 +403,7 @@ const Home = () => {
       </section>
 
       {/* Goals/Objectives Section */}
-      <section className="py-16 md:py-24 lg:py-32 px-4" style={{ backgroundColor: '#0a1f1a' }}>
+      <section className="py-16 md:py-24 lg:py-32 px-4 sm:px-6 md:px-8 overflow-hidden" style={{ backgroundColor: '#0a1f1a' }}>
         <div className="max-w-[1600px] mx-auto">
           <div className="text-center mb-8 md:mb-12">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4 text-white">
@@ -408,7 +414,7 @@ const Home = () => {
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid md:grid-cols-2 gap-4 md:gap-6 px-2 sm:px-4">
             {[
               {
                 number: '01',
@@ -439,7 +445,7 @@ const Home = () => {
               return (
                 <div
                   key={index}
-                  className="group relative p-8 rounded-2xl border-2 transition-all hover:scale-105"
+                  className="group relative p-8 rounded-2xl border-2 transition-all md:hover:scale-105"
                   style={{
                     backgroundColor: 'rgba(255, 255, 255, 0.05)',
                     borderColor: 'rgba(220, 181, 87, 0.3)'
@@ -652,7 +658,7 @@ const Home = () => {
           </div>
 
           {/* Project Cards */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-10">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6 mb-8 md:mb-10">
             {recentProjects.map((project, index) => {
               // Determine status badge color based on project status
               let badgeBgColor = '#dcb557'; // default: active/gold (#dcb557)
@@ -675,7 +681,7 @@ const Home = () => {
                   className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
                 >
                   {/* Image Container with Status Badge Overlay */}
-                  <div className="relative h-64 overflow-hidden">
+                  <div className="relative h-40 sm:h-48 md:h-64 overflow-hidden">
                     <img 
                       src={project.image} 
                       alt={project.title[language]} 
@@ -683,7 +689,7 @@ const Home = () => {
                     />
                     {/* Status Badge - Top Right */}
                     <div 
-                      className="absolute top-4 right-4 px-3 py-1.5 rounded-full text-sm font-semibold text-white"
+                      className="absolute top-2 right-2 sm:top-2 sm:right-2 md:top-4 md:right-4 px-2 py-1 sm:px-2 sm:py-1 md:px-3 md:py-1.5 rounded-full text-xs sm:text-sm font-semibold text-white"
                       style={{ backgroundColor: badgeBgColor }}
                     >
                       {badgeText}
@@ -691,16 +697,15 @@ const Home = () => {
                   </div>
                   
                   {/* Card Content */}
-                  <div className="p-8">
+                  <div className="p-3 sm:p-4 md:p-8">
                     <h3 
-                      className="text-2xl font-bold mb-4"
+                      className="text-sm sm:text-base md:text-2xl font-bold mb-2 sm:mb-2 md:mb-4 line-clamp-2"
                       style={{ color: '#1f4333' }}
                     >
                       {project.title[language]}
                     </h3>
                     <p 
-                      className="text-gray-600 mb-6 leading-relaxed line-clamp-2"
-                      style={{ fontSize: '16px', lineHeight: '26px' }}
+                      className="text-gray-600 mb-2 sm:mb-4 md:mb-6 leading-relaxed line-clamp-2 sm:line-clamp-3 text-xs sm:text-sm md:text-base"
                     >
                       {project.description[language]}
                     </p>
@@ -708,12 +713,12 @@ const Home = () => {
                     <div className="flex items-center justify-end">
                       <Link 
                         to={`/projects/${project.id}`}
-                        className="flex items-center text-base font-semibold hover:translate-x-1 transition-transform group/link"
+                        className="flex items-center text-xs sm:text-sm md:text-base font-semibold hover:translate-x-1 transition-transform group/link"
                         style={{ color: '#dcb557' }}
                       >
                         {language === 'ar' ? 'اقرأ المزيد' : language === 'en' ? 'Read More' : 'Daha Fazla Oku'}
                         <ArrowRight 
-                          className={`${direction === 'rtl' ? 'mr-2 rotate-180' : 'ml-2'} group-hover/link:translate-x-1 transition-transform`} 
+                          className={`${direction === 'rtl' ? 'mr-1 rotate-180 sm:mr-2' : 'ml-1 sm:ml-2'} group-hover/link:translate-x-1 transition-transform w-3 h-3 sm:w-4 sm:h-4`} 
                           size={16} 
                         />
                       </Link>
@@ -934,12 +939,12 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
             {(() => {
-              // Get first 3 Istanbul subunions
+              // Get first 4 Istanbul subunions
               const istanbulUnions = (subunionsData.unions || [])
                 .filter(u => u.city === 'إسطنبول')
-                .slice(0, 3);
+                .slice(0, 4);
               
               // Helper function to get region color based on city
               const getRegionColor = (cityName) => {
@@ -961,11 +966,11 @@ const Home = () => {
                     onClick={() => setSelectedUnion(u)}
                   >
                     {/* Image Header - larger size */}
-                    <div className="relative w-full h-80 overflow-hidden bg-white flex items-center justify-center">
+                    <div className="relative w-full h-40 sm:h-60 md:h-80 overflow-hidden bg-white flex items-center justify-center">
                       <img
                         src="/assets/sampleLogo.png"
                         alt={u.name}
-                        className="w-64 h-64 object-contain"
+                        className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 object-contain"
                         onError={(e) => {
                           e.target.src = '/assets/sampleLogo.png';
                           e.target.className = 'w-48 h-48 object-contain opacity-20';
@@ -974,7 +979,7 @@ const Home = () => {
                       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10"></div>
                       {/* Region/City Badge - Top Right */}
                       <div
-                        className="absolute top-4 right-4 px-4 py-1.5 rounded-full text-sm font-semibold text-white z-10"
+                        className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 px-2 py-0.5 sm:px-3 sm:py-1 md:px-4 md:py-1.5 rounded-full text-xs sm:text-sm font-semibold text-white z-10"
                         style={{ backgroundColor: getRegionColor(u.city) }}
                       >
                         {u.city}
@@ -982,25 +987,25 @@ const Home = () => {
                     </div>
 
                     {/* Content - matching Figma spacing */}
-                    <div className="p-8">
+                    <div className="p-3 sm:p-5 md:p-8">
                       {/* Title */}
                       <h3
-                        className="text-2xl font-bold mb-2 leading-8"
+                        className="text-sm sm:text-lg md:text-2xl font-bold mb-1 sm:mb-2 leading-tight sm:leading-8 line-clamp-2"
                         style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}
                       >
                         {u.name}
                       </h3>
                       {/* Location */}
                       <p
-                        className="text-base text-gray-600 mb-4"
+                        className="text-xs sm:text-sm md:text-base text-gray-600 mb-2 sm:mb-3 md:mb-4 line-clamp-1"
                         style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                       >
                         {u.location}
                       </p>
                       {/* Description */}
                       <p
-                        className="text-base text-gray-700 mb-6 leading-relaxed"
-                        style={{ direction: language === 'ar' ? 'rtl' : 'ltr', minHeight: '78px' }}
+                        className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-3 sm:line-clamp-none sm:min-h-[78px]"
+                        style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                       >
                         {language === 'ar'
                           ? 'يمثل هذا الاتحاد الطلبة السوريين في الجامعة ويعمل على تقديم الدعم الأكاديمي والاجتماعي والثقافي لهم.'
@@ -1010,10 +1015,10 @@ const Home = () => {
                       </p>
 
                       {/* Footer - Learn More and Established Date */}
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between flex-col sm:flex-row gap-2 sm:gap-0">
                         {/* Established Date with Calendar Icon */}
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
-                          <Calendar size={14} />
+                        <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500">
+                          <Calendar size={12} className="sm:w-3.5 sm:h-3.5 md:w-[14px] md:h-[14px]" />
                           <span>
                             {language === 'ar' ? `تأسس ${establishedYear}` : language === 'tr' ? `${establishedYear} Kuruluş` : `Est. ${establishedYear}`}
                           </span>
@@ -1024,11 +1029,11 @@ const Home = () => {
                             e.stopPropagation();
                             setSelectedUnion(u);
                           }}
-                          className="text-base font-medium hover:opacity-80 transition-opacity flex items-center gap-1"
+                          className="text-xs sm:text-sm md:text-base font-medium hover:opacity-80 transition-opacity flex items-center gap-1"
                           style={{ color: '#dcb557', direction: language === 'ar' ? 'rtl' : 'ltr' }}
                         >
                           {language === 'ar' ? 'تعرف أكثر' : language === 'tr' ? 'Daha Fazla Bilgi' : 'Learn More'}
-                          {language === 'ar' ? <ArrowLeft size={16} className="rotate-180" /> : <ArrowLeft size={16} />}
+                          {language === 'ar' ? <ArrowLeft size={12} className="sm:w-4 sm:h-4 md:w-4 md:h-4 rotate-180" /> : <ArrowLeft size={12} className="sm:w-4 sm:h-4 md:w-4 md:h-4" />}
                         </button>
                       </div>
                     </div>
@@ -1068,7 +1073,7 @@ const Home = () => {
           </div>
 
           {/* Category Cards Grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 md:mb-12">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 md:gap-6 mb-8 md:mb-12">
             {[
               {
                 id: 'board',
@@ -1115,36 +1120,36 @@ const Home = () => {
               return (
                 <div
                   key={category.id}
-                  className="relative p-8 rounded-2xl transition-all duration-300 hover:scale-105"
+                  className="relative p-3 sm:p-5 md:p-8 rounded-2xl transition-all duration-300 md:hover:scale-105"
                   style={{ 
                     backgroundColor: 'rgba(255, 255, 255, 0.1)',
                     backdropFilter: 'blur(10px)'
                   }}
                 >
                   {/* Icon Container */}
-                  <div className="flex justify-center mb-8">
+                  <div className="flex justify-center mb-3 sm:mb-5 md:mb-8">
                     <div 
-                      className="w-16 h-16 rounded-full flex items-center justify-center"
+                      className="w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center"
                       style={{ backgroundColor: '#dcb557' }}
                     >
-                      <IconComponent size={24} style={{ color: '#1f4333' }} />
+                      <IconComponent className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" style={{ color: '#1f4333' }} />
                     </div>
                   </div>
 
                   {/* Title */}
                   <h3 
-                    className="text-xl font-bold text-center mb-4 text-white"
+                    className="text-xs sm:text-base md:text-xl font-bold text-center mb-2 sm:mb-3 md:mb-4 text-white line-clamp-2"
                     style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                   >
                     {category.name[language]}
                   </h3>
 
                   {/* Description */}
-                  <div className="text-center mb-6">
+                  <div className="text-center mb-3 sm:mb-4 md:mb-6">
                     {category.description[language].map((line, lineIndex) => (
                       <p 
                         key={lineIndex}
-                        className="text-sm text-gray-300 leading-relaxed"
+                        className="text-xs sm:text-sm text-gray-300 leading-relaxed line-clamp-2 sm:line-clamp-none"
                         style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                       >
                         {line}
@@ -1156,7 +1161,7 @@ const Home = () => {
                   <div className="text-center">
                     <Link to="/offices">
                       <button
-                        className="text-sm font-medium hover:opacity-80 transition-opacity"
+                        className="text-xs sm:text-sm font-medium hover:opacity-80 transition-opacity"
                         style={{ color: '#dcb557', direction: language === 'ar' ? 'rtl' : 'ltr' }}
                       >
                         {language === 'ar' ? 'اعرف المزيد' : language === 'en' ? 'Learn More' : 'Daha Fazla Bilgi'}

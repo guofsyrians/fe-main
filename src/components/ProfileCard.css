@@ -32,7 +32,7 @@
   perspective: 500px;
   transform: translate3d(0, 0, 0.1px);
   position: relative;
-  touch-action: none;
+  touch-action: pan-y; /* Allow vertical scrolling on mobile */
 }
 
 .pc-card-wrapper::before {
@@ -94,6 +94,23 @@
     0 0 90px rgba(31, 67, 51, 0.2),
     rgba(0, 0, 0, 0.2) calc((var(--pointer-from-left) * 10px) - 3px)
     calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px;
+}
+
+/* Disable tilt on mobile to prevent scroll interference */
+@media (max-width: 768px) {
+  .pc-card-wrapper {
+    touch-action: pan-y;
+    pointer-events: auto;
+  }
+
+  .pc-card {
+    transform: translate3d(0, 0, 0.1px) rotateX(0deg) rotateY(0deg) !important;
+  }
+
+  .pc-card:hover,
+  .pc-card.active {
+    transform: translate3d(0, 0, 0.1px) rotateX(0deg) rotateY(0deg) !important;
+  }
 }
 
 .pc-card * {
@@ -289,7 +306,7 @@
   z-index: 2;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center; /* Changed from space-between since button is hidden */
   background: rgba(31, 67, 51, 0.95);
   backdrop-filter: none;
   border: 1px solid rgba(31, 67, 51, 0.3);
@@ -369,6 +386,7 @@
 }
 
 .pc-contact-btn {
+  /* display: none; */ /* Commented out - button hidden on mobile and desktop */
   border: 1px solid rgba(220, 181, 87, 0.5);
   border-radius: 8px;
   padding: 8px 16px;
@@ -383,6 +401,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   transform-style: flat;
+  display: none; /* Hidden on all screen sizes */
 }
 
 .smaller-text .pc-contact-btn {
@@ -479,6 +498,62 @@
   }
 }
 
+/* Smaller cards in offices grid on mobile */
+@media (max-width: 768px) {
+  .offices-grid .pc-card-wrapper {
+    width: 100%;
+    max-width: 180px;
+  }
+
+  .offices-grid .pc-card {
+    height: 50svh;
+    max-height: 320px;
+    width: 100%;
+  }
+
+  .offices-grid .pc-details {
+    top: 1.5em;
+  }
+
+  .offices-grid .pc-details h3 {
+    font-size: min(3.5svh, 1.8em);
+  }
+
+  .offices-grid .pc-details p {
+    font-size: 12px;
+    top: -8px;
+  }
+
+  .offices-grid .pc-user-info {
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 8px 10px;
+  }
+
+  .offices-grid .pc-mini-avatar {
+    width: 24px;
+    height: 24px;
+  }
+
+  .offices-grid .pc-user-details {
+    gap: 8px;
+  }
+
+  .offices-grid .pc-handle {
+    font-size: 11px;
+  }
+
+  .offices-grid .pc-status {
+    font-size: 9px;
+  }
+
+  .offices-grid .pc-contact-btn {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+}
+
 @media (max-width: 768px) {
   .pc-card {
     height: 70svh;
@@ -524,6 +599,47 @@
   .pc-contact-btn {
     padding: 6px 12px;
     font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .offices-grid .pc-card-wrapper {
+    max-width: 160px;
+  }
+
+  .offices-grid .pc-card {
+    height: 45svh;
+    max-height: 280px;
+  }
+
+  .offices-grid .pc-details h3 {
+    font-size: min(3svh, 1.5em);
+  }
+
+  .offices-grid .pc-details p {
+    font-size: 11px;
+  }
+
+  .offices-grid .pc-user-info {
+    padding: 6px 8px;
+  }
+
+  .offices-grid .pc-mini-avatar {
+    width: 20px;
+    height: 20px;
+  }
+
+  .offices-grid .pc-handle {
+    font-size: 10px;
+  }
+
+  .offices-grid .pc-status {
+    font-size: 8px;
+  }
+
+  .offices-grid .pc-contact-btn {
+    padding: 4px 8px;
+    font-size: 9px;
   }
 }
 

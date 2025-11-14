@@ -297,7 +297,7 @@ const SubUnions = () => {
                 {unionsForCity.length === 0 ? (
                   <p className="text-gray-600">{language === 'ar' ? 'لا توجد اتحادات في هذه المدينة حالياً' : language === 'tr' ? 'Şu anda bu şehirde birlik yok' : 'No unions in this city yet'}</p>
                 ) : (
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
                     {unionsForCity.map((u, idx) => {
                       // Mock data for member count and tags - can be replaced with real data
                       const memberCount = Math.floor(Math.random() * 1000) + 100;
@@ -316,11 +316,11 @@ const SubUnions = () => {
                           onClick={() => setSelectedUnion(u)}
                         >
                           {/* Image Header - larger size */}
-                          <div className="relative w-full h-80 overflow-hidden bg-white flex items-center justify-center">
+                          <div className="relative w-full h-40 sm:h-60 md:h-80 overflow-hidden bg-white flex items-center justify-center">
                             <img
                               src="/assets/sampleLogo.png"
                               alt={u.name}
-                              className="w-64 h-64 object-contain"
+                              className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 object-contain"
                               onError={(e) => {
                                 e.target.src = '/assets/sampleLogo.png';
                                 e.target.className = 'w-48 h-48 object-contain opacity-20';
@@ -329,7 +329,7 @@ const SubUnions = () => {
                             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10"></div>
                             {/* Region/City Badge - Top Right */}
                             <div
-                              className="absolute top-4 right-4 px-4 py-1.5 rounded-full text-sm font-semibold text-white z-10"
+                              className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 px-2 py-0.5 sm:px-3 sm:py-1 md:px-4 md:py-1.5 rounded-full text-xs sm:text-sm font-semibold text-white z-10"
                               style={{ backgroundColor: idx % 4 === 0 ? '#ef4444' : idx % 4 === 1 ? '#3b82f6' : idx % 4 === 2 ? '#10b981' : '#eab308' }}
                             >
                               {u.city}
@@ -346,25 +346,25 @@ const SubUnions = () => {
                           </div>
 
                           {/* Content - matching Figma spacing */}
-                          <div className="p-8">
+                          <div className="p-3 sm:p-5 md:p-8">
                             {/* Title */}
                             <h3
-                              className="text-2xl font-bold mb-2 leading-8"
+                              className="text-sm sm:text-lg md:text-2xl font-bold mb-1 sm:mb-2 leading-tight sm:leading-8 line-clamp-2"
                               style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}
                             >
                               {u.name}
                             </h3>
                             {/* Location */}
                             <p
-                              className="text-base text-gray-600 mb-4"
+                              className="text-xs sm:text-sm md:text-base text-gray-600 mb-2 sm:mb-3 md:mb-4 line-clamp-1"
                               style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                             >
                               {u.location}
                             </p>
                             {/* Description */}
                             <p
-                              className="text-base text-gray-700 mb-6 leading-relaxed"
-                              style={{ direction: language === 'ar' ? 'rtl' : 'ltr', minHeight: '78px' }}
+                              className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-3 sm:line-clamp-none sm:min-h-[78px]"
+                              style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                             >
                               {language === 'ar'
                                 ? 'يمثل هذا الاتحاد الطلبة السوريين في الجامعة ويعمل على تقديم الدعم الأكاديمي والاجتماعي والثقافي لهم.'
@@ -390,17 +390,17 @@ const SubUnions = () => {
                             </div> */}
 
                             {/* Footer - Learn More and Established Date */}
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between flex-col sm:flex-row gap-2 sm:gap-0">
                               {/* Established Date with Calendar Icon */}
-                              <div className="flex items-center gap-2 text-sm text-gray-500">
-                                <Calendar size={14} />
+                              <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500">
+                                <Calendar size={12} className="sm:w-3.5 sm:h-3.5 md:w-[14px] md:h-[14px]" />
                                 <span>
                                   {language === 'ar' ? `تأسس ${establishedYear}` : language === 'tr' ? `${establishedYear} Kuruluş` : `Est. ${establishedYear}`}
                                 </span>
                               </div>
                               {/* Learn More Link */}
                               <button
-                                className="text-base font-medium hover:opacity-80 transition-opacity flex items-center gap-1"
+                                className="text-xs sm:text-sm md:text-base font-medium hover:opacity-80 transition-opacity flex items-center gap-1"
                                 style={{ color: '#dcb557', direction: language === 'ar' ? 'rtl' : 'ltr' }}
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -408,7 +408,7 @@ const SubUnions = () => {
                                 }}
                               >
                                 {language === 'ar' ? 'تعرف أكثر' : language === 'tr' ? 'Daha Fazla Bilgi' : 'Learn More'}
-                                {language === 'ar' ? <ArrowLeft size={16} className="rotate-180" /> : <ArrowLeft size={16} />}
+                                {language === 'ar' ? <ArrowLeft size={12} className="sm:w-4 sm:h-4 md:w-4 md:h-4 rotate-180" /> : <ArrowLeft size={12} className="sm:w-4 sm:h-4 md:w-4 md:h-4" />}
                               </button>
                             </div>
                           </div>
@@ -439,7 +439,7 @@ const SubUnions = () => {
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-12 md:mb-16 lg:mb-20 text-center" style={{ color: '#1f4333' }}>
             {language === 'ar' ? 'جميع الاتحادات الفرعية' : language === 'tr' ? 'Tüm Alt Birlikler' : 'All Subunions'}
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
             {subunionsData.unions.map((u, idx) => {
               // Mock data for member count and tags - can be replaced with real data
               const memberCount = Math.floor(Math.random() * 1000) + 100;
@@ -467,11 +467,11 @@ const SubUnions = () => {
                   onClick={() => setSelectedUnion(u)}
                 >
                   {/* Image Header - larger size */}
-                  <div className="relative w-full h-80 overflow-hidden bg-white flex items-center justify-center">
+                  <div className="relative w-full h-40 sm:h-60 md:h-80 overflow-hidden bg-white flex items-center justify-center">
                     <img
                       src="/assets/sampleLogo.png"
                       alt={u.name}
-                      className="w-64 h-64 object-contain"
+                      className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 object-contain"
                       onError={(e) => {
                         e.target.src = '/assets/sampleLogo.png';
                         e.target.className = 'w-48 h-48 object-contain opacity-20';
@@ -480,7 +480,7 @@ const SubUnions = () => {
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10"></div>
                     {/* Region/City Badge - Top Right */}
                     <div
-                      className="absolute top-4 right-4 px-4 py-1.5 rounded-full text-sm font-semibold text-white z-10"
+                      className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 px-2 py-0.5 sm:px-3 sm:py-1 md:px-4 md:py-1.5 rounded-full text-xs sm:text-sm font-semibold text-white z-10"
                       style={{ backgroundColor: getRegionColor(u.city) }}
                     >
                       {u.city}
@@ -497,25 +497,25 @@ const SubUnions = () => {
                   </div>
 
                   {/* Content - matching Figma spacing */}
-                  <div className="p-8">
+                  <div className="p-3 sm:p-5 md:p-8">
                     {/* Title */}
                     <h3
-                      className="text-2xl font-bold mb-2 leading-8"
+                      className="text-sm sm:text-lg md:text-2xl font-bold mb-1 sm:mb-2 leading-tight sm:leading-8 line-clamp-2"
                       style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}
                     >
                       {u.name}
                     </h3>
                     {/* Location */}
                     <p
-                      className="text-base text-gray-600 mb-4"
+                      className="text-xs sm:text-sm md:text-base text-gray-600 mb-2 sm:mb-3 md:mb-4 line-clamp-1"
                       style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                     >
                       {u.location}
                     </p>
                     {/* Description */}
                     <p
-                      className="text-base text-gray-700 mb-6 leading-relaxed"
-                      style={{ direction: language === 'ar' ? 'rtl' : 'ltr', minHeight: '78px' }}
+                      className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-3 sm:line-clamp-none sm:min-h-[78px]"
+                      style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                     >
                       {language === 'ar'
                         ? 'يمثل هذا الاتحاد الطلبة السوريين في الجامعة ويعمل على تقديم الدعم الأكاديمي والاجتماعي والثقافي لهم.'
@@ -541,17 +541,17 @@ const SubUnions = () => {
                     </div> */}
 
                     {/* Footer - Learn More and Established Date */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between flex-col sm:flex-row gap-2 sm:gap-0">
                       {/* Established Date with Calendar Icon */}
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <Calendar size={14} />
+                      <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500">
+                        <Calendar size={12} className="sm:w-3.5 sm:h-3.5 md:w-[14px] md:h-[14px]" />
                         <span>
                           {language === 'ar' ? `تأسس ${establishedYear}` : language === 'tr' ? `${establishedYear} Kuruluş` : `Est. ${establishedYear}`}
                         </span>
                       </div>
                       {/* Learn More Link */}
                       <button
-                        className="text-base font-medium hover:opacity-80 transition-opacity flex items-center gap-1"
+                        className="text-xs sm:text-sm md:text-base font-medium hover:opacity-80 transition-opacity flex items-center gap-1"
                         style={{ color: '#dcb557', direction: language === 'ar' ? 'rtl' : 'ltr' }}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -559,7 +559,7 @@ const SubUnions = () => {
                         }}
                       >
                         {language === 'ar' ? 'تعرف أكثر' : language === 'tr' ? 'Daha Fazla Bilgi' : 'Learn More'}
-                        {language === 'ar' ? <ArrowLeft size={16} className="rotate-180" /> : <ArrowLeft size={16} />}
+                        {language === 'ar' ? <ArrowLeft size={12} className="sm:w-4 sm:h-4 md:w-4 md:h-4 rotate-180" /> : <ArrowLeft size={12} className="sm:w-4 sm:h-4 md:w-4 md:h-4" />}
                       </button>
                     </div>
                   </div>

@@ -5,15 +5,18 @@ import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../components/ui/select';
 import { toast } from 'sonner';
-import { Search, Filter, GraduationCap, MapPin, Building2, BookOpen } from 'lucide-react';
+import { Search, Filter, GraduationCap, MapPin, Building2, BookOpen, Check, ChevronsUpDown } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popover';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '../components/ui/command';
+import { cn } from '../lib/utils';
 
 const Graduates = () => {
   const { t, language, direction } = useLanguage();
@@ -31,21 +34,44 @@ const Graduates = () => {
     university_name: 'all',
   });
 
+  // Combobox open states
+  const [openAcademicBranch, setOpenAcademicBranch] = useState(false);
+  const [openCity, setOpenCity] = useState(false);
+  const [openUniversity, setOpenUniversity] = useState(false);
+
   // Fetch all graduates from Supabase
   useEffect(() => {
     const fetchGraduates = async () => {
       try {
         setLoading(true);
-        const { data, error } = await supabase
-          .from('members')
-          .select('*')
-          .order('full_name', { ascending: true });
+        let allData = [];
+        let from = 0;
+        const pageSize = 1000; // Supabase default limit
+        let hasMore = true;
 
-        if (error) {
-          throw error;
+        // Fetch all records in batches to overcome Supabase's 1000 row limit
+        while (hasMore) {
+          const { data, error } = await supabase
+            .from('members')
+            .select('*')
+            .order('full_name', { ascending: true })
+            .range(from, from + pageSize - 1);
+
+          if (error) {
+            throw error;
+          }
+
+          if (data && data.length > 0) {
+            allData = [...allData, ...data];
+            from += pageSize;
+            // If we got less than pageSize, we've reached the end
+            hasMore = data.length === pageSize;
+          } else {
+            hasMore = false;
+          }
         }
 
-        setAllGraduates(data || []);
+        setAllGraduates(allData);
       } catch (error) {
         console.error('Error fetching graduates:', error);
         toast.error(
@@ -109,7 +135,7 @@ const Graduates = () => {
   const handleLoadMore = () => {
     setLoadingMore(true);
     setTimeout(() => {
-      setDisplayCount(prev => prev + 50);
+      setDisplayCount(prev => prev + 500);
       setLoadingMore(false);
     }, 300);
   };
@@ -214,22 +240,71 @@ const Graduates = () => {
                 <Label htmlFor="academic_branch" className="text-sm font-medium" style={{ color: '#374151' }}>
                   {language === 'ar' ? 'التخصص الأكاديمي' : language === 'en' ? 'Academic Branch' : 'Akademik Dal'}
                 </Label>
-                <Select
-                  value={filters.academic_branch}
-                  onValueChange={(value) => handleFilterChange('academic_branch', value)}
-                >
-                  <SelectTrigger className="h-[50px] border-gray-300 rounded-lg" style={{ direction: direction }}>
-                    <SelectValue placeholder={language === 'ar' ? 'اختر التخصص' : language === 'en' ? 'Select branch' : 'Dal seçin'} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{language === 'ar' ? 'الكل' : language === 'en' ? 'All' : 'Tümü'}</SelectItem>
-                    {filterOptions.academic_branch.map((branch) => (
-                      <SelectItem key={branch} value={branch}>
-                        {branch}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Popover open={openAcademicBranch} onOpenChange={setOpenAcademicBranch}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={openAcademicBranch}
+                      className="h-[50px] w-full justify-between border-gray-300 rounded-lg"
+                      style={{ direction: direction }}
+                    >
+                      {filters.academic_branch === 'all'
+                        ? (language === 'ar' ? 'اختر التخصص' : language === 'en' ? 'Select branch' : 'Dal seçin')
+                        : filters.academic_branch}
+                      <ChevronsUpDown className={cn(direction === 'rtl' ? "mr-2" : "ml-2", "h-4 w-4 shrink-0 opacity-50")} />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" style={{ direction: direction }}>
+                    <Command>
+                      <CommandInput 
+                        placeholder={language === 'ar' ? 'ابحث عن التخصص...' : language === 'en' ? 'Search branch...' : 'Dal ara...'} 
+                      />
+                      <CommandList>
+                        <CommandEmpty>
+                          {language === 'ar' ? 'لم يتم العثور على نتائج' : language === 'en' ? 'No results found' : 'Sonuç bulunamadı'}
+                        </CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem
+                            value="all"
+                            onSelect={() => {
+                              handleFilterChange('academic_branch', 'all');
+                              setOpenAcademicBranch(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                direction === 'rtl' ? "ml-2" : "mr-2",
+                                "h-4 w-4",
+                                filters.academic_branch === 'all' ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            {language === 'ar' ? 'الكل' : language === 'en' ? 'All' : 'Tümü'}
+                          </CommandItem>
+                          {filterOptions.academic_branch.map((branch) => (
+                            <CommandItem
+                              key={branch}
+                              value={branch}
+                              onSelect={() => {
+                                handleFilterChange('academic_branch', branch);
+                                setOpenAcademicBranch(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  direction === 'rtl' ? "ml-2" : "mr-2",
+                                  "h-4 w-4",
+                                  filters.academic_branch === branch ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {branch}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
 
               {/* City */}
@@ -237,22 +312,71 @@ const Graduates = () => {
                 <Label htmlFor="city" className="text-sm font-medium" style={{ color: '#374151' }}>
                   {language === 'ar' ? 'المدينة' : language === 'en' ? 'City' : 'Şehir'}
                 </Label>
-                <Select
-                  value={filters.city}
-                  onValueChange={(value) => handleFilterChange('city', value)}
-                >
-                  <SelectTrigger className="h-[50px] border-gray-300 rounded-lg" style={{ direction: direction }}>
-                    <SelectValue placeholder={language === 'ar' ? 'اختر المدينة' : language === 'en' ? 'Select city' : 'Şehir seçin'} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{language === 'ar' ? 'الكل' : language === 'en' ? 'All' : 'Tümü'}</SelectItem>
-                    {filterOptions.city.map((city) => (
-                      <SelectItem key={city} value={city}>
-                        {city}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Popover open={openCity} onOpenChange={setOpenCity}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={openCity}
+                      className="h-[50px] w-full justify-between border-gray-300 rounded-lg"
+                      style={{ direction: direction }}
+                    >
+                      {filters.city === 'all'
+                        ? (language === 'ar' ? 'اختر المدينة' : language === 'en' ? 'Select city' : 'Şehir seçin')
+                        : filters.city}
+                      <ChevronsUpDown className={cn(direction === 'rtl' ? "mr-2" : "ml-2", "h-4 w-4 shrink-0 opacity-50")} />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" style={{ direction: direction }}>
+                    <Command>
+                      <CommandInput 
+                        placeholder={language === 'ar' ? 'ابحث عن المدينة...' : language === 'en' ? 'Search city...' : 'Şehir ara...'} 
+                      />
+                      <CommandList>
+                        <CommandEmpty>
+                          {language === 'ar' ? 'لم يتم العثور على نتائج' : language === 'en' ? 'No results found' : 'Sonuç bulunamadı'}
+                        </CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem
+                            value="all"
+                            onSelect={() => {
+                              handleFilterChange('city', 'all');
+                              setOpenCity(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                direction === 'rtl' ? "ml-2" : "mr-2",
+                                "h-4 w-4",
+                                filters.city === 'all' ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            {language === 'ar' ? 'الكل' : language === 'en' ? 'All' : 'Tümü'}
+                          </CommandItem>
+                          {filterOptions.city.map((city) => (
+                            <CommandItem
+                              key={city}
+                              value={city}
+                              onSelect={() => {
+                                handleFilterChange('city', city);
+                                setOpenCity(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  direction === 'rtl' ? "ml-2" : "mr-2",
+                                  "h-4 w-4",
+                                  filters.city === city ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {city}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
 
               {/* University Name */}
@@ -260,22 +384,71 @@ const Graduates = () => {
                 <Label htmlFor="university_name" className="text-sm font-medium" style={{ color: '#374151' }}>
                   {language === 'ar' ? 'الجامعة' : language === 'en' ? 'University' : 'Üniversite'}
                 </Label>
-                <Select
-                  value={filters.university_name}
-                  onValueChange={(value) => handleFilterChange('university_name', value)}
-                >
-                  <SelectTrigger className="h-[50px] border-gray-300 rounded-lg" style={{ direction: direction }}>
-                    <SelectValue placeholder={language === 'ar' ? 'اختر الجامعة' : language === 'en' ? 'Select university' : 'Üniversite seçin'} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">{language === 'ar' ? 'الكل' : language === 'en' ? 'All' : 'Tümü'}</SelectItem>
-                    {filterOptions.university_name.map((university) => (
-                      <SelectItem key={university} value={university}>
-                        {university}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Popover open={openUniversity} onOpenChange={setOpenUniversity}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={openUniversity}
+                      className="h-[50px] w-full justify-between border-gray-300 rounded-lg"
+                      style={{ direction: direction }}
+                    >
+                      {filters.university_name === 'all'
+                        ? (language === 'ar' ? 'اختر الجامعة' : language === 'en' ? 'Select university' : 'Üniversite seçin')
+                        : filters.university_name}
+                      <ChevronsUpDown className={cn(direction === 'rtl' ? "mr-2" : "ml-2", "h-4 w-4 shrink-0 opacity-50")} />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" style={{ direction: direction }}>
+                    <Command>
+                      <CommandInput 
+                        placeholder={language === 'ar' ? 'ابحث عن الجامعة...' : language === 'en' ? 'Search university...' : 'Üniversite ara...'} 
+                      />
+                      <CommandList>
+                        <CommandEmpty>
+                          {language === 'ar' ? 'لم يتم العثور على نتائج' : language === 'en' ? 'No results found' : 'Sonuç bulunamadı'}
+                        </CommandEmpty>
+                        <CommandGroup>
+                          <CommandItem
+                            value="all"
+                            onSelect={() => {
+                              handleFilterChange('university_name', 'all');
+                              setOpenUniversity(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                direction === 'rtl' ? "ml-2" : "mr-2",
+                                "h-4 w-4",
+                                filters.university_name === 'all' ? "opacity-100" : "opacity-0"
+                              )}
+                            />
+                            {language === 'ar' ? 'الكل' : language === 'en' ? 'All' : 'Tümü'}
+                          </CommandItem>
+                          {filterOptions.university_name.map((university) => (
+                            <CommandItem
+                              key={university}
+                              value={university}
+                              onSelect={() => {
+                                handleFilterChange('university_name', university);
+                                setOpenUniversity(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  direction === 'rtl' ? "ml-2" : "mr-2",
+                                  "h-4 w-4",
+                                  filters.university_name === university ? "opacity-100" : "opacity-0"
+                                )}
+                              />
+                              {university}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               </div>
             </div>
 
@@ -295,8 +468,8 @@ const Graduates = () => {
         </Card>
 
         {/* Results Count */}
-        <div className="mb-4 md:mb-6" style={{ direction: direction }}>
-          <p className="text-sm md:text-base text-gray-600">
+        <div className="mb-4 md:mb-6 px-4 py-3 rounded-lg" style={{ direction: direction, backgroundColor: '#f3f4f6', border: '1px solid #e5e7eb' }}>
+          <p className="text-base md:text-lg font-semibold" style={{ color: '#1f4333' }}>
             {language === 'ar' 
               ? `عرض ${graduates.length} من ${totalFiltered} خريج` 
               : language === 'en' 
@@ -333,7 +506,21 @@ const Graduates = () => {
             {/* Graduates Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
               {graduates.map((graduate) => (
-                <Card key={graduate.id} className="shadow-lg border-0 rounded-2xl hover:shadow-xl transition-shadow">
+                <Card 
+                  key={graduate.id} 
+                  className="rounded-2xl transition-all"
+                  style={{ 
+                    backgroundColor: '#ffffff',
+                    border: '1px solid #dcb557',
+                    boxShadow: '0 10px 20px -5px rgba(31, 67, 51, 0.5)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 15px 30px -5px rgba(31, 67, 51, 0.7)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = '0 10px 20px -5px rgba(31, 67, 51, 0.5)';
+                  }}
+                >
                   <CardContent className="p-4 md:p-6">
                     <div className="space-y-3 md:space-y-4" style={{ direction: direction }}>
                       {/* Full Name */}
@@ -410,7 +597,7 @@ const Graduates = () => {
                 >
                   {loadingMore 
                     ? (language === 'ar' ? 'جاري التحميل...' : language === 'en' ? 'Loading...' : 'Yükleniyor...')
-                    : (language === 'ar' ? 'عرض المزيد (50)' : language === 'en' ? 'Load More (50)' : 'Daha Fazla Yükle (50)')
+                    : (language === 'ar' ? 'عرض المزيد (500)' : language === 'en' ? 'Load More (500)' : 'Daha Fazla Yükle (500)')
                   }
                 </Button>
               </div>
