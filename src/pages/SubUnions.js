@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Mail, Phone, Users, X, MapPin, Calendar, ExternalLink, ArrowLeft } from 'lucide-react';
-import { turkeyUnions } from '../mock';
+import { cities, subUnionsIndividualData } from '../mock';
 // SVG map imported directly
 import subunionsData from '../data/subunions.json';
 import TurkeyMap from '../components/TurkeyMap';
@@ -13,125 +13,42 @@ const SubUnions = () => {
   const [selectedUnion, setSelectedUnion] = useState(null);
   const mapEndRef = useRef(null);
 
-  const cities = [
-    {
-      id: 'istanbul',
-      name: { ar: 'إسطنبول', en: 'Istanbul', tr: 'İstanbul' },
-      svgX: 190,
-      svgY: 250,
-      colorZone: 10,
-      clickZone: 1,
-      // Example: Custom polygon shape (hexagon-like)
-      // clickShape: 'polygon',
-      // clickPoints: [
-      //   { x: -33, y: -8 },
-      //   { x: 35, y: 13 },
-      //   { x: 31, y: 22 },
-      //   { x: 10, y: 27 },
-      //   { x: -35, y: 15 }
-      // ],
-    },
-    { 
-      id: 'izmir', 
-      name: { ar: 'إزمير', en: 'Izmir', tr: 'İzmir' }, 
-      svgX: 125, 
-      svgY: 340, 
-      colorZone: 20, 
-      clickZone: 1,
-    },
-    { 
-      id: 'mersin', 
-      name: { ar: 'مرسين', en: 'Mersin', tr: 'Mersin' }, 
-      svgX: 365, 
-      svgY: 400, 
-      colorZone: 20, 
-      clickZone: 1,
-    },
-    { 
-      id: 'kilis', 
-      name: { ar: 'كلس', en: 'Kilis', tr: 'Kilis' }, 
-      svgX: 460, 
-      svgY: 390, 
-      colorZone: 10, 
-      clickZone: 1,
-    },
-    { 
-      id: 'duzce', 
-      name: { ar: 'دوزجة', en: 'Düzce', tr: 'Düzce' }, 
-      svgX: 267, 
-      svgY: 255, 
-      colorZone: 16, 
-      clickZone: 1,
-    },
-    { 
-      id: 'isparta', 
-      name: { ar: 'اسبارطة', en: 'Isparta', tr: 'Isparta' }, 
-      svgX: 258, 
-      svgY: 370, 
-      colorZone: 30, 
-      clickZone: 1,
-    },
-    { 
-      id: 'adiyaman', 
-      name: { ar: 'أديامان', en: 'Adıyaman', tr: 'Adıyaman' }, 
-      svgX: 505, 
-      svgY: 360, 
-      colorZone: 20, 
-      clickZone: 1,
-    },
-    { 
-      id: 'gaziantep', 
-      name: { ar: 'غازي عنتاب', en: 'Gaziantep', tr: 'Gaziantep' }, 
-      svgX: 470, 
-      svgY: 380, 
-      colorZone: 10, 
-      clickZone: 1,
-    },
-    { 
-      id: 'karabuk', 
-      name: { ar: 'كرابوك', en: 'Karabük', tr: 'Karabük' }, 
-      svgX: 308, 
-      svgY: 247, 
-      colorZone: 10, 
-      clickZone: 1,
-    },
-    { 
-      id: 'elazig', 
-      name: { ar: 'إيلازيغ', en: 'Elazığ', tr: 'Elazığ' }, 
-      svgX: 540, 
-      svgY: 330, 
-      colorZone: 20, 
-      clickZone: 1,
-    },
-    { 
-      id: 'sivas', 
-      name: { ar: 'سيفاس', en: 'Sivas', tr: 'Sivas' }, 
-      svgX: 470, 
-      svgY: 300, 
-      colorZone: 30, 
-      clickZone: 1,
-    },
-    { 
-      id: 'adana', 
-      name: { ar: 'أضنة', en: 'Adana', tr: 'Adana' }, 
-      svgX: 410, 
-      svgY: 370, 
-      colorZone: 30, 
-      clickZone: 1 
-    },
-    { id: 'sakarya', name: { ar: 'سكاريا', en: 'Sakarya', tr: 'Sakarya' }, svgX: 220, svgY: 260, colorZone: 25, clickZone: 1 },
-    { id: 'bursa', name: { ar: 'بورصة', en: 'Bursa', tr: 'Bursa' }, svgX: 180, svgY: 290, colorZone: 30, clickZone: 1 },
-    { id: 'kahramanmaras', name: { ar: 'كهرمان مرعش', en: 'Kahramanmaraş', tr: 'Kahramanmaraş' }, svgX: 455, svgY: 360, colorZone: 25, clickZone: 1 },
-    { id: 'malatya', name: { ar: 'ملاطيا', en: 'Malatya', tr: 'Malatya' }, svgX: 500, svgY: 330, colorZone: 25, clickZone: 1 },
-    { id: 'hatay', name: { ar: 'هاتاي', en: 'Hatay', tr: 'Hatay' }, svgX: 440, svgY: 408, colorZone: 30, clickZone: 1 },
-    { id: 'konya', name: { ar: 'قونيا', en: 'Konya', tr: 'Konya' }, svgX: 320, svgY: 340, colorZone: 35, clickZone: 1 },
-    { id: 'bolu', name: { ar: 'بولو', en: 'Bolu', tr: 'Bolu' }, svgX: 280, svgY: 270, colorZone: 20, clickZone: 1 },
-    { id: 'ankara', name: { ar: 'أنقرة', en: 'Ankara', tr: 'Ankara' }, svgX: 320, svgY: 290, colorZone: 30, clickZone: 1 },
-    { id: 'kocaeli', name: { ar: 'كوجالي', en: 'Kocaeli', tr: 'Kocaeli' }, svgX: 240, svgY: 250, colorZone: 30, clickZone: 1 },
-    { id: 'kastamonu', name: { ar: 'كاستامونو', en: 'Kastamonu', tr: 'Kastamonu' }, svgX: 340, svgY: 240, colorZone: 25, clickZone: 1 },
-    { id: 'kayseri', name: { ar: 'قيصري', en: 'Kayseri', tr: 'Kayseri' }, svgX: 420, svgY: 330, colorZone: 30, clickZone: 1 },
-    { id: 'kutahya', name: { ar: 'كوتاهيا', en: 'Kütahya', tr: 'Kütahya' }, svgX: 200, svgY: 310, colorZone: 25, clickZone: 1 }
-  ];
+  // Helper function to get union-specific description or fallback to generic
+  const getUnionDescription = (union, type = 'cardDescription') => {
+    const unionName = union.name;
+    const individualData = subUnionsIndividualData[unionName];
+    
+    if (individualData && individualData[type] && individualData[type][language]) {
+      return individualData[type][language];
+    }
+    
+    // Fallback to generic description
+    return t(`subUnions.${type}`);
+  };
+
+  // Helper function to get union-specific field data
+  const getUnionField = (union, fieldName) => {
+    const unionName = union.name;
+    const individualData = subUnionsIndividualData[unionName];
+    
+    if (individualData && individualData[fieldName] && individualData[fieldName][language]) {
+      return individualData[fieldName][language];
+    }
+    
+    return null;
+  };
+
+  // Helper function to get union logo URL
+  const getUnionLogo = (union) => {
+    const unionName = union.name;
+    const individualData = subUnionsIndividualData[unionName];
+    
+    if (individualData && individualData.logo) {
+      return individualData.logo;
+    }
+    
+    return '/assets/sampleLogo.png';
+  };
 
   const handleCityClick = (cityId) => {
     setSelectedCity(cityId);
@@ -161,9 +78,12 @@ const SubUnions = () => {
                 <X size={24} style={{ color: '#1f4333' }} />
               </button>
               <img
-                src="/assets/sampleLogo.png"
+                src={getUnionLogo(selectedUnion)}
                 alt={selectedUnion.name}
                 className="w-40 h-40 object-contain"
+                onError={(e) => {
+                  e.target.src = '/assets/sampleLogo.png';
+                }}
               />
             </div>
 
@@ -186,14 +106,10 @@ const SubUnions = () => {
               {/* Description */}
               <div className="mb-4 md:mb-6">
                 <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
-                  {language === 'ar' ? 'نبذة عن الاتحاد' : language === 'tr' ? 'Birlik Hakkında' : 'About the Union'}
+                  {t('subUnions.aboutUnion')}
                 </h3>
                 <p className="text-sm md:text-base text-gray-700 leading-relaxed" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
-                  {language === 'ar'
-                    ? 'يمثل هذا الاتحاد الطلبة السوريين في الجامعة ويعمل على تقديم الدعم الأكاديمي والاجتماعي والثقافي لهم. تأسس الاتحاد بمبادرة من الطلاب لتوحيد جهودهم وتمثيل مصالحهم داخل الجامعة وخارجها، وتنظيم الفعاليات والأنشطة التي تعزز الهوية الوطنية والتواصل بين الطلبة.'
-                    : language === 'tr'
-                      ? 'Bu birlik, üniversitedeki Suriyeli öğrencileri temsil eder ve onlara akademik, sosyal ve kültürel destek sağlamak için çalışır. Birlik, öğrencilerin çabalarını birleştirmek ve üniversite içinde ve dışında çıkarlarını temsil etmek için öğrenci inisiyatifiyle kurulmuştur.'
-                      : 'This union represents Syrian students at the university and works to provide them with academic, social, and cultural support. The union was established by student initiative to unite their efforts and represent their interests inside and outside the university.'}
+                  {getUnionDescription(selectedUnion, 'aboutDescription')}
                 </p>
               </div>
 
@@ -203,7 +119,7 @@ const SubUnions = () => {
                   <Calendar size={20} style={{ color: '#dcb557' }} className="mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-gray-600">
-                      {language === 'ar' ? 'تاريخ التأسيس' : language === 'tr' ? 'Kuruluş Tarihi' : 'Established'}
+                      {t('subUnions.established')}
                     </p>
                     <p className="text-gray-800 font-bold">2024</p>
                   </div>
@@ -212,32 +128,93 @@ const SubUnions = () => {
                   <Users size={20} style={{ color: '#dcb557' }} className="mt-1" />
                   <div>
                     <p className="text-sm font-semibold text-gray-600">
-                      {language === 'ar' ? 'الحالة' : language === 'tr' ? 'Durum' : 'Status'}
+                      {t('subUnions.status')}
                     </p>
                     <p className="text-gray-800 font-bold">
-                      {language === 'ar' ? 'نشط' : language === 'tr' ? 'Aktif' : 'Active'}
+                      {t('subUnions.active')}
                     </p>
                   </div>
                 </div>
+                {getUnionField(selectedUnion, 'contactNumber') && (
+                  <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+                    <Phone size={20} style={{ color: '#dcb557' }} className="mt-1" />
+                    <div>
+                      <p className="text-sm font-semibold text-gray-600">
+                        {t('subUnions.contactNumber')}
+                      </p>
+                      <p className="text-gray-800 font-bold">
+                        {getUnionField(selectedUnion, 'contactNumber')}
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
 
+              {/* Activities and Achievements */}
+              {getUnionField(selectedUnion, 'activitiesAndAchievements') && (
+                <div className="mb-4 md:mb-6">
+                  <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                    {t('subUnions.activitiesAndAchievements')}
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                    {getUnionField(selectedUnion, 'activitiesAndAchievements')}
+                  </p>
+                </div>
+              )}
+
+              {/* Special Achievements */}
+              {getUnionField(selectedUnion, 'specialAchievements') && (
+                <div className="mb-4 md:mb-6">
+                  <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                    {t('subUnions.specialAchievements')}
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                    {getUnionField(selectedUnion, 'specialAchievements')}
+                  </p>
+                </div>
+              )}
+
+              {/* Current Administrative Team */}
+              {getUnionField(selectedUnion, 'currentAdministrativeTeam') && (
+                <div className="mb-4 md:mb-6">
+                  <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                    {t('subUnions.currentAdministrativeTeam')}
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                    {getUnionField(selectedUnion, 'currentAdministrativeTeam')}
+                  </p>
+                </div>
+              )}
+
+              {/* Notes */}
+              {getUnionField(selectedUnion, 'notes') && (
+                <div className="mb-4 md:mb-6">
+                  <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                    {t('subUnions.notes')}
+                  </h3>
+                  <p className="text-sm md:text-base text-gray-700 leading-relaxed" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
+                    {getUnionField(selectedUnion, 'notes')}
+                  </p>
+                </div>
+              )}
+
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3">
+              {/*  <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   className="flex-1 px-4 md:px-6 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-all hover:opacity-90 flex items-center justify-center gap-2 min-h-[44px]"
                   style={{ backgroundColor: '#1f4333', color: 'white' }}
                 >
                   <ExternalLink size={16} className="md:w-[18px] md:h-[18px]" />
-                  {language === 'ar' ? 'زيارة الموقع' : language === 'tr' ? 'Siteyi Ziyaret Et' : 'Visit Website'}
+                  {t('subUnions.visitWebsite')}
                 </button>
                 <button
                   className="flex-1 sm:flex-none px-4 md:px-6 py-2.5 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-all hover:opacity-90 flex items-center justify-center gap-2 min-h-[44px]"
                   style={{ backgroundColor: '#dcb557', color: '#1f4333' }}
                 >
                   <Mail size={16} className="md:w-[18px] md:h-[18px]" />
-                  {language === 'ar' ? 'تواصل معنا' : language === 'tr' ? 'Bize Ulaşın' : 'Contact Us'}
+                  {t('subUnions.contact')}
                 </button>
-              </div>
+              </div>*/}
             </div>
           </div>
         </div>
@@ -295,16 +272,16 @@ const SubUnions = () => {
                   {cityObj?.name?.[language] || ''}
                 </h2>
                 {unionsForCity.length === 0 ? (
-                  <p className="text-gray-600">{language === 'ar' ? 'لا توجد اتحادات في هذه المدينة حالياً' : language === 'tr' ? 'Şu anda bu şehirde birlik yok' : 'No unions in this city yet'}</p>
+                  <p className="text-gray-600">{t('subUnions.noUnionsInCity')}</p>
                 ) : (
                   <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
                     {unionsForCity.map((u, idx) => {
                       // Mock data for member count and tags - can be replaced with real data
                       const memberCount = Math.floor(Math.random() * 1000) + 100;
                       const tags = [
-                        language === 'ar' ? 'الأكاديمي' : language === 'tr' ? 'Akademik' : 'Academic',
-                        language === 'ar' ? 'الثقافي' : language === 'tr' ? 'Kültürel' : 'Cultural',
-                        language === 'ar' ? 'الاجتماعي' : language === 'tr' ? 'Sosyal' : 'Social'
+                        t('subUnions.academic'),
+                        t('subUnions.cultural'),
+                        t('subUnions.social')
                       ];
                       const establishedYear = 2015 + Math.floor(Math.random() * 10);
 
@@ -318,7 +295,7 @@ const SubUnions = () => {
                           {/* Image Header - larger size */}
                           <div className="relative w-full h-40 sm:h-60 md:h-80 overflow-hidden bg-white flex items-center justify-center">
                             <img
-                              src="/assets/sampleLogo.png"
+                              src={getUnionLogo(u)}
                               alt={u.name}
                               className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 object-contain"
                               onError={(e) => {
@@ -366,11 +343,7 @@ const SubUnions = () => {
                               className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-3 sm:line-clamp-none sm:min-h-[78px]"
                               style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                             >
-                              {language === 'ar'
-                                ? 'يمثل هذا الاتحاد الطلبة السوريين في الجامعة ويعمل على تقديم الدعم الأكاديمي والاجتماعي والثقافي لهم.'
-                                : language === 'tr'
-                                  ? 'Bu birlik, üniversitedeki Suriyeli öğrencileri temsil eder ve onlara akademik, sosyal ve kültürel destek sağlar.'
-                                  : 'This union represents Syrian students at the university and works to provide them with academic, social, and cultural support.'}
+                              {getUnionDescription(u, 'cardDescription')}
                             </p>
 
                             {/* Tags */}
@@ -395,7 +368,7 @@ const SubUnions = () => {
                               <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500">
                                 <Calendar size={12} className="sm:w-3.5 sm:h-3.5 md:w-[14px] md:h-[14px]" />
                                 <span>
-                                  {language === 'ar' ? `تأسس ${establishedYear}` : language === 'tr' ? `${establishedYear} Kuruluş` : `Est. ${establishedYear}`}
+                                  {language === 'ar' ? `${t('subUnions.establishedYear')} ${establishedYear}` : language === 'tr' ? `${establishedYear} ${t('subUnions.establishedYear')}` : `${t('subUnions.establishedYear')} ${establishedYear}`}
                                 </span>
                               </div>
                               {/* Learn More Link */}
@@ -407,7 +380,7 @@ const SubUnions = () => {
                                   setSelectedUnion(u);
                                 }}
                               >
-                                {language === 'ar' ? 'تعرف أكثر' : language === 'tr' ? 'Daha Fazla Bilgi' : 'Learn More'}
+                                {t('subUnions.learnMore')}
                                 {language === 'ar' ? <ArrowLeft size={12} className="sm:w-4 sm:h-4 md:w-4 md:h-4 rotate-180" /> : <ArrowLeft size={12} className="sm:w-4 sm:h-4 md:w-4 md:h-4" />}
                               </button>
                             </div>
@@ -428,7 +401,7 @@ const SubUnions = () => {
                 {t('subUnions.selectCity')}
               </h3>
               <p className="text-gray-600">
-                {language === 'ar' ? 'انقر على مدينة على الخريطة لعرض الاتحادات' : language === 'en' ? 'Click on a city on the map to view unions' : 'Birlikleri görüntülemek için haritada bir şehre tıklayın'}
+                {t('subUnions.clickCityToView')}
               </p>
             </div>
           )}
@@ -437,16 +410,16 @@ const SubUnions = () => {
         {/* All Subunions (scraped) */}
         <div className="mt-16 md:mt-24 lg:mt-40">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-12 md:mb-16 lg:mb-20 text-center" style={{ color: '#1f4333' }}>
-            {language === 'ar' ? 'جميع الاتحادات الفرعية' : language === 'tr' ? 'Tüm Alt Birlikler' : 'All Subunions'}
+            {t('subUnions.allSubunions')}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
             {subunionsData.unions.map((u, idx) => {
               // Mock data for member count and tags - can be replaced with real data
               const memberCount = Math.floor(Math.random() * 1000) + 100;
               const tags = [
-                language === 'ar' ? 'الأكاديمي' : language === 'tr' ? 'Akademik' : 'Academic',
-                language === 'ar' ? 'الثقافي' : language === 'tr' ? 'Kültürel' : 'Cultural',
-                language === 'ar' ? 'الاجتماعي' : language === 'tr' ? 'Sosyal' : 'Social'
+                t('subUnions.academic'),
+                t('subUnions.cultural'),
+                t('subUnions.social')
               ];
               const establishedYear = 2015 + Math.floor(Math.random() * 10);
 
@@ -469,7 +442,7 @@ const SubUnions = () => {
                   {/* Image Header - larger size */}
                   <div className="relative w-full h-40 sm:h-60 md:h-80 overflow-hidden bg-white flex items-center justify-center">
                     <img
-                      src="/assets/sampleLogo.png"
+                      src={getUnionLogo(u)}
                       alt={u.name}
                       className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 object-contain"
                       onError={(e) => {
@@ -517,11 +490,7 @@ const SubUnions = () => {
                       className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-3 sm:line-clamp-none sm:min-h-[78px]"
                       style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                     >
-                      {language === 'ar'
-                        ? 'يمثل هذا الاتحاد الطلبة السوريين في الجامعة ويعمل على تقديم الدعم الأكاديمي والاجتماعي والثقافي لهم.'
-                        : language === 'tr'
-                          ? 'Bu birlik, üniversitedeki Suriyeli öğrencileri temsil eder ve onlara akademik, sosyal ve kültürel destek sağlar.'
-                          : 'This union represents Syrian students at the university and works to provide them with academic, social, and cultural support.'}
+                      {getUnionDescription(u, 'cardDescription')}
                     </p>
 
                     {/* Tags */}
@@ -546,7 +515,7 @@ const SubUnions = () => {
                       <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500">
                         <Calendar size={12} className="sm:w-3.5 sm:h-3.5 md:w-[14px] md:h-[14px]" />
                         <span>
-                          {language === 'ar' ? `تأسس ${establishedYear}` : language === 'tr' ? `${establishedYear} Kuruluş` : `Est. ${establishedYear}`}
+                          {language === 'ar' ? `${t('subUnions.establishedYear')} ${establishedYear}` : language === 'tr' ? `${establishedYear} ${t('subUnions.establishedYear')}` : `${t('subUnions.establishedYear')} ${establishedYear}`}
                         </span>
                       </div>
                       {/* Learn More Link */}
@@ -558,7 +527,7 @@ const SubUnions = () => {
                           setSelectedUnion(u);
                         }}
                       >
-                        {language === 'ar' ? 'تعرف أكثر' : language === 'tr' ? 'Daha Fazla Bilgi' : 'Learn More'}
+                        {t('subUnions.learnMore')}
                         {language === 'ar' ? <ArrowLeft size={12} className="sm:w-4 sm:h-4 md:w-4 md:h-4 rotate-180" /> : <ArrowLeft size={12} className="sm:w-4 sm:h-4 md:w-4 md:h-4" />}
                       </button>
                     </div>
