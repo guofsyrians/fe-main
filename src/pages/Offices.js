@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ProfileCard from '../components/ProfileCard';
-import { offices } from '../mock';
+import { fetchOffices } from '../services/database';
+import { toast } from 'sonner';
 
 const Offices = () => {
   const { t, language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('board');
+  const [offices, setOffices] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Categories matching the reference website structure
   const categories = [
@@ -14,6 +17,29 @@ const Offices = () => {
     { id: 'electoral', name: { ar: 'الهيئة الانتخابية', en: 'Electoral Commission', tr: 'Seçim Komisyonu' } },
     { id: 'offices', name: { ar: 'المكاتب واللجان التنفيذية', en: 'Offices & Executive Committees', tr: 'Ofisler ve İcra Komiteleri' } }
   ];
+
+  useEffect(() => {
+    const loadOffices = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchOffices();
+        setOffices(data);
+      } catch (error) {
+        console.error('Error loading offices:', error);
+        toast.error(
+          language === 'ar' 
+            ? 'حدث خطأ في تحميل البيانات' 
+            : language === 'en' 
+            ? 'Error loading data' 
+            : 'Veri yüklenirken hata oluştu'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadOffices();
+  }, [language]);
 
   // Filter offices by category
   const filteredOffices = offices.filter(office => office.category === selectedCategory);
@@ -123,8 +149,17 @@ const Offices = () => {
           </div>
         )}
 
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-16">
+            <p className="text-gray-500 text-lg">
+              {language === 'ar' ? 'جاري التحميل...' : language === 'en' ? 'Loading...' : 'Yükleniyor...'}
+            </p>
+          </div>
+        )}
+
         {/* Other Members - Grid Layout: 2 per row */}
-        {otherMembers.length > 0 && (
+        {!loading && otherMembers.length > 0 && (
           <div className="offices-grid grid grid-cols-2 gap-2 sm:gap-4 md:gap-6 lg:gap-8 justify-items-center max-w-6xl mx-auto">
             {otherMembers.map((office) => (
               <div key={office.id} className="w-full flex justify-center">

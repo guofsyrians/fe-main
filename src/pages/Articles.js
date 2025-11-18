@@ -1,14 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { ArrowRight, Calendar, FileText, Users, Eye, Globe, Search, Clock, Heart, MessageCircle } from 'lucide-react';
-import { articles } from '../mock';
+import { fetchArticles } from '../services/database';
+import { toast } from 'sonner';
 
 const Articles = () => {
   const { t, language, direction } = useLanguage();
   const [viewMode, setViewMode] = useState('articles');
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadArticles = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchArticles();
+        setArticles(data);
+      } catch (error) {
+        console.error('Error loading articles:', error);
+        toast.error(
+          language === 'ar' 
+            ? 'حدث خطأ في تحميل البيانات' 
+            : language === 'en' 
+            ? 'Error loading data' 
+            : 'Veri yüklenirken hata oluştu'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadArticles();
+  }, [language]);
 
   // Filter articles based on viewMode from hero buttons
   const getFilteredArticles = () => {
@@ -259,8 +285,17 @@ const Articles = () => {
             </div>
           </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-16">
+            <p className="text-gray-500 text-lg">
+              {language === 'ar' ? 'جاري التحميل...' : language === 'en' ? 'Loading...' : 'Yükleniyor...'}
+            </p>
+          </div>
+        )}
+
         {/* Conditional Rendering Based on View Mode */}
-        {viewMode === 'news' ? (
+        {!loading && viewMode === 'news' ? (
           /* NEWS UI - Exact Featured Article Style */
           <div>
             {filteredArticles.map((article, index) => (

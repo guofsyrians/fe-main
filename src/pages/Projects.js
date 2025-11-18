@@ -1,15 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Target, CheckCircle, Users, Globe, Calendar, User, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { projects } from '../mock';
+import { fetchProjects } from '../services/database';
+import { toast } from 'sonner';
 
 const Projects = () => {
   const { t, language, direction } = useLanguage();
   const [filter, setFilter] = useState('all');
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchProjects();
+        setProjects(data);
+      } catch (error) {
+        console.error('Error loading projects:', error);
+        toast.error(
+          language === 'ar' 
+            ? 'حدث خطأ في تحميل البيانات' 
+            : language === 'en' 
+            ? 'Error loading data' 
+            : 'Veri yüklenirken hata oluştu'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProjects();
+  }, [language]);
 
   const filteredProjects = filter === 'all' 
     ? projects 
@@ -178,7 +204,17 @@ const Projects = () => {
           </Button>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center py-16">
+            <p className="text-gray-500 text-lg">
+              {language === 'ar' ? 'جاري التحميل...' : language === 'en' ? 'Loading...' : 'Yükleniyor...'}
+            </p>
+          </div>
+        )}
+
         {/* Projects Grid */}
+        {!loading && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
           {filteredProjects.map((project) => {
             // Get data from project or use defaults
@@ -333,6 +369,7 @@ const Projects = () => {
             );
           })}
         </div>
+        )}
         </div>
       </div>
     </div>

@@ -1,17 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { ArrowLeft, Clock, Target } from 'lucide-react';
-import { projects } from '../mock';
+import { fetchProjectById, fetchProjects } from '../services/database';
 import { Button } from '../components/ui/button';
+import { toast } from 'sonner';
 
 const ProjectDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language, direction } = useLanguage();
+  const [project, setProject] = useState(null);
+  const [relatedProjects, setRelatedProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
   
-  const project = projects.find(p => p.id === parseInt(id));
+  useEffect(() => {
+    const loadProject = async () => {
+      try {
+        setLoading(true);
+        const projectData = await fetchProjectById(parseInt(id));
+        setProject(projectData);
+        
+        // Load related projects
+        const allProjects = await fetchProjects();
+        setRelatedProjects(allProjects.filter(p => p.id !== parseInt(id)).slice(0, 3));
+      } catch (error) {
+        console.error('Error loading project:', error);
+        toast.error(
+          language === 'ar' 
+            ? 'حدث خطأ في تحميل المشروع' 
+            : language === 'en' 
+            ? 'Error loading project' 
+            : 'Proje yüklenirken hata oluştu'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      loadProject();
+    }
+  }, [id, language]);
   
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center">
+          <p className="text-gray-500 text-lg">
+            {language === 'ar' ? 'جاري التحميل...' : language === 'en' ? 'Loading...' : 'Yükleniyor...'}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (!project) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
@@ -169,6 +212,7 @@ const ProjectDetail = () => {
         </div>
 
         {/* Related Projects Section */}
+        {relatedProjects.length > 0 && (
         <div className="mt-8 md:mt-12 lg:mt-16">
           <h2 
             className={`text-2xl md:text-3xl font-bold mb-6 md:mb-8 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
@@ -177,10 +221,7 @@ const ProjectDetail = () => {
             {language === 'ar' ? 'مشاريع أخرى' : language === 'en' ? 'Other Projects' : 'Diğer Projeler'}
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {projects
-              .filter(p => p.id !== project.id)
-              .slice(0, 3)
-              .map((relatedProject) => {
+            {relatedProjects.map((relatedProject) => {
                 // Get status badge color
                 let relatedBadgeBgColor = '#dcb557';
                 let relatedBadgeText = language === 'ar' ? 'نشط' : language === 'en' ? 'Active' : 'Aktif';
@@ -232,6 +273,7 @@ const ProjectDetail = () => {
               })}
           </div>
         </div>
+        )}
       </div>
     </div>
   );

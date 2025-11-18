@@ -95,7 +95,8 @@ const Header = () => {
               className="h-8 md:h-12 w-auto"
             />
             <span className="text-sm md:text-lg font-bold text-white sm:inline">
-              {language === 'ar' ? 'اتحاد الطلبة السوريين' : language === 'en' ? 'Syrian Student Union' : 'Suriyeli Öğrenciler Birliği'}
+              {language === 'ar' ? 'الإتحاد العام لطلبة سوريا' : language === 'en' ? 'Syrian Student Union' : 'Suriyeli Öğrenciler Birliği'}
+              
             </span>
           </Link>
 

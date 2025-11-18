@@ -4,8 +4,8 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Users, MapPin, Briefcase, Building2, ArrowRight, Target, Eye, Heart, BookOpen, Lightbulb, TrendingUp, ExternalLink, ChevronLeft, ChevronRight, Calendar, ArrowLeft, X, Mail, Radio, Handshake } from 'lucide-react';
-import { articles, projects, offices } from '../mock';
-import subunionsData from '../data/subunions.json';
+import { fetchArticles, fetchProjects, fetchOffices, fetchSubUnions } from '../services/database';
+import { toast } from 'sonner';
 import '../styles/animations.css';
 
 const Home = () => {
@@ -14,13 +14,49 @@ const Home = () => {
   const autoSlideTimerRef = useRef(null);
   const pauseTimeoutRef = useRef(null);
   const [selectedUnion, setSelectedUnion] = useState(null);
+  const [articles, setArticles] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [offices, setOffices] = useState([]);
+  const [subUnions, setSubUnions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const stats = [
-    { value: '5000+', label: t('home.stats.students'), icon: Users },
-    { value: '15+', label: t('home.stats.unions'), icon: MapPin },
+    { value: '15000+', label: t('home.stats.students'), icon: Users },
+    { value: '43+', label: t('home.stats.unions'), icon: MapPin },
     { value: '12+', label: t('home.stats.projects'), icon: Briefcase },
-    { value: '8+', label: t('home.stats.cities'), icon: Building2 }
+    { value: '20+', label: t('home.stats.cities'), icon: Building2 }
   ];
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const [articlesData, projectsData, officesData, subUnionsData] = await Promise.all([
+          fetchArticles(),
+          fetchProjects(),
+          fetchOffices(),
+          fetchSubUnions()
+        ]);
+        setArticles(articlesData);
+        setProjects(projectsData);
+        setOffices(officesData);
+        setSubUnions(subUnionsData);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        toast.error(
+          language === 'ar' 
+            ? 'حدث خطأ في تحميل البيانات' 
+            : language === 'en' 
+            ? 'Error loading data' 
+            : 'Veri yüklenirken hata oluştu'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [language]);
 
   const recentArticles = articles.slice(0, 5);
   const recentProjects = projects.filter(p => p.status === 'ongoing').slice(0, 4);
@@ -420,7 +456,7 @@ const Home = () => {
                 number: '01',
                 icon: Target,
                 title: language === 'ar' ? 'تمثيل الطلبة' : language === 'en' ? 'Student Representation' : 'Öğrenci Temsili',
-                desc: language === 'ar' ? 'تمثيل الطلبة السوريين في تركيا ومتابعة مشاكلهم ورعاية مصالحهم' : language === 'en' ? 'Representing Syrian students in Turkey and following up on their problems and caring for their interests' : 'Türkiye\'deki Suriyeli öğrencileri temsil etmek ve sorunlarını takip etmek'
+                desc: language === 'ar' ? 'تمثيل الطلبة السوريين في العالم ومتابعة مشاكلهم ورعاية مصالحهم' : language === 'en' ? 'Representing Syrian students in Turkey and following up on their problems and caring for their interests' : 'Türkiye\'deki Suriyeli öğrencileri temsil etmek ve sorunlarını takip etmek'
               },
               {
                 number: '02',
@@ -516,7 +552,7 @@ const Home = () => {
                 </div>
                 <p className="text-base md:text-lg text-white/90 leading-relaxed">
                   {language === 'ar' 
-                    ? 'نطمح إلى أن يكون الاتحاد رائداً في توحيد الطلاب السوريين في تركيا، وأن يكون عنواناً للتعاون والتفاهم بين الثقافات، والمساهمة بفعالية في تعزيز التعليم والاندماج في المجتمع المحلي'
+                    ? 'هيئة طلابية نقابية مستقلة تضمن حقوق الطلاب السوريين أينما كانوا، وتُكوّن مجتمعاً طلابياً سورياً مُبدع دولياً.'
                     : language === 'en'
                     ? 'We aspire for the union to be a pioneer in uniting Syrian students in Turkey, a symbol of cooperation and understanding between cultures, and to contribute effectively to enhancing education and integration into the local community'
                     : 'Birliğin Türkiye\'deki Suriyeli öğrencileri birleştirmede öncü olmasını, kültürler arası işbirliği ve anlayışın sembolü olmasını hedefliyoruz'}
@@ -658,6 +694,7 @@ const Home = () => {
           </div>
 
           {/* Project Cards */}
+          {!loading && recentProjects.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6 mb-8 md:mb-10">
             {recentProjects.map((project, index) => {
               // Determine status badge color based on project status
@@ -728,6 +765,7 @@ const Home = () => {
               );
             })}
           </div>
+          )}
 
           {/* Full Width View All Button */}
           <div className="mt-10">
@@ -789,14 +827,15 @@ const Home = () => {
           </div>
 
           {/* Articles Grid */}
+          {!loading && recentArticles.length > 0 && (
           <div className="grid md:grid-cols-[2fr_1fr] gap-4 md:gap-6">
             {/* Left: Featured Article */}
             <div className="bg-gray-50 rounded-2xl overflow-hidden">
               {/* Featured Image */}
               <div className="relative h-48 md:h-64 lg:h-80 overflow-hidden bg-transparent flex items-center justify-center rounded-2xl">
                 <img 
-                  src={recentArticles[featuredArticleIndex].image} 
-                  alt={recentArticles[featuredArticleIndex].title[language]} 
+                  src={recentArticles[featuredArticleIndex]?.image} 
+                  alt={recentArticles[featuredArticleIndex]?.title[language]} 
                   className="max-w-full max-h-full object-contain rounded-2xl" 
                 />
                 {/* Featured Badge */}
@@ -821,7 +860,7 @@ const Home = () => {
                   </span>
                   <span>•</span>
                   <span>
-                    {new Date(recentArticles[featuredArticleIndex].date).toLocaleDateString(
+                    {recentArticles[featuredArticleIndex]?.date && new Date(recentArticles[featuredArticleIndex].date).toLocaleDateString(
                       language === 'ar' ? 'ar-SA' : language === 'en' ? 'en-US' : 'tr-TR',
                       { day: 'numeric', month: 'long', year: 'numeric', calendar: 'gregory' }
                     )}
@@ -833,16 +872,16 @@ const Home = () => {
                   className="text-xl md:text-2xl font-bold mb-3 md:mb-4 leading-tight"
                   style={{ color: '#1f4333' }}
                 >
-                  {recentArticles[featuredArticleIndex].title[language]}
+                  {recentArticles[featuredArticleIndex]?.title[language]}
                 </h3>
                 
                 {/* Excerpt */}
                 <p className="text-sm md:text-base text-gray-600 mb-4 md:mb-6 leading-relaxed line-clamp-2 md:line-clamp-3">
-                  {recentArticles[featuredArticleIndex].excerpt[language]}
+                  {recentArticles[featuredArticleIndex]?.excerpt[language]}
                 </p>
                 
                 {/* Read Full Article Link */}
-                <Link to={`/articles/${recentArticles[featuredArticleIndex].id}`}>
+                <Link to={`/articles/${recentArticles[featuredArticleIndex]?.id}`}>
                   <span className="flex items-center text-base md:text-lg font-semibold hover:translate-x-1 transition-transform group/link" style={{ color: '#dcb557' }}>
                     {language === 'ar' ? 'قراءة المقال كاملاً' : language === 'en' ? 'Read Full Article' : 'Makalenin Tamamını Oku'}
                     <ArrowRight 
@@ -912,6 +951,7 @@ const Home = () => {
                 })}
             </div>
           </div>
+          )}
         </div>
       </section>
 
@@ -939,90 +979,101 @@ const Home = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
-            {(() => {
-              // Get first 4 Istanbul subunions
-              const istanbulUnions = (subunionsData.unions || [])
-                .filter(u => u.city === 'إسطنبول')
-                .slice(0, 4);
-              
-              // Helper function to get region color based on city
-              const getRegionColor = (cityName) => {
-                const cityLower = cityName.toLowerCase();
-                if (cityLower.includes('إسطنبول') || cityLower.includes('istanbul')) return '#ef4444';
-                if (cityLower.includes('إزمير') || cityLower.includes('izmir')) return '#3b82f6';
-                if (cityLower.includes('مرسين') || cityLower.includes('mersin')) return '#10b981';
-                return '#eab308';
-              };
+            {!loading && (
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
+              {(() => {
+                // Get first 4 Istanbul subunions from database
+                const istanbulUnions = subUnions
+                  .filter(u => u.city && (
+                    u.city.ar === 'إسطنبول' ||
+                    u.city.en?.toLowerCase().includes('istanbul') ||
+                    u.city.tr?.toLowerCase().includes('istanbul')
+                  ))
+                  .slice(0, 4);
+                
+                // Helper function to get region color based on city
+                const getRegionColor = (cityObj) => {
+                  if (!cityObj) return '#eab308';
+                  const cityName = cityObj.ar || cityObj.en || cityObj.tr || '';
+                  const cityLower = cityName.toLowerCase();
+                  if (cityLower.includes('إسطنبول') || cityLower.includes('istanbul')) return '#ef4444';
+                  if (cityLower.includes('إزمير') || cityLower.includes('izmir')) return '#3b82f6';
+                  if (cityLower.includes('مرسين') || cityLower.includes('mersin')) return '#10b981';
+                  return '#eab308';
+                };
 
-              return istanbulUnions.map((u, idx) => {
-                const establishedYear = 2015 + Math.floor(Math.random() * 10);
-
-                return (
-                  <Card
-                    key={`${u.name}-${idx}`}
-                    className="hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
-                    style={{ borderRadius: '24px' }}
-                    onClick={() => setSelectedUnion(u)}
-                  >
-                    {/* Image Header - larger size */}
-                    <div className="relative w-full h-40 sm:h-60 md:h-80 overflow-hidden bg-white flex items-center justify-center">
-                      <img
-                        src="/assets/sampleLogo.png"
-                        alt={u.name}
-                        className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 object-contain"
-                        onError={(e) => {
-                          e.target.src = '/assets/sampleLogo.png';
-                          e.target.className = 'w-48 h-48 object-contain opacity-20';
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10"></div>
-                      {/* Region/City Badge - Top Right */}
-                      <div
-                        className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 px-2 py-0.5 sm:px-3 sm:py-1 md:px-4 md:py-1.5 rounded-full text-xs sm:text-sm font-semibold text-white z-10"
-                        style={{ backgroundColor: getRegionColor(u.city) }}
-                      >
-                        {u.city}
-                      </div>
-                    </div>
-
-                    {/* Content - matching Figma spacing */}
-                    <div className="p-3 sm:p-5 md:p-8">
-                      {/* Title */}
-                      <h3
-                        className="text-sm sm:text-lg md:text-2xl font-bold mb-1 sm:mb-2 leading-tight sm:leading-8 line-clamp-2"
-                        style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}
-                      >
-                        {u.name}
-                      </h3>
-                      {/* Location */}
-                      <p
-                        className="text-xs sm:text-sm md:text-base text-gray-600 mb-2 sm:mb-3 md:mb-4 line-clamp-1"
-                        style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
-                      >
-                        {u.location}
-                      </p>
-                      {/* Description */}
-                      <p
-                        className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-3 sm:line-clamp-none sm:min-h-[78px]"
-                        style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
-                      >
-                        {language === 'ar'
-                          ? 'يمثل هذا الاتحاد الطلبة السوريين في الجامعة ويعمل على تقديم الدعم الأكاديمي والاجتماعي والثقافي لهم.'
-                          : language === 'tr'
-                            ? 'Bu birlik, üniversitedeki Suriyeli öğrencileri temsil eder ve onlara akademik, sosyal ve kültürel destek sağlar.'
-                            : 'This union represents Syrian students at the university and works to provide them with academic, social, and cultural support.'}
-                      </p>
-
-                      {/* Footer - Learn More and Established Date */}
-                      <div className="flex items-center justify-between flex-col sm:flex-row gap-2 sm:gap-0">
-                        {/* Established Date with Calendar Icon */}
-                        <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500">
-                          <Calendar size={12} className="sm:w-3.5 sm:h-3.5 md:w-[14px] md:h-[14px]" />
-                          <span>
-                            {language === 'ar' ? `تأسس ${establishedYear}` : language === 'tr' ? `${establishedYear} Kuruluş` : `Est. ${establishedYear}`}
-                          </span>
+                return istanbulUnions.map((u, idx) => {
+                  return (
+                    <Card
+                      key={u.id || idx}
+                      className="hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
+                      style={{ borderRadius: '24px' }}
+                      onClick={() => setSelectedUnion(u)}
+                    >
+                      {/* Image Header - larger size */}
+                      <div className="relative w-full h-40 sm:h-60 md:h-80 overflow-hidden bg-white flex items-center justify-center">
+                        <img
+                          src={u.logo || '/assets/sampleLogo.png'}
+                          alt={u.name[language]}
+                          className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 object-contain"
+                          onError={(e) => {
+                            e.target.src = '/assets/sampleLogo.png';
+                            e.target.className = 'w-48 h-48 object-contain opacity-20';
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10"></div>
+                        {/* Region/City Badge - Top Right */}
+                        {u.city && (
+                        <div
+                          className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 px-2 py-0.5 sm:px-3 sm:py-1 md:px-4 md:py-1.5 rounded-full text-xs sm:text-sm font-semibold text-white z-10"
+                          style={{ backgroundColor: getRegionColor(u.city) }}
+                        >
+                          {u.city[language]}
                         </div>
+                        )}
+                      </div>
+
+                      {/* Content - matching Figma spacing */}
+                      <div className="p-3 sm:p-5 md:p-8">
+                        {/* Title */}
+                        <h3
+                          className="text-sm sm:text-lg md:text-2xl font-bold mb-1 sm:mb-2 leading-tight sm:leading-8 line-clamp-2"
+                          style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}
+                        >
+                          {u.name[language]}
+                        </h3>
+                        {/* Location */}
+                        {u.city && (
+                        <p
+                          className="text-xs sm:text-sm md:text-base text-gray-600 mb-2 sm:mb-3 md:mb-4 line-clamp-1"
+                          style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
+                        >
+                          {language === 'ar' ? `في ${u.city.ar}` : language === 'en' ? `In ${u.city.en}` : `${u.city.tr}'de`}
+                        </p>
+                        )}
+                        {/* Description */}
+                        <p
+                          className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-3 sm:line-clamp-none sm:min-h-[78px]"
+                          style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
+                        >
+                          {u.cardDescription?.[language] || (language === 'ar'
+                            ? 'يمثل هذا الاتحاد الطلبة السوريين في الجامعة ويعمل على تقديم الدعم الأكاديمي والاجتماعي والثقافي لهم.'
+                            : language === 'tr'
+                              ? 'Bu birlik, üniversitedeki Suriyeli öğrencileri temsil eder ve onlara akademik, sosyal ve kültürel destek sağlar.'
+                              : 'This union represents Syrian students at the university and works to provide them with academic, social, and cultural support.')}
+                        </p>
+
+                        {/* Footer - Learn More and Established Date */}
+                        <div className="flex items-center justify-between flex-col sm:flex-row gap-2 sm:gap-0">
+                          {/* Established Date with Calendar Icon */}
+                          {u.establishedYear && (
+                          <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500">
+                            <Calendar size={12} className="sm:w-3.5 sm:h-3.5 md:w-[14px] md:h-[14px]" />
+                            <span>
+                              {language === 'ar' ? `تأسس ${u.establishedYear}` : language === 'tr' ? `${u.establishedYear} Kuruluş` : `Est. ${u.establishedYear}`}
+                            </span>
+                          </div>
+                          )}
                         {/* Learn More Link */}
                         <button
                           onClick={(e) => {
@@ -1040,10 +1091,11 @@ const Home = () => {
                   </Card>
                 );
               });
-            })()}
+              })()}
+            </div>
+            )}
           </div>
-        </div>
-      </section>
+        </section>
 
       {/* Offices Section */}
       <section className="py-16 md:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ backgroundColor: '#1f4333' }}>
@@ -1267,7 +1319,7 @@ const Home = () => {
                 style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}
               >
                 {language === 'ar' 
-                  ? 'ينتشر الاتحاد العام للطلبة السوريين في 21 ولاية تركية، ويضم عشرات الاتحادات الفرعية التي تخدم الطلبة السوريين في مختلف الجامعات التركية'
+                  ? 'ينتشر الاتحاد العام لطلبة سوريا في 21 ولاية تركية، ويضم عشرات الاتحادات الفرعية التي تخدم الطلبة السوريين في مختلف الجامعات التركية'
                   : language === 'en'
                   ? 'The Syrian Students Union spreads across 21 Turkish provinces, and includes dozens of branch unions that serve Syrian students in various Turkish universities'
                   : 'Suriyeli Öğrenciler Birliği, Türkiye\'nin 21 ilinde yayılmakta ve çeşitli Türk üniversitelerinde Suriyeli öğrencilere hizmet veren onlarca şube birliğine sahiptir'}

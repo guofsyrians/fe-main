@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-const TurkeyMap = ({ onProvinceClick, selectedCity, cities, subunionsData }) => {
+const TurkeyMap = ({ onProvinceClick, selectedCity, cities, subUnions }) => {
   const { language } = useLanguage();
   const [paths, setPaths] = useState([]);
   const [pathsWithUnions, setPathsWithUnions] = useState(new Set());
@@ -137,18 +137,24 @@ const TurkeyMap = ({ onProvinceClick, selectedCity, cities, subunionsData }) => 
 
   // Get list of city IDs that have unions
   const citiesWithUnions = React.useMemo(() => {
-    if (!subunionsData?.unions) return new Set();
+    if (!subUnions || subUnions.length === 0) return new Set();
     
     const unionCities = new Set();
-    subunionsData.unions.forEach(union => {
-      // Find city ID by matching Arabic name
-      const city = cities.find(c => c.name.ar === union.city);
-      if (city) {
-        unionCities.add(city.id);
+    subUnions.forEach(union => {
+      // Find city ID by matching city object
+      if (union.city) {
+        const city = cities.find(c => 
+          c.name.ar === union.city.ar ||
+          c.name.en === union.city.en ||
+          c.name.tr === union.city.tr
+        );
+        if (city) {
+          unionCities.add(city.id);
+        }
       }
     });
     return unionCities;
-  }, [subunionsData, cities]);
+  }, [subUnions, cities]);
 
   // Calculate which paths correspond to provinces with unions
   useEffect(() => {

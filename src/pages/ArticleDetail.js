@@ -1,17 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
-import { articles } from '../mock';
+import { fetchArticleById, fetchArticles } from '../services/database';
 import { Button } from '../components/ui/button';
+import { toast } from 'sonner';
 
 const ArticleDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { language, direction } = useLanguage();
+  const [article, setArticle] = useState(null);
+  const [relatedArticles, setRelatedArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
   
-  const article = articles.find(a => a.id === parseInt(id));
+  useEffect(() => {
+    const loadArticle = async () => {
+      try {
+        setLoading(true);
+        const articleData = await fetchArticleById(parseInt(id));
+        setArticle(articleData);
+        
+        // Load related articles
+        const allArticles = await fetchArticles();
+        setRelatedArticles(allArticles.filter(a => a.id !== parseInt(id)).slice(0, 3));
+      } catch (error) {
+        console.error('Error loading article:', error);
+        toast.error(
+          language === 'ar' 
+            ? 'حدث خطأ في تحميل المقال' 
+            : language === 'en' 
+            ? 'Error loading article' 
+            : 'Makale yüklenirken hata oluştu'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      loadArticle();
+    }
+  }, [id, language]);
   
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="text-center">
+          <p className="text-gray-500 text-lg">
+            {language === 'ar' ? 'جاري التحميل...' : language === 'en' ? 'Loading...' : 'Yükleniyor...'}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (!article) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
@@ -169,6 +212,7 @@ const ArticleDetail = () => {
         </div>
 
         {/* Related Articles Section */}
+        {relatedArticles.length > 0 && (
         <div className="mt-8 md:mt-12 lg:mt-16">
           <h2 
             className={`text-2xl md:text-3xl font-bold mb-6 md:mb-8 ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
@@ -177,10 +221,7 @@ const ArticleDetail = () => {
             {language === 'ar' ? 'مقالات ذات صلة' : language === 'en' ? 'Related Articles' : 'İlgili Makaleler'}
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {articles
-              .filter(a => a.id !== article.id)
-              .slice(0, 3)
-              .map((relatedArticle) => (
+            {relatedArticles.map((relatedArticle) => (
                 <Link
                   key={relatedArticle.id}
                   to={`/articles/${relatedArticle.id}`}
@@ -217,6 +258,7 @@ const ArticleDetail = () => {
               ))}
           </div>
         </div>
+        )}
       </div>
     </div>
   );

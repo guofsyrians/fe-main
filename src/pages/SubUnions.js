@@ -1,25 +1,98 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Mail, Phone, Users, X, MapPin, Calendar, ExternalLink, ArrowLeft } from 'lucide-react';
-import { cities, subUnionsIndividualData } from '../mock';
-// SVG map imported directly
-import subunionsData from '../data/subunions.json';
+import { fetchCities, fetchSubUnions } from '../services/database';
+import { toast } from 'sonner';
 import TurkeyMap from '../components/TurkeyMap';
 
 const SubUnions = () => {
   const { t, language } = useLanguage();
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedUnion, setSelectedUnion] = useState(null);
+  const [cities, setCities] = useState([]);
+  const [subUnions, setSubUnions] = useState([]);
+  const [loading, setLoading] = useState(true);
   const mapEndRef = useRef(null);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const [citiesData, subUnionsData] = await Promise.all([
+          fetchCities(),
+          fetchSubUnions()
+        ]);
+        setCities(citiesData);
+        setSubUnions(subUnionsData);
+      } catch (error) {
+        console.error('Error loading data:', error);
+        toast.error(
+          language === 'ar' 
+            ? 'حدث خطأ في تحميل البيانات' 
+            : language === 'en' 
+            ? 'Error loading data' 
+            : 'Veri yüklenirken hata oluştu'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [language]);
+
+  // Helper function to find database union by name
+  const findDatabaseUnion = (unionName) => {
+    if (typeof unionName === 'string') {
+      return subUnions.find(dbUnion => 
+        dbUnion.name.ar === unionName || 
+        dbUnion.name.en === unionName || 
+        dbUnion.name.tr === unionName
+      );
+    }
+    // If unionName is already an object with name property
+    if (unionName && unionName.name) {
+      return subUnions.find(dbUnion => 
+        dbUnion.id === unionName.id ||
+        (dbUnion.name.ar === unionName.name?.ar || 
+         dbUnion.name.en === unionName.name?.en || 
+         dbUnion.name.tr === unionName.name?.tr)
+      );
+    }
+    return null;
+  };
 
   // Helper function to get union-specific description or fallback to generic
   const getUnionDescription = (union, type = 'cardDescription') => {
-    const unionName = union.name;
-    const individualData = subUnionsIndividualData[unionName];
+    // If union is already from database (has id and matches), use it directly
+    if (union.id && subUnions.find(u => u.id === union.id)) {
+      const fieldMap = {
+        'cardDescription': 'cardDescription',
+        'aboutDescription': 'aboutDescription'
+      };
+      const field = fieldMap[type] || type;
+      const value = union[field];
+      
+      if (value && value[language]) {
+        return value[language];
+      }
+    }
     
-    if (individualData && individualData[type] && individualData[type][language]) {
-      return individualData[type][language];
+    // Otherwise try to find it in database
+    const dbUnion = findDatabaseUnion(union);
+    
+    if (dbUnion) {
+      const fieldMap = {
+        'cardDescription': 'cardDescription',
+        'aboutDescription': 'aboutDescription'
+      };
+      const field = fieldMap[type] || type;
+      const value = dbUnion[field];
+      
+      if (value && value[language]) {
+        return value[language];
+      }
     }
     
     // Fallback to generic description
@@ -28,11 +101,22 @@ const SubUnions = () => {
 
   // Helper function to get union-specific field data
   const getUnionField = (union, fieldName) => {
-    const unionName = union.name;
-    const individualData = subUnionsIndividualData[unionName];
+    // If union is already from database, use it directly
+    if (union.id && subUnions.find(u => u.id === union.id)) {
+      const value = union[fieldName];
+      if (value && value[language]) {
+        return value[language];
+      }
+    }
     
-    if (individualData && individualData[fieldName] && individualData[fieldName][language]) {
-      return individualData[fieldName][language];
+    // Otherwise try to find it in database
+    const dbUnion = findDatabaseUnion(union);
+    
+    if (dbUnion) {
+      const value = dbUnion[fieldName];
+      if (value && value[language]) {
+        return value[language];
+      }
     }
     
     return null;
@@ -40,11 +124,18 @@ const SubUnions = () => {
 
   // Helper function to get union logo URL
   const getUnionLogo = (union) => {
-    const unionName = union.name;
-    const individualData = subUnionsIndividualData[unionName];
+    // If union is already from database, use it directly
+    if (union.id && subUnions.find(u => u.id === union.id)) {
+      if (union.logo) {
+        return union.logo;
+      }
+    }
     
-    if (individualData && individualData.logo) {
-      return individualData.logo;
+    // Otherwise try to find it in database
+    const dbUnion = findDatabaseUnion(union);
+    
+    if (dbUnion && dbUnion.logo) {
+      return dbUnion.logo;
     }
     
     return '/assets/sampleLogo.png';
@@ -91,16 +182,20 @@ const SubUnions = () => {
             <div className="p-4 md:p-6 lg:p-8">
               {/* Title and City Badge */}
               <div className="mb-4 md:mb-6">
+                {selectedUnion.city && (
                 <div className="inline-block px-3 md:px-4 py-1 rounded-full text-xs md:text-sm font-semibold text-white mb-2 md:mb-3" style={{ backgroundColor: '#dcb557' }}>
                   <MapPin size={12} className="inline mr-1 w-3 h-3 md:w-3.5 md:h-3.5" />
-                  {selectedUnion.city}
+                  {selectedUnion.city[language]}
                 </div>
+                )}
                 <h2 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}>
-                  {selectedUnion.name}
+                  {selectedUnion.name[language]}
                 </h2>
+                {selectedUnion.city && (
                 <p className="text-sm md:text-base text-gray-600" style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}>
-                  {selectedUnion.location}
+                  {language === 'ar' ? `في ${selectedUnion.city.ar}` : language === 'en' ? `In ${selectedUnion.city.en}` : `${selectedUnion.city.tr}'de`}
                 </p>
+                )}
               </div>
 
               {/* Description */}
@@ -115,15 +210,21 @@ const SubUnions = () => {
 
               {/* Info Grid */}
               <div className="grid md:grid-cols-2 gap-4 mb-6">
-                <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
-                  <Calendar size={20} style={{ color: '#dcb557' }} className="mt-1" />
-                  <div>
-                    <p className="text-sm font-semibold text-gray-600">
-                      {t('subUnions.established')}
-                    </p>
-                    <p className="text-gray-800 font-bold">2024</p>
-                  </div>
-                </div>
+                {(() => {
+                  const dbUnion = findDatabaseUnion(selectedUnion.name);
+                  const establishedYear = dbUnion?.establishedYear;
+                  return establishedYear ? (
+                    <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
+                      <Calendar size={20} style={{ color: '#dcb557' }} className="mt-1" />
+                      <div>
+                        <p className="text-sm font-semibold text-gray-600">
+                          {t('subUnions.established')}
+                        </p>
+                        <p className="text-gray-800 font-bold">{establishedYear}</p>
+                      </div>
+                    </div>
+                  ) : null;
+                })()}
                 <div className="flex items-start gap-3 p-4 bg-gray-50 rounded-lg">
                   <Users size={20} style={{ color: '#dcb557' }} className="mt-1" />
                   <div>
@@ -247,7 +348,7 @@ const SubUnions = () => {
                     onProvinceClick={handleCityClick}
                     selectedCity={selectedCity}
                     cities={cities}
-                    subunionsData={subunionsData}
+                    subUnions={subUnions}
                   />
                   
                 </div>
@@ -260,12 +361,29 @@ const SubUnions = () => {
         </div>
 
 
-        {/* Unions List by selected pointer (from scraped data) */}
+        {/* Unions List by selected city */}
+        {!loading && (
         <div>
           {selectedCity ? (() => {
             const cityObj = cities.find(c => c.id === selectedCity);
-            const cityNameAr = cityObj?.name?.ar;
-            const unionsForCity = (subunionsData.unions || []).filter(u => u.city === cityNameAr);
+            // Filter sub-unions by city_id or city name match
+            const unionsForCity = subUnions.filter(u => {
+              if (u.cityId) {
+                // Match by city_id if available
+                const city = cities.find(c => c.id === selectedCity);
+                return u.city && (
+                  u.city.ar === cityObj?.name?.ar ||
+                  u.city.en === cityObj?.name?.en ||
+                  u.city.tr === cityObj?.name?.tr
+                );
+              }
+              // Fallback to name matching
+              return u.city && (
+                u.city.ar === cityObj?.name?.ar ||
+                u.city.en === cityObj?.name?.en ||
+                u.city.tr === cityObj?.name?.tr
+              );
+            });
             return (
               <div>
                 <h2 className="text-2xl font-bold mb-6" style={{ color: '#1f4333' }}>
@@ -287,7 +405,7 @@ const SubUnions = () => {
 
                       return (
                         <Card
-                          key={`${u.name}-${idx}`}
+                          key={u.id || idx}
                           className="hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
                           style={{ borderRadius: '24px' }}
                           onClick={() => setSelectedUnion(u)}
@@ -296,7 +414,7 @@ const SubUnions = () => {
                           <div className="relative w-full h-40 sm:h-60 md:h-80 overflow-hidden bg-white flex items-center justify-center">
                             <img
                               src={getUnionLogo(u)}
-                              alt={u.name}
+                              alt={u.name[language]}
                               className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 object-contain"
                               onError={(e) => {
                                 e.target.src = '/assets/sampleLogo.png';
@@ -305,12 +423,14 @@ const SubUnions = () => {
                             />
                             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10"></div>
                             {/* Region/City Badge - Top Right */}
+                            {u.city && (
                             <div
                               className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 px-2 py-0.5 sm:px-3 sm:py-1 md:px-4 md:py-1.5 rounded-full text-xs sm:text-sm font-semibold text-white z-10"
                               style={{ backgroundColor: idx % 4 === 0 ? '#ef4444' : idx % 4 === 1 ? '#3b82f6' : idx % 4 === 2 ? '#10b981' : '#eab308' }}
                             >
-                              {u.city}
+                              {u.city[language]}
                             </div>
+                            )}
                             {/* Member Count Badge - Bottom Left */}
                             {/* <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg">
                               <div className="flex items-center gap-2">
@@ -329,15 +449,17 @@ const SubUnions = () => {
                               className="text-sm sm:text-lg md:text-2xl font-bold mb-1 sm:mb-2 leading-tight sm:leading-8 line-clamp-2"
                               style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}
                             >
-                              {u.name}
+                              {u.name[language]}
                             </h3>
                             {/* Location */}
+                            {u.city && (
                             <p
                               className="text-xs sm:text-sm md:text-base text-gray-600 mb-2 sm:mb-3 md:mb-4 line-clamp-1"
                               style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                             >
-                              {u.location}
+                              {language === 'ar' ? `في ${u.city.ar}` : language === 'en' ? `In ${u.city.en}` : `${u.city.tr}'de`}
                             </p>
+                            )}
                             {/* Description */}
                             <p
                               className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-3 sm:line-clamp-none sm:min-h-[78px]"
@@ -365,12 +487,14 @@ const SubUnions = () => {
                             {/* Footer - Learn More and Established Date */}
                             <div className="flex items-center justify-between flex-col sm:flex-row gap-2 sm:gap-0">
                               {/* Established Date with Calendar Icon */}
+                              {u.establishedYear && (
                               <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500">
                                 <Calendar size={12} className="sm:w-3.5 sm:h-3.5 md:w-[14px] md:h-[14px]" />
                                 <span>
-                                  {language === 'ar' ? `${t('subUnions.establishedYear')} ${establishedYear}` : language === 'tr' ? `${establishedYear} ${t('subUnions.establishedYear')}` : `${t('subUnions.establishedYear')} ${establishedYear}`}
+                                  {language === 'ar' ? `${t('subUnions.establishedYear')} ${u.establishedYear}` : language === 'tr' ? `${u.establishedYear} ${t('subUnions.establishedYear')}` : `${t('subUnions.establishedYear')} ${u.establishedYear}`}
                                 </span>
                               </div>
+                              )}
                               {/* Learn More Link */}
                               <button
                                 className="text-xs sm:text-sm md:text-base font-medium hover:opacity-80 transition-opacity flex items-center gap-1"
@@ -406,25 +530,20 @@ const SubUnions = () => {
             </div>
           )}
         </div>
+        )}
 
-        {/* All Subunions (scraped) */}
+        {/* All Subunions */}
+        {!loading && (
         <div className="mt-16 md:mt-24 lg:mt-40">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-12 md:mb-16 lg:mb-20 text-center" style={{ color: '#1f4333' }}>
             {t('subUnions.allSubunions')}
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 md:gap-6">
-            {subunionsData.unions.map((u, idx) => {
-              // Mock data for member count and tags - can be replaced with real data
-              const memberCount = Math.floor(Math.random() * 1000) + 100;
-              const tags = [
-                t('subUnions.academic'),
-                t('subUnions.cultural'),
-                t('subUnions.social')
-              ];
-              const establishedYear = 2015 + Math.floor(Math.random() * 10);
-
+            {subUnions.map((u, idx) => {
               // Determine region color based on city
-              const getRegionColor = (cityName) => {
+              const getRegionColor = (cityObj) => {
+                if (!cityObj) return '#eab308';
+                const cityName = cityObj.ar || cityObj.en || cityObj.tr || '';
                 const cityLower = cityName.toLowerCase();
                 if (cityLower.includes('إسطنبول') || cityLower.includes('istanbul')) return '#ef4444';
                 if (cityLower.includes('إزمير') || cityLower.includes('izmir')) return '#3b82f6';
@@ -434,7 +553,7 @@ const SubUnions = () => {
 
               return (
                 <Card
-                  key={`${u.name}-${idx}`}
+                  key={u.id || idx}
                   className="hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
                   style={{ borderRadius: '24px' }}
                   onClick={() => setSelectedUnion(u)}
@@ -443,7 +562,7 @@ const SubUnions = () => {
                   <div className="relative w-full h-40 sm:h-60 md:h-80 overflow-hidden bg-white flex items-center justify-center">
                     <img
                       src={getUnionLogo(u)}
-                      alt={u.name}
+                      alt={u.name[language]}
                       className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 object-contain"
                       onError={(e) => {
                         e.target.src = '/assets/sampleLogo.png';
@@ -452,12 +571,14 @@ const SubUnions = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/10"></div>
                     {/* Region/City Badge - Top Right */}
+                    {u.city && (
                     <div
                       className="absolute top-2 right-2 sm:top-3 sm:right-3 md:top-4 md:right-4 px-2 py-0.5 sm:px-3 sm:py-1 md:px-4 md:py-1.5 rounded-full text-xs sm:text-sm font-semibold text-white z-10"
                       style={{ backgroundColor: getRegionColor(u.city) }}
                     >
-                      {u.city}
+                      {u.city[language]}
                     </div>
+                    )}
                     {/* Member Count Badge - Bottom Left */}
                     {/* <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg">
                       <div className="flex items-center gap-2">
@@ -476,15 +597,17 @@ const SubUnions = () => {
                       className="text-sm sm:text-lg md:text-2xl font-bold mb-1 sm:mb-2 leading-tight sm:leading-8 line-clamp-2"
                       style={{ color: '#1f4333', direction: language === 'ar' ? 'rtl' : 'ltr' }}
                     >
-                      {u.name}
+                      {u.name[language]}
                     </h3>
                     {/* Location */}
+                    {u.city && (
                     <p
                       className="text-xs sm:text-sm md:text-base text-gray-600 mb-2 sm:mb-3 md:mb-4 line-clamp-1"
                       style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
                     >
-                      {u.location}
+                      {language === 'ar' ? `في ${u.city.ar}` : language === 'en' ? `In ${u.city.en}` : `${u.city.tr}'de`}
                     </p>
+                    )}
                     {/* Description */}
                     <p
                       className="text-xs sm:text-sm md:text-base text-gray-700 mb-3 sm:mb-4 md:mb-6 leading-relaxed line-clamp-3 sm:line-clamp-none sm:min-h-[78px]"
@@ -512,12 +635,14 @@ const SubUnions = () => {
                     {/* Footer - Learn More and Established Date */}
                     <div className="flex items-center justify-between flex-col sm:flex-row gap-2 sm:gap-0">
                       {/* Established Date with Calendar Icon */}
+                      {u.establishedYear && (
                       <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm text-gray-500">
                         <Calendar size={12} className="sm:w-3.5 sm:h-3.5 md:w-[14px] md:h-[14px]" />
                         <span>
-                          {language === 'ar' ? `${t('subUnions.establishedYear')} ${establishedYear}` : language === 'tr' ? `${establishedYear} ${t('subUnions.establishedYear')}` : `${t('subUnions.establishedYear')} ${establishedYear}`}
+                          {language === 'ar' ? `${t('subUnions.establishedYear')} ${u.establishedYear}` : language === 'tr' ? `${u.establishedYear} ${t('subUnions.establishedYear')}` : `${t('subUnions.establishedYear')} ${u.establishedYear}`}
                         </span>
                       </div>
+                      )}
                       {/* Learn More Link */}
                       <button
                         className="text-xs sm:text-sm md:text-base font-medium hover:opacity-80 transition-opacity flex items-center gap-1"
@@ -534,13 +659,11 @@ const SubUnions = () => {
                   </div>
                 </Card>
               );
-            })}
+              })}
+            </div>
           </div>
-          {/* <p className="text-xs text-gray-500 mt-4">
-            {language === 'ar' ? 'المصدر:' : language === 'tr' ? 'Kaynak:' : 'Source:'} {subunionsData.source}
-          </p> */}
+        )}
         </div>
-      </div>
     </div>
   );
 };

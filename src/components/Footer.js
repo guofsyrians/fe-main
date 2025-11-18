@@ -42,7 +42,7 @@ const Footer = () => {
               style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
             >
               {language === 'ar' 
-                ? 'اتحاد الطلبة السوريين، منظمة طلابية مستقلة تسعى لخدمة الطلاب السوريين في جميع أنحاء العالم وتمكينهم أكاديمياً ومهنياً.'
+                ? 'هيئة طلابية نقابية وطنية منتخبة ومستقلة، تهدف لتمثيل الحركة الطلابية السورية، تستمد شرعيتها من قواعدهـا الطلابيـة الجامعيـة، و تمثل الطلبـة السوريين بقضاياهم وحقوقهم في كافة أنحاء العالم.'
                 : language === 'en'
                 ? 'Syrian Students Union, an independent student organization that seeks to serve Syrian students around the world and empower them academically and professionally.'
                 : 'Suriyeli Öğrenciler Birliği, dünya çapında Suriyeli öğrencilere hizmet etmeyi ve onları akademik ve profesyonel olarak güçlendirmeyi amaçlayan bağımsız bir öğrenci örgütüdür.'}
