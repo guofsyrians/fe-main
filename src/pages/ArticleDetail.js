@@ -171,15 +171,21 @@ const ArticleDetail = () => {
               fontSize: '16px'
             }}
           >
-            {/* Article Content - Using excerpt as full content for now */}
-            <div 
-              className="whitespace-pre-wrap leading-relaxed"
-              style={{ 
-                fontFamily: direction === 'rtl' ? 'Tajawal, sans-serif' : 'inherit'
-              }}
-            >
-              {article.excerpt[language]}
-            </div>
+            {/* Article Content - Using full content, fallback to excerpt if content is not available */}
+            {(() => {
+              const content = article.content?.[language] || article.excerpt[language];
+              const isHTML = content && /<[a-z][\s\S]*>/i.test(content);
+              
+              return (
+                <div 
+                  className={isHTML ? "leading-relaxed" : "whitespace-pre-wrap leading-relaxed"}
+                  style={{ 
+                    fontFamily: direction === 'rtl' ? 'Tajawal, sans-serif' : 'inherit'
+                  }}
+                  {...(isHTML ? { dangerouslySetInnerHTML: { __html: content } } : { children: content })}
+                />
+              );
+            })()}
           </div>
 
           {/* Article Footer */}
