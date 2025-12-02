@@ -726,44 +726,7 @@ export const subUnionsIndividualData = {
     },
     logo: ''
   },
-  "اتحاد الطلبة السوريين في جامعة اسكودار": {
-    aboutDescription: {
-      ar: 'لا يوجد',
-      en: 'No description available.',
-      tr: 'Açıklama mevcut değil.'
-    },
-    cardDescription: {
-      ar: 'اتحاد الطلبة السوريين في جامعة اسكودار.',
-      en: 'Syrian Students Union at Uskudar University.',
-      tr: 'Üsküdar Üniversitesi Suriyeli Öğrenci Birliği.'
-    },
-    contactNumber: {
-      ar: 'لا يوجد',
-      en: 'Not available',
-      tr: 'Mevcut değil'
-    },
-    activitiesAndAchievements: {
-      ar: 'محاضرات: أثر اللغة في الشخصية والسلوك، كيف نبني قوتنا النفسية، استعادة التوازن قبل الاختبارات النهائية، كيف نستعد لشهر رمضان، بين الحلال والحرام كيف نفهم الفتاوى في زمننا، قطوف من الشمائل المحمدية. فعاليات: سوريا العظيمة في جامعة اسكودار (احتفال التحرير)، ذكرى الثورة بالتعاون مع اتحادات اسطنبول، حفل التخرج المركزي في اسطنبول بالتعاون مع الاتحادات، فعالية اليوم العالمي في جامعة اسكودار، فلسطين من الثقافة إلى المقاومة، فعالية عرض فيلم معطف كبير الحجم، مؤتمر بوصلة الشباب، فعالية بالتعاون مع جمعية شام للأيتام. ورشات: ورشة الأنيميشن، ورشة الكونكريت، ورشة صناعة مستحضرات التجميل. حملات في رمضان: أغث بصدقة لتوزيع السلل الغذائية، إفطار صائم. مبادرات: ختمة، ترتيل.',
-      en: 'Lectures: The impact of language on personality and behavior, how to build our psychological strength, restoring balance before final exams, how to prepare for Ramadan, between halal and haram how to understand fatwas in our time, excerpts from Muhammad\'s character. Events: Great Syria at Uskudar University (Liberation celebration), Revolution commemoration in cooperation with Istanbul unions, Central graduation ceremony in Istanbul in cooperation with unions, World Day event at Uskudar University, Palestine from culture to resistance, Large Coat film screening event, Youth Compass conference, event in cooperation with Sham Orphans Association. Workshops: Animation workshop, Concrete workshop, Cosmetics manufacturing workshop. Ramadan campaigns: Help with charity to distribute food baskets, Iftar for fasting. Initiatives: Quran completion, recitation.',
-      tr: 'Konferanslar: Dilin kişilik ve davranış üzerindeki etkisi, psikolojik gücümüzü nasıl inşa ederiz, final sınavlarından önce dengeyi geri kazanma, Ramazan ayına nasıl hazırlanırız, helal ve haram arasında zamanımızda fetvaları nasıl anlarız, Muhammed\'in karakterinden alıntılar. Etkinlikler: Üsküdar Üniversitesi\'nde Büyük Suriye (Kurtuluş kutlaması), İstanbul birlikleriyle işbirliği içinde Devrim anması, birliklerle işbirliği içinde İstanbul\'da Merkezi mezuniyet töreni, Üsküdar Üniversitesi\'nde Dünya Günü etkinliği, kültürden direnişe Filistin, Büyük Palto film gösterimi etkinliği, Gençlik Pusulası konferansı, Şam Yetimler Derneği ile işbirliği içinde etkinlik. Atölyeler: Animasyon atölyesi, Beton atölyesi, Kozmetik üretim atölyesi. Ramazan kampanyaları: Gıda sepetleri dağıtmak için sadaka ile yardım, oruçlular için iftar. Girişimler: Kuran tamamlama, tilavet.'
-    },
-    specialAchievements: {
-      ar: 'حملة أغث بصدقة (تم توزيع 120 سلة غذائية). حملة إفطار صائم في رمضان (تم جمع 84 ألف ليرة تركية وتوزيع 840 وجبة).',
-      en: 'Help with charity campaign (120 food baskets were distributed). Iftar for fasting campaign in Ramadan (84,000 Turkish lira was collected and 840 meals were distributed).',
-      tr: 'Sadaka ile yardım kampanyası (120 gıda sepeti dağıtıldı). Ramazan\'da oruçlular için iftar kampanyası (84.000 Türk lirası toplandı ve 840 yemek dağıtıldı).'
-    },
-    currentAdministrativeTeam: {
-      ar: 'الإدارة: 7 أعضاء. المتطوعين: حوالي 15.',
-      en: 'Administration: 7 members. Volunteers: approximately 15.',
-      tr: 'Yönetim: 7 üye. Gönüllüler: yaklaşık 15.'
-    },
-    notes: {
-      ar: 'لا يوجد',
-      en: 'No additional notes.',
-      tr: 'Ek not yok.'
-    },
-    logo: ''
-  },
+  
   "تجمع الطلبة السوريين في جامعة السلطان محمد الفاتح": {
     aboutDescription: {
       ar: 'بدأ كنشاط باسم "السقيفة" لطلاب الجامعة قبل ثلاث سنين. هدفهم نفع أكبر عدد من الطلاب السوريين والعرب داخل وخارج الجامعة.',
@@ -2649,3 +2612,41 @@ export const offices = [
     image: '/assets/placeholder.webp'
   }
 ];
+// "اتحاد الطلبة السوريين في جامعة اسكودار": {
+//     aboutDescription: {
+//       ar: 'لا يوجد',
+//       en: 'No description available.',
+//       tr: 'Açıklama mevcut değil.'
+//     },
+//     cardDescription: {
+//       ar: 'اتحاد الطلبة السوريين في جامعة اسكودار.',
+//       en: 'Syrian Students Union at Uskudar University.',
+//       tr: 'Üsküdar Üniversitesi Suriyeli Öğrenci Birliği.'
+//     },
+//     contactNumber: {
+//       ar: 'لا يوجد',
+//       en: 'Not available',
+//       tr: 'Mevcut değil'
+//     },
+//     activitiesAndAchievements: {
+//       ar: 'محاضرات: أثر اللغة في الشخصية والسلوك، كيف نبني قوتنا النفسية، استعادة التوازن قبل الاختبارات النهائية، كيف نستعد لشهر رمضان، بين الحلال والحرام كيف نفهم الفتاوى في زمننا، قطوف من الشمائل المحمدية. فعاليات: سوريا العظيمة في جامعة اسكودار (احتفال التحرير)، ذكرى الثورة بالتعاون مع اتحادات اسطنبول، حفل التخرج المركزي في اسطنبول بالتعاون مع الاتحادات، فعالية اليوم العالمي في جامعة اسكودار، فلسطين من الثقافة إلى المقاومة، فعالية عرض فيلم معطف كبير الحجم، مؤتمر بوصلة الشباب، فعالية بالتعاون مع جمعية شام للأيتام. ورشات: ورشة الأنيميشن، ورشة الكونكريت، ورشة صناعة مستحضرات التجميل. حملات في رمضان: أغث بصدقة لتوزيع السلل الغذائية، إفطار صائم. مبادرات: ختمة، ترتيل.',
+//       en: 'Lectures: The impact of language on personality and behavior, how to build our psychological strength, restoring balance before final exams, how to prepare for Ramadan, between halal and haram how to understand fatwas in our time, excerpts from Muhammad\'s character. Events: Great Syria at Uskudar University (Liberation celebration), Revolution commemoration in cooperation with Istanbul unions, Central graduation ceremony in Istanbul in cooperation with unions, World Day event at Uskudar University, Palestine from culture to resistance, Large Coat film screening event, Youth Compass conference, event in cooperation with Sham Orphans Association. Workshops: Animation workshop, Concrete workshop, Cosmetics manufacturing workshop. Ramadan campaigns: Help with charity to distribute food baskets, Iftar for fasting. Initiatives: Quran completion, recitation.',
+//       tr: 'Konferanslar: Dilin kişilik ve davranış üzerindeki etkisi, psikolojik gücümüzü nasıl inşa ederiz, final sınavlarından önce dengeyi geri kazanma, Ramazan ayına nasıl hazırlanırız, helal ve haram arasında zamanımızda fetvaları nasıl anlarız, Muhammed\'in karakterinden alıntılar. Etkinlikler: Üsküdar Üniversitesi\'nde Büyük Suriye (Kurtuluş kutlaması), İstanbul birlikleriyle işbirliği içinde Devrim anması, birliklerle işbirliği içinde İstanbul\'da Merkezi mezuniyet töreni, Üsküdar Üniversitesi\'nde Dünya Günü etkinliği, kültürden direnişe Filistin, Büyük Palto film gösterimi etkinliği, Gençlik Pusulası konferansı, Şam Yetimler Derneği ile işbirliği içinde etkinlik. Atölyeler: Animasyon atölyesi, Beton atölyesi, Kozmetik üretim atölyesi. Ramazan kampanyaları: Gıda sepetleri dağıtmak için sadaka ile yardım, oruçlular için iftar. Girişimler: Kuran tamamlama, tilavet.'
+//     },
+//     specialAchievements: {
+//       ar: 'حملة أغث بصدقة (تم توزيع 120 سلة غذائية). حملة إفطار صائم في رمضان (تم جمع 84 ألف ليرة تركية وتوزيع 840 وجبة).',
+//       en: 'Help with charity campaign (120 food baskets were distributed). Iftar for fasting campaign in Ramadan (84,000 Turkish lira was collected and 840 meals were distributed).',
+//       tr: 'Sadaka ile yardım kampanyası (120 gıda sepeti dağıtıldı). Ramazan\'da oruçlular için iftar kampanyası (84.000 Türk lirası toplandı ve 840 yemek dağıtıldı).'
+//     },
+//     currentAdministrativeTeam: {
+//       ar: 'الإدارة: 7 أعضاء. المتطوعين: حوالي 15.',
+//       en: 'Administration: 7 members. Volunteers: approximately 15.',
+//       tr: 'Yönetim: 7 üye. Gönüllüler: yaklaşık 15.'
+//     },
+//     notes: {
+//       ar: 'لا يوجد',
+//       en: 'No additional notes.',
+//       tr: 'Ek not yok.'
+//     },
+//     logo: ''
+//   },
