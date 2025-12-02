@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Mail, Phone, Users, X, MapPin, Calendar, ExternalLink, ArrowLeft } from 'lucide-react';
-import { fetchCities, fetchSubUnions } from '../services/database';
+import { fetchCities, fetchSubUnions, fetchSubUnionById } from '../services/database';
 import { toast } from 'sonner';
 import TurkeyMap from '../components/TurkeyMap';
 
@@ -40,7 +40,7 @@ const SubUnions = () => {
     };
 
     loadData();
-  }, [language]);
+  }, []);
 
   // Helper function to find database union by name
   const findDatabaseUnion = (unionName) => {
@@ -61,6 +61,28 @@ const SubUnions = () => {
       );
     }
     return null;
+  };
+
+  const handleUnionClick = async (u) => {
+    // Set selected union immediately with available data (lite version)
+    setSelectedUnion(u);
+
+    // Check if we have the full details (e.g. check for aboutDescription)
+    // Since lite fetch doesn't include about_description, these will be undefined/null
+    const hasFullDetails = u.aboutDescription?.ar || u.aboutDescription?.en || u.aboutDescription?.tr;
+
+    if (!hasFullDetails) {
+      try {
+        const fullData = await fetchSubUnionById(u.id);
+        if (fullData) {
+          setSelectedUnion(fullData);
+          // Optionally update the main list so we don't fetch again for this session
+          setSubUnions(prev => prev.map(item => item.id === u.id ? fullData : item));
+        }
+      } catch (error) {
+        console.error('Error fetching union details:', error);
+      }
+    }
   };
 
   // Helper function to get union-specific description or fallback to generic
@@ -408,7 +430,7 @@ const SubUnions = () => {
                           key={u.id || idx}
                           className="hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
                           style={{ borderRadius: '24px' }}
-                          onClick={() => setSelectedUnion(u)}
+                          onClick={() => handleUnionClick(u)}
                         >
                           {/* Image Header - larger size */}
                           <div className="relative w-full h-40 sm:h-60 md:h-80 overflow-hidden bg-white flex items-center justify-center">
@@ -501,7 +523,7 @@ const SubUnions = () => {
                                 style={{ color: '#dcb557', direction: language === 'ar' ? 'rtl' : 'ltr' }}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  setSelectedUnion(u);
+                                  handleUnionClick(u);
                                 }}
                               >
                                 {t('subUnions.learnMore')}
@@ -556,7 +578,7 @@ const SubUnions = () => {
                   key={u.id || idx}
                   className="hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden cursor-pointer"
                   style={{ borderRadius: '24px' }}
-                  onClick={() => setSelectedUnion(u)}
+                  onClick={() => handleUnionClick(u)}
                 >
                   {/* Image Header - larger size */}
                   <div className="relative w-full h-40 sm:h-60 md:h-80 overflow-hidden bg-white flex items-center justify-center">

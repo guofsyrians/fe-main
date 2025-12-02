@@ -166,7 +166,13 @@ export const fetchSubUnions = async (cityId = null) => {
     let query = supabase
       .from('sub_unions')
       .select(`
-        *,
+        id,
+        name_ar, name_en, name_tr,
+        city_id,
+        logo_url,
+        status,
+        established_year,
+        card_description_ar, card_description_en, card_description_tr,
         cities (
           id,
           name_ar,
@@ -197,6 +203,31 @@ export const fetchSubUnions = async (cityId = null) => {
     return data.map(transformSubUnion);
   } catch (error) {
     console.error('Error fetching sub-unions:', error);
+    throw error;
+  }
+};
+
+export const fetchSubUnionById = async (id) => {
+  try {
+    const { data, error } = await supabase
+      .from('sub_unions')
+      .select(`
+        *,
+        cities (
+          id,
+          name_ar,
+          name_en,
+          name_tr,
+          city_code
+        )
+      `)
+      .eq('id', id)
+      .single();
+
+    if (error) throw error;
+    return transformSubUnion(data);
+  } catch (error) {
+    console.error('Error fetching sub-union details:', error);
     throw error;
   }
 };
