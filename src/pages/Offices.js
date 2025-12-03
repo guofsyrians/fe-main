@@ -130,7 +130,7 @@ const Offices = () => {
               name={secretaryGeneral.head[language]}
               title={secretaryGeneral.position ? secretaryGeneral.position[language] : secretaryGeneral.name[language]}
               handle={getHandle(secretaryGeneral)}
-              status={secretaryGeneral.email || secretaryGeneral.phone ? t('offices.available') || 'Available' : 'N/A'}
+              status={secretaryGeneral.email || secretaryGeneral.phone || 'N/A'}
               contactText={t('offices.contact') || 'Contact'}
               avatarUrl={secretaryGeneral.image}
               miniAvatarUrl={secretaryGeneral.image}
@@ -158,32 +158,42 @@ const Offices = () => {
           </div>
         )}
 
-        {/* Other Members - Grid Layout: 2 per row */}
+        {/* Other Members - Grid Layout: 2 per row usually, but configurable */}
         {!loading && otherMembers.length > 0 && (
-          <div className="offices-grid grid grid-cols-2 gap-2 sm:gap-4 md:gap-6 lg:gap-8 justify-items-center max-w-6xl mx-auto">
-            {otherMembers.map((office) => (
-              <div key={office.id} className="w-full flex justify-center">
-                <ProfileCard
-                  name={office.head[language]}
-                  title={office.position ? office.position[language] : office.name[language]}
-                  handle={getHandle(office)}
-                  status={office.email || office.phone ? t('offices.available') || 'Available' : 'N/A'}
-                  contactText={t('offices.contact') || 'Contact'}
-                  avatarUrl={office.image}
-                  miniAvatarUrl={office.image}
-                  showUserInfo={true}
-                  enableTilt={true}
-                  enableMobileTilt={false}
-                  showBehindGradient={false}
-                  behindGradient="none"
-                  innerGradient="none"
-                  iconUrl=""
-                  grainUrl=""
-                  className={language !== 'ar' ? 'smaller-text' : ''}
-                  onContactClick={() => handleContactClick(office)}
-                />
-              </div>
-            ))}
+          <div className={`offices-grid grid gap-2 sm:gap-4 justify-items-center max-w-6xl mx-auto ${
+            selectedCategory === 'board' 
+              ? 'grid-cols-2 md:grid-cols-6 md:gap-8 lg:gap-12' 
+              : 'grid-cols-2 md:gap-6 lg:gap-8'
+          }`}>
+            {otherMembers.map((office, index) => {
+              const colSpanClass = selectedCategory === 'board'
+                ? (index >= 2 && index < 5 ? 'col-span-1 md:col-span-2' : 'col-span-1 md:col-span-3')
+                : 'col-span-1';
+
+              return (
+                <div key={office.id} className={`w-full flex justify-center ${colSpanClass}`}>
+                  <ProfileCard
+                    name={office.head[language]}
+                    title={office.position ? office.position[language] : office.name[language]}
+                    handle={getHandle(office)}
+                    status={office.email || office.phone || 'N/A'}
+                    contactText={t('offices.contact') || 'Contact'}
+                    avatarUrl={office.image}
+                    miniAvatarUrl={office.image}
+                    showUserInfo={true}
+                    enableTilt={true}
+                    enableMobileTilt={false}
+                    showBehindGradient={false}
+                    behindGradient="none"
+                    innerGradient="none"
+                    iconUrl=""
+                    grainUrl=""
+                    className={language !== 'ar' ? 'smaller-text' : ''}
+                    onContactClick={() => handleContactClick(office)}
+                  />
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

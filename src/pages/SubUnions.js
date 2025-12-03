@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Mail, Phone, Users, X, MapPin, Calendar, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Mail, Phone, Users, X, MapPin, Calendar, ExternalLink, ArrowLeft, Loader2 } from 'lucide-react';
 import { fetchCities, fetchSubUnions, fetchSubUnionById } from '../services/database';
 import { toast } from 'sonner';
 import TurkeyMap from '../components/TurkeyMap';
@@ -12,18 +12,20 @@ const SubUnions = () => {
   const [selectedUnion, setSelectedUnion] = useState(null);
   const [cities, setCities] = useState([]);
   const [subUnions, setSubUnions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingUnions, setLoadingUnions] = useState(true);
   const mapEndRef = useRef(null);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        setLoading(true);
-        const [citiesData, subUnionsData] = await Promise.all([
-          fetchCities(),
-          fetchSubUnions()
-        ]);
+        setLoadingUnions(true);
+        
+        // Load cities first so the map can be interactive quickly
+        const citiesData = await fetchCities();
         setCities(citiesData);
+        
+        // Then load sub-unions which might take longer
+        const subUnionsData = await fetchSubUnions();
         setSubUnions(subUnionsData);
       } catch (error) {
         console.error('Error loading data:', error);
@@ -35,7 +37,7 @@ const SubUnions = () => {
             : 'Veri yüklenirken hata oluştu'
         );
       } finally {
-        setLoading(false);
+        setLoadingUnions(false);
       }
     };
 
@@ -384,7 +386,11 @@ const SubUnions = () => {
 
 
         {/* Unions List by selected city */}
-        {!loading && (
+        {loadingUnions ? (
+          <div className="flex justify-center items-center py-12">
+            <Loader2 className="w-12 h-12 animate-spin text-[#1f4333]" />
+          </div>
+        ) : (
         <div>
           {selectedCity ? (() => {
             const cityObj = cities.find(c => c.id === selectedCity);
@@ -555,7 +561,11 @@ const SubUnions = () => {
         )}
 
         {/* All Subunions */}
-        {!loading && (
+        {loadingUnions ? (
+          <div className="flex justify-center items-center mt-16 md:mt-24 lg:mt-40 py-12">
+            <Loader2 className="w-12 h-12 animate-spin text-[#1f4333]" />
+          </div>
+        ) : (
         <div className="mt-16 md:mt-24 lg:mt-40">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-12 md:mb-16 lg:mb-20 text-center" style={{ color: '#1f4333' }}>
             {t('subUnions.allSubunions')}
