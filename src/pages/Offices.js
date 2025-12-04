@@ -44,13 +44,29 @@ const Offices = () => {
   // Filter offices by category
   const filteredOffices = offices.filter(office => office.category === selectedCategory);
   
-  // Separate Secretary General from other board members
-  const secretaryGeneral = selectedCategory === 'board' 
-    ? filteredOffices.find(office => office.position?.en === 'Secretary General')
-    : null;
+  // Separate prominent positions from other members
+  const getProminentMember = () => {
+    if (selectedCategory === 'board') {
+      return filteredOffices.find(office => office.position?.en === 'Secretary General');
+    } else if (selectedCategory === 'supervisory') {
+      return filteredOffices.find(office => 
+        office.position?.en === 'President of the Supervisory Body' || 
+        office.position?.en === 'Head of the Supervisory Body' ||
+        (office.position?.en === 'President' && office.category === 'supervisory')
+      );
+    } else if (selectedCategory === 'electoral') {
+      return filteredOffices.find(office => 
+        office.position?.en === 'Head of the Electoral Commission' ||
+        office.position?.en === 'President of the Electoral Commission'
+      );
+    }
+    return null;
+  };
   
-  const otherMembers = secretaryGeneral 
-    ? filteredOffices.filter(office => office.id !== secretaryGeneral.id)
+  const prominentMember = getProminentMember();
+  
+  const otherMembers = prominentMember 
+    ? filteredOffices.filter(office => office.id !== prominentMember.id)
     : filteredOffices;
   
   // All other members will be displayed in a grid (2 per row)
@@ -116,24 +132,24 @@ const Offices = () => {
           </h2>
         </div>
 
-        {/* Secretary General Section - Centered and Prominent */}
-        {secretaryGeneral && (
+        {/* Prominent Member Section - Centered and Prominent (Secretary General, President of Supervisory Body, Head of Electoral Commission) */}
+        {prominentMember && (
           <div className="mb-12 md:mb-16">
             {/* <div className="text-center mb-6">
               <h3 className="text-2xl font-semibold" style={{ color: '#dcb557' }}>
-                {secretaryGeneral.position[language]}
+                {prominentMember.position[language]}
               </h3>
             </div> */}
             <div className="flex justify-center">
               <ProfileCard
-              key={secretaryGeneral.id}
-              name={secretaryGeneral.head[language]}
-              title={secretaryGeneral.position ? secretaryGeneral.position[language] : secretaryGeneral.name[language]}
-              handle={getHandle(secretaryGeneral)}
-              status={secretaryGeneral.email || secretaryGeneral.phone || 'N/A'}
+              key={prominentMember.id}
+              name={prominentMember.head[language]}
+              title={prominentMember.position ? prominentMember.position[language] : prominentMember.name[language]}
+              handle={getHandle(prominentMember)}
+              status={prominentMember.email || prominentMember.phone || 'N/A'}
               contactText={t('offices.contact') || 'Contact'}
-              avatarUrl={secretaryGeneral.image}
-              miniAvatarUrl={secretaryGeneral.image}
+              avatarUrl={prominentMember.image}
+              miniAvatarUrl={prominentMember.image}
               showUserInfo={true}
               enableTilt={true}
               enableMobileTilt={false}
@@ -143,7 +159,7 @@ const Offices = () => {
               iconUrl=""
               grainUrl=""
               className={language !== 'ar' ? 'smaller-text' : ''}
-              onContactClick={() => handleContactClick(secretaryGeneral)}
+              onContactClick={() => handleContactClick(prominentMember)}
             />
             </div>
           </div>
@@ -161,12 +177,12 @@ const Offices = () => {
         {/* Other Members - Grid Layout: 2 per row usually, but configurable */}
         {!loading && otherMembers.length > 0 && (
           <div className={`offices-grid grid gap-2 sm:gap-4 justify-items-center max-w-6xl mx-auto ${
-            selectedCategory === 'board' 
+            selectedCategory === 'board' || selectedCategory === 'supervisory'
               ? 'grid-cols-2 md:grid-cols-6 md:gap-8 lg:gap-12' 
               : 'grid-cols-2 md:gap-6 lg:gap-8'
           }`}>
             {otherMembers.map((office, index) => {
-              const colSpanClass = selectedCategory === 'board'
+              const colSpanClass = selectedCategory === 'board' || selectedCategory === 'supervisory'
                 ? (index >= 2 && index < 5 ? 'col-span-1 md:col-span-2' : 'col-span-1 md:col-span-3')
                 : 'col-span-1';
 

@@ -2394,7 +2394,7 @@ export const offices = [
     category: 'supervisory',
     name: { ar: '', en: '', tr: '' },
     head: { ar: 'محمد سيرجية', en: 'Mohammed Serjiya', tr: 'Mohammed Serjiya' },
-    position: { ar: 'الرئيس', en: 'President', tr: 'Başkan' },
+    position: { ar: 'رئيس الهيئة الرقابية', en: 'President of the Supervisory Body', tr: 'Denetim Kurulu Başkanı' },
     email: 'supervision@syrianstudents.org',
     phone: '+90 5XX XXX XXXX',
     image: '/assets/placeholder.webp'
@@ -2456,7 +2456,7 @@ export const offices = [
     category: 'electoral',
     name: { ar: '', en: '', tr: '' },
     head: { ar: 'أحمد غزال', en: 'Ahmed Ghazal', tr: 'Ahmed Ghazal' },
-    position: { ar: 'عضو الهيئة الانتخابية', en: 'Electoral Member', tr: 'Seçim Üyesi' },
+    position: { ar: 'رئيس الهيئة الانتخابية', en: 'Head of the Electoral Commission', tr: 'Seçim Komisyonu Başkanı' },
     email: 'ahmed.g@syrianstudents.org',
     phone: '+90 5XX XXX XXXX',
     image: '/assets/placeholder.webp'
