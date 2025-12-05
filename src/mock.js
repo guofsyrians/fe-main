@@ -16,13 +16,13 @@ export const translations = {
     },
     home: {
       hero: {
-        title: 'الإتحاد العام لطلبة سوريا',
+        title: 'الاتحاد العام لطلبة سوريا',
         subtitle: 'هيئة طلابية نقابية وطنية منتخبة ومستقلة، تهدف لتمثيل الحركة الطلابية السورية داخل الجامعات التركية، تستمد شرعيتها من قواعدهـا الطلابيـة الجامعيـة، و تمثل الطلبـة السوريين بقضاياهم وحقوقهم في تركيا.',
         cta: 'انضم إلينا'
       },
       about: {
         title: 'عن الاتحاد',
-        description: 'هيئة طلابية نقابية وطنية منتخبة ومستقلة، تهدف لتمثيل الحركة الطلابية السورية في كافة الجامعات في الداخل السوري وفي الشتات، تســتمد شرعيتها من قواعدها الطلابيــة الجامعيــة، و تمثل الطلبــة السورييـن بقضاياهم وحقوقهم أمام السلطات والرأي العام في كافة أنحاء العالم.'
+        description: 'هيئة طلابية نقابية وطنية منتخبة ومستقلة تهدف لتمثيل الحركة الطلابية السورية في الجامعات التركية ، تستمد شرعيتها من قواعدها الطلابية الجامعية، وتمثل الطلبة السوريين بقضاياهم وحقوقهم أمام السلطات والرأي العام في تركيا.'
       },
       stats: {
         students: 'طالب وطالبة',
@@ -141,7 +141,7 @@ export const translations = {
       },
       about: {
         title: 'About the Union',
-        description: 'The General Union of Syrian Students is a student organization aimed at supporting and representing Syrian students in Turkey. We work to enhance academic and cultural communication and provide support to students in their educational journey.'
+        description: 'A national, elected, and independent student union organization that aims to represent the Syrian student movement in Turkish universities. It derives its legitimacy from its university student base, and represents Syrian students with their issues and rights before the authorities and public opinion in Turkey.'
       },
       stats: {
         students: 'Students',
@@ -260,7 +260,7 @@ export const translations = {
       },
       about: {
         title: 'Birlik Hakkında',
-        description: 'Suriye Öğrencileri Genel Birliği, Türkiye\'deki Suriyeli öğrencileri desteklemeyi ve temsil etmeyi amaçlayan bir öğrenci kuruluşudur. Akademik ve kültürel iletişimi geliştirmek ve öğrencilere eğitim yolculuklarında destek sağlamak için çalışıyoruz.'
+        description: 'Türk üniversitelerindeki Suriyeli öğrenci hareketini temsil etmeyi amaçlayan ulusal, seçilmiş ve bağımsız bir öğrenci sendika örgütü. Meşruiyetini üniversite öğrenci tabanından alır ve Suriyeli öğrencileri sorunları ve haklarıyla Türkiye\'deki yetkililer ve kamuoyu önünde temsil eder.'
       },
       stats: {
         students: 'Öğrenci',

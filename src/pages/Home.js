@@ -552,10 +552,10 @@ const Home = () => {
                 </div>
                 <p className="text-base md:text-lg text-white/90 leading-relaxed">
                   {language === 'ar' 
-                    ? 'هيئة طلابية نقابية مستقلة تضمن حقوق الطلاب السوريين أينما كانوا، وتُكوّن مجتمعاً طلابياً سورياً مُبدع دولياً.'
+                    ? 'تمكين الشباب السوري بالعلم والمعرفة والتجربة، وبناء قادة قادرين على المساهمة في إعادة بناء وطنهم ومجتمعهم عبر منظومة طلابية منسقة وفاعلة'
                     : language === 'en'
-                    ? 'We aspire for the union to be a pioneer in uniting Syrian students in Turkey, a symbol of cooperation and understanding between cultures, and to contribute effectively to enhancing education and integration into the local community'
-                    : 'Birliğin Türkiye\'deki Suriyeli öğrencileri birleştirmede öncü olmasını, kültürler arası işbirliği ve anlayışın sembolü olmasını hedefliyoruz'}
+                    ? 'Empowering Syrian youth through knowledge, learning, and experience, and building leaders capable of contributing to the reconstruction of their homeland and society through a coordinated and effective student system'
+                    : 'Suriyeli gençleri bilim, bilgi ve deneyimle güçlendirmek ve koordineli ve etkili bir öğrenci sistemi aracılığıyla vatanlarını ve toplumlarını yeniden inşa etmeye katkıda bulunabilecek liderler yetiştirmek'}
                 </p>
               </div>
             </div>
@@ -582,10 +582,10 @@ const Home = () => {
                 </div>
                 <p className="text-base md:text-lg leading-relaxed" style={{ color: '#1f4333' }}>
                   {language === 'ar'
-                    ? 'إنشاء روابط قوية تجمع بين الطلاب السوريين وتعزز من تجربتهم التعليمية والحياتية. من خلال التعاون والتواصل، يهدف إلى تحقيق أهداف مشتركة وبناء جسور التفاهم والأخوة مع المجتمع المحلي'
+                    ? 'تقديم تمثيل طلابي فاعل يدافع عن حقوق الطلبة السوريين، ويوفر برامج وخدمات تعليمية ومهنية وثقافية، ويبني شراكات مستدامة تعزز فرص الطلبة الأكاديمية والمهنية والاجتماعية في تركيا.'
                     : language === 'en'
-                    ? 'Creating strong bonds that bring Syrian students together and enhance their educational and life experiences. Through cooperation and communication, it aims to achieve common goals and build bridges of understanding and brotherhood with the local community'
-                    : 'Suriyeli öğrencileri bir araya getiren ve eğitim ve yaşam deneyimlerini geliştiren güçlü bağlar oluşturmak. İşbirliği ve iletişim yoluyla ortak hedeflere ulaşmayı amaçlıyoruz'}
+                    ? 'Providing effective student representation that defends the rights of Syrian students, offers educational, professional, and cultural programs and services, and builds sustainable partnerships that enhance students\' academic, professional, and social opportunities in Turkey.'
+                    : 'Suriyeli öğrencilerin haklarını savunan etkili bir öğrenci temsili sunmak, eğitim, mesleki ve kültürel programlar ve hizmetler sağlamak ve öğrencilerin Türkiye\'deki akademik, mesleki ve sosyal fırsatlarını artıran sürdürülebilir ortaklıklar kurmak.'}
                 </p>
               </div>
             </div>
@@ -613,15 +613,15 @@ const Home = () => {
             </div>
             <div className="flex items-center justify-center w-full h-40">
               <img
-                src="/assets/GaziLogo.png"
-                alt="Al Gazi"
+                src="/assets/STH logo.png"
+                alt="STH"
                 className="max-h-32 w-auto object-contain transition-transform duration-300 hover:scale-110 cursor-pointer"
               />
             </div>
             <div className="flex items-center justify-center w-full h-40">
               <img
-                src="/assets/coreLogo.png"
-                alt="Core Istanbul"
+                src="/assets/Tamkin logo.png"
+                alt="Tamkin"
                 className="max-h-32 w-auto object-contain transition-transform duration-300 hover:scale-110 cursor-pointer"
               />
             </div>
