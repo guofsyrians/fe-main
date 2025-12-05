@@ -15,7 +15,9 @@ const Offices = () => {
     { id: 'board', name: { ar: 'مجلس الإدارة', en: 'Board of Directors', tr: 'Yönetim Kurulu' } },
     { id: 'supervisory', name: { ar: 'الهيئة الرقابية', en: 'Supervisory Body', tr: 'Denetim Kurulu' } },
     { id: 'electoral', name: { ar: 'الهيئة الانتخابية', en: 'Electoral Commission', tr: 'Seçim Komisyonu' } },
-    { id: 'offices', name: { ar: 'المكاتب واللجان التنفيذية', en: 'Offices & Executive Committees', tr: 'Ofisler ve İcra Komiteleri' } }
+    { id: 'general_assembly', name: { ar: 'الهيئة العمومية', en: 'General Assembly', tr: 'Genel Kurul' } },
+    { id: 'offices', name: { ar: 'المكاتب واللجان التنفيذية', en: 'Offices & Executive Committees', tr: 'Ofisler ve İcra Komiteleri' } },
+    
   ];
 
   useEffect(() => {
@@ -58,6 +60,12 @@ const Offices = () => {
       return filteredOffices.find(office => 
         office.position?.en === 'Head of the Electoral Commission' ||
         office.position?.en === 'President of the Electoral Commission'
+      );
+    } else if (selectedCategory === 'general_assembly') {
+      return filteredOffices.find(office => 
+        office.position?.en === 'President of the General Assembly' ||
+        office.position?.en === 'Head of the General Assembly' ||
+        (office.position?.en === 'President' && office.category === 'general_assembly')
       );
     }
     return null;

@@ -156,7 +156,7 @@ The admin panel will interact with a PostgreSQL database (Supabase) with the fol
 
 ### 6. **offices** Table
 - `id` (SERIAL, PRIMARY KEY)
-- `category` (office_category ENUM, NOT NULL) - Category: 'board', 'supervisory', 'electoral', or 'offices'
+- `category` (office_category ENUM, NOT NULL) - Category: 'board', 'supervisory', 'electoral', 'offices', or 'general_assembly'
 - `name_ar` (TEXT) - Office/committee name in Arabic (optional)
 - `name_en` (TEXT) - Office/committee name in English (optional)
 - `name_tr` (TEXT) - Office/committee name in Turkish (optional)
@@ -185,7 +185,7 @@ The admin panel will interact with a PostgreSQL database (Supabase) with the fol
 1. **sub_union_status**: 'active', 'inactive'
 2. **article_category**: 'news', 'events', 'announcements'
 3. **project_status**: 'ongoing', 'completed', 'planned'
-4. **office_category**: 'board', 'supervisory', 'electoral', 'offices'
+4. **office_category**: 'board', 'supervisory', 'electoral', 'offices', 'general_assembly'
 
 ### Database Features
 

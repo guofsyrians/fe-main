@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
-import { Users, MapPin, Briefcase, Building2, ArrowRight, Target, Eye, Heart, BookOpen, Lightbulb, TrendingUp, ExternalLink, ChevronLeft, ChevronRight, Calendar, ArrowLeft, X, Mail, Radio, Handshake } from 'lucide-react';
+import { Users, MapPin, Briefcase, Building2, ArrowRight, Target, Eye, Heart, BookOpen, Lightbulb, TrendingUp, ExternalLink, ChevronLeft, ChevronRight, Calendar, ArrowLeft, X, Mail, Radio, Handshake, Building } from 'lucide-react';
 import { fetchArticles, fetchProjects, fetchOffices, fetchSubUnions } from '../services/database';
 import { toast } from 'sonner';
 import '../styles/animations.css';
@@ -1125,7 +1125,7 @@ const Home = () => {
           </div>
 
           {/* Category Cards Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 md:gap-6 mb-8 md:mb-12">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-4 md:gap-6 mb-8 md:mb-12">
             {[
               {
                 id: 'board',
@@ -1165,6 +1165,16 @@ const Home = () => {
                   ar: ['تضم المكاتب المتخصصة واللجان', 'التي تنفذ برامج ومشاريع الاتحاد'],
                   en: ['Includes specialized offices and committees', 'that implement union programs and projects'],
                   tr: ['Birlik programlarını ve projelerini', 'uygulayan uzmanlaşmış ofisler ve komiteleri içerir']
+                }
+              },
+              {
+                id: 'general_assembly',
+                icon: Building,
+                name: { ar: 'الهيئة العمومية', en: 'General Assembly', tr: 'Genel Kurul' },
+                description: {
+                  ar: ['تمثل جميع الأعضاء المسجلين', 'وتتخذ القرارات الأساسية للاتحاد'],
+                  en: ['Represents all registered members', 'and makes fundamental decisions for the union'],
+                  tr: ['Tüm kayıtlı üyeleri temsil eder', 've birliğin temel kararlarını alır']
                 }
               }
             ].map((category, index) => {

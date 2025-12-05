@@ -15,7 +15,7 @@ CREATE TYPE article_category AS ENUM ('news', 'events', 'announcements');
 CREATE TYPE project_status AS ENUM ('ongoing', 'completed', 'planned');
 
 -- Enum for office category
-CREATE TYPE office_category AS ENUM ('board', 'supervisory', 'electoral', 'offices');
+CREATE TYPE office_category AS ENUM ('board', 'supervisory', 'electoral', 'offices', 'general_assembly');
 
 -- ============================================================================
 -- CREATE TABLES
