@@ -193,7 +193,7 @@ const Footer = () => {
             className="text-xs md:text-sm lg:text-base text-gray-500 text-center mb-2 px-4"
             style={{ direction: language === 'ar' ? 'rtl' : 'ltr' }}
           >
-            © {currentYear} {language === 'ar' ? 'اتحاد الطلبة السوريين. جميع الحقوق محفوظة.' : language === 'en' ? 'Syrian Students Union. All rights reserved.' : 'Suriyeli Öğrenciler Birliği. Tüm hakları saklıdır.'}
+            © {currentYear} {language === 'ar' ? 'الاتحاد العام لطلبة سوريا. جميع الحقوق محفوظة.' : language === 'en' ? 'Syrian Students Union. All rights reserved.' : 'Suriyeli Öğrenciler Birliği. Tüm hakları saklıdır.'}
           </p>
           <p 
             className="text-xs md:text-sm text-gray-600 text-center px-4"
