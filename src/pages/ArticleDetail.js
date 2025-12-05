@@ -92,7 +92,10 @@ const ArticleDetail = () => {
   const categoryLabels = {
     news: { ar: 'أخبار', en: 'News', tr: 'Haber' },
     events: { ar: 'فعاليات', en: 'Events', tr: 'Etkinlik' },
-    announcements: { ar: 'إعلانات', en: 'Announcements', tr: 'Duyuru' }
+    announcements: { ar: 'إعلانات', en: 'Announcements', tr: 'Duyuru' },
+    cultural: { ar: 'ثقافي', en: 'Cultural', tr: 'Kültürel' },
+    academic: { ar: 'أكاديمي', en: 'Academic', tr: 'Akademik' },
+    sports: { ar: 'رياضي', en: 'Sports', tr: 'Spor' }
   };
 
   return (
