@@ -21,10 +21,12 @@ jobs:
       - name: Install project dependencies
         run: npm install
         
+      - name: Write environment variables into .env file
+        run: |
+          echo "REACT_APP_SUPABASE_URL=${{ env.REACT_APP_SUPABASE_URL }}" >> .env
+          echo "REACT_APP_SUPABASE_ANON_KEY=${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}" >> .env
+
       - name: Build project
-        env:
-          REACT_APP_SUPABASE_URL: ${{ env.REACT_APP_SUPABASE_URL }}
-          REACT_APP_SUPABASE_ANON_KEY: ${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}
         run: npm run build
 
       - name: Install Wrangler
