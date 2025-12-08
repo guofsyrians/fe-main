@@ -23,7 +23,7 @@ jobs:
         
       - name: Write environment variables into .env file
         run: |
-          echo "REACT_APP_SUPABASE_URL=${{ env.REACT_APP_SUPABASE_URL }}" >> .env
+          echo "REACT_APP_SUPABASE_URL=${{ vars.REACT_APP_SUPABASE_URL }}" >> .env
           echo "REACT_APP_SUPABASE_ANON_KEY=${{ secrets.REACT_APP_SUPABASE_ANON_KEY }}" >> .env
 
       - name: Build project
