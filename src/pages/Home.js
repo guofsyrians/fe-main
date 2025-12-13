@@ -429,7 +429,7 @@ const Home = () => {
             {/* Right: Status Image */}
             <div className="flex items-center justify-center mt-6 md:mt-0">
               <img
-                src="/assets/status.png"
+                src={language === 'ar' ? '/assets/status-arabic.png' : language === 'en' ? '/assets/status-english.png' : '/assets/status-turkish.png'}
                 alt={language === 'ar' ? 'إحصائيات الاتحاد' : language === 'en' ? 'Union Statistics' : 'Birlik İstatistikleri'}
                 className="w-full max-w-2xl h-auto object-contain"
               />
