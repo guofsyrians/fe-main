@@ -4,19 +4,22 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { ArrowRight, Calendar, FileText, Users, Eye, Globe, Search, Clock, Heart, MessageCircle } from 'lucide-react';
-import { fetchArticles } from '../services/database';
+import { fetchArticles, getCachedData } from '../services/database';
 import { toast } from 'sonner';
 
 const Articles = () => {
   const { t, language, direction } = useLanguage();
   const [viewMode, setViewMode] = useState('articles');
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [articles, setArticles] = useState(() => getCachedData('articles', null) || []);
+  const [loading, setLoading] = useState(() => !getCachedData('articles', null));
 
   useEffect(() => {
     const loadArticles = async () => {
       try {
-        setLoading(true);
+        // Only show loading if cache is empty
+        if (!getCachedData('articles', null)) {
+          setLoading(true);
+        }
         const data = await fetchArticles();
         setArticles(data);
       } catch (error) {

@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Users, MapPin, Briefcase, Building2, ArrowRight, Target, Eye, Heart, BookOpen, Lightbulb, TrendingUp, ExternalLink, ChevronLeft, ChevronRight, Calendar, ArrowLeft, X, Mail, Radio, Handshake, Building } from 'lucide-react';
-import { fetchArticles, fetchProjects, fetchOffices, fetchSubUnions } from '../services/database';
+import { fetchArticles, fetchProjects, fetchOffices, fetchSubUnions, getCachedData } from '../services/database';
 import { toast } from 'sonner';
 import '../styles/animations.css';
 
@@ -14,11 +14,19 @@ const Home = () => {
   const autoSlideTimerRef = useRef(null);
   const pauseTimeoutRef = useRef(null);
   const [selectedUnion, setSelectedUnion] = useState(null);
-  const [articles, setArticles] = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [offices, setOffices] = useState([]);
-  const [subUnions, setSubUnions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Try to load from cache synchronously first
+  const [articles, setArticles] = useState(() => getCachedData('articles', null) || []);
+  const [projects, setProjects] = useState(() => getCachedData('projects', null) || []);
+  const [offices, setOffices] = useState(() => getCachedData('offices', null) || []);
+  const [subUnions, setSubUnions] = useState(() => getCachedData('subUnions', null) || []);
+  const [loading, setLoading] = useState(() => {
+    // Only show loading if we don't have any cached data
+    const hasCache = getCachedData('articles', null) && 
+                     getCachedData('projects', null) && 
+                     getCachedData('offices', null) && 
+                     getCachedData('subUnions', null);
+    return !hasCache;
+  });
 
   const stats = [
     { value: '15000+', label: t('home.stats.students'), icon: Users },
@@ -30,7 +38,16 @@ const Home = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        setLoading(true);
+        // Only set loading if we don't have cached data
+        const hasCache = getCachedData('articles', null) && 
+                         getCachedData('projects', null) && 
+                         getCachedData('offices', null) && 
+                         getCachedData('subUnions', null);
+        
+        if (!hasCache) {
+          setLoading(true);
+        }
+        
         const [articlesData, projectsData, officesData, subUnionsData] = await Promise.all([
           fetchArticles(),
           fetchProjects(),

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { ArrowLeft, Clock, Target } from 'lucide-react';
-import { fetchProjectById, fetchProjects } from '../services/database';
+import { fetchProjectById, fetchProjects, getCachedData } from '../services/database';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
 
@@ -16,14 +16,29 @@ const ProjectDetail = () => {
   
   useEffect(() => {
     const loadProject = async () => {
-      try {
+      if (!id) return;
+      
+      const projectId = parseInt(id);
+      
+      // Check cache first for immediate rendering
+      const cachedProject = getCachedData('projectById', projectId);
+      const cachedProjects = getCachedData('projects', null) || [];
+      
+      if (cachedProject) {
+        setProject(cachedProject);
+        setRelatedProjects(cachedProjects.filter(p => p.id !== projectId).slice(0, 3));
+        setLoading(false);
+      } else {
         setLoading(true);
-        const projectData = await fetchProjectById(parseInt(id));
+      }
+      
+      try {
+        const projectData = await fetchProjectById(projectId);
         setProject(projectData);
         
         // Load related projects
         const allProjects = await fetchProjects();
-        setRelatedProjects(allProjects.filter(p => p.id !== parseInt(id)).slice(0, 3));
+        setRelatedProjects(allProjects.filter(p => p.id !== projectId).slice(0, 3));
       } catch (error) {
         console.error('Error loading project:', error);
         toast.error(
@@ -38,9 +53,7 @@ const ProjectDetail = () => {
       }
     };
 
-    if (id) {
-      loadProject();
-    }
+    loadProject();
   }, [id, language]);
   
   if (loading) {

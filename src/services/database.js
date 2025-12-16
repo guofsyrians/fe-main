@@ -1,4 +1,14 @@
 import { supabase } from '../lib/supabase';
+import cache from './cache';
+
+/**
+ * Helper to get cached data synchronously if available
+ * This allows pages to render immediately without loading state
+ */
+export const getCachedData = (queryType, params = null) => {
+  const cacheKey = cache.generateKey(queryType, params);
+  return cache.getSync(cacheKey);
+};
 
 // Transform database row to match component expectations
 const transformCity = (row) => ({
@@ -145,188 +155,220 @@ const transformOffice = (row) => ({
   image: row.image_url
 });
 
-// Fetch functions
+// Fetch functions with caching
 export const fetchCities = async () => {
-  try {
-    const { data, error } = await supabase
-      .from('cities')
-      .select('*')
-      .order('name_en', { ascending: true });
+  const cacheKey = cache.generateKey('cities', null);
+  
+  return await cache.getOrFetch(cacheKey, async () => {
+    try {
+      const { data, error } = await supabase
+        .from('cities')
+        .select('*')
+        .order('name_en', { ascending: true });
 
-    if (error) throw error;
-    return data.map(transformCity);
-  } catch (error) {
-    console.error('Error fetching cities:', error);
-    throw error;
-  }
+      if (error) throw error;
+      return data.map(transformCity);
+    } catch (error) {
+      console.error('Error fetching cities:', error);
+      throw error;
+    }
+  });
 };
 
 export const fetchSubUnions = async (cityId = null) => {
-  try {
-    let query = supabase
-      .from('sub_unions')
-      .select(`
-        id,
-        name_ar, name_en, name_tr,
-        city_id,
-        logo_url,
-        status,
-        established_year,
-        card_description_ar, card_description_en, card_description_tr,
-        cities (
+  const cacheKey = cache.generateKey('subUnions', cityId);
+  
+  return await cache.getOrFetch(cacheKey, async () => {
+    try {
+      let query = supabase
+        .from('sub_unions')
+        .select(`
           id,
-          name_ar,
-          name_en,
-          name_tr,
-          city_code
-        )
-      `)
-      .eq('status', 'active')
-      .order('name_en', { ascending: true });
+          name_ar, name_en, name_tr,
+          city_id,
+          logo_url,
+          status,
+          established_year,
+          card_description_ar, card_description_en, card_description_tr,
+          cities (
+            id,
+            name_ar,
+            name_en,
+            name_tr,
+            city_code
+          )
+        `)
+        .eq('status', 'active')
+        .order('name_en', { ascending: true });
 
-    if (cityId) {
-      // If cityId is a city_code string, we need to find the city first
-      const city = await supabase
-        .from('cities')
-        .select('id')
-        .eq('city_code', cityId)
-        .single();
-      
-      if (city.data) {
-        query = query.eq('city_id', city.data.id);
+      if (cityId) {
+        // If cityId is a city_code string, we need to find the city first
+        const city = await supabase
+          .from('cities')
+          .select('id')
+          .eq('city_code', cityId)
+          .single();
+        
+        if (city.data) {
+          query = query.eq('city_id', city.data.id);
+        }
       }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+      return data.map(transformSubUnion);
+    } catch (error) {
+      console.error('Error fetching sub-unions:', error);
+      throw error;
     }
-
-    const { data, error } = await query;
-
-    if (error) throw error;
-    return data.map(transformSubUnion);
-  } catch (error) {
-    console.error('Error fetching sub-unions:', error);
-    throw error;
-  }
+  });
 };
 
 export const fetchSubUnionById = async (id) => {
-  try {
-    const { data, error } = await supabase
-      .from('sub_unions')
-      .select(`
-        *,
-        cities (
-          id,
-          name_ar,
-          name_en,
-          name_tr,
-          city_code
-        )
-      `)
-      .eq('id', id)
-      .single();
+  const cacheKey = cache.generateKey('subUnionById', id);
+  
+  return await cache.getOrFetch(cacheKey, async () => {
+    try {
+      const { data, error } = await supabase
+        .from('sub_unions')
+        .select(`
+          *,
+          cities (
+            id,
+            name_ar,
+            name_en,
+            name_tr,
+            city_code
+          )
+        `)
+        .eq('id', id)
+        .single();
 
-    if (error) throw error;
-    return transformSubUnion(data);
-  } catch (error) {
-    console.error('Error fetching sub-union details:', error);
-    throw error;
-  }
+      if (error) throw error;
+      return transformSubUnion(data);
+    } catch (error) {
+      console.error('Error fetching sub-union details:', error);
+      throw error;
+    }
+  });
 };
 
 export const fetchArticles = async (category = null) => {
-  try {
-    let query = supabase
-      .from('articles')
-      .select('*')
-      .eq('published', true)
-      .order('date', { ascending: false });
+  const cacheKey = cache.generateKey('articles', category);
+  
+  return await cache.getOrFetch(cacheKey, async () => {
+    try {
+      let query = supabase
+        .from('articles')
+        .select('*')
+        .eq('published', true)
+        .order('date', { ascending: false });
 
-    if (category) {
-      query = query.eq('category', category);
+      if (category) {
+        query = query.eq('category', category);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+      return data.map(transformArticle);
+    } catch (error) {
+      console.error('Error fetching articles:', error);
+      throw error;
     }
-
-    const { data, error } = await query;
-
-    if (error) throw error;
-    return data.map(transformArticle);
-  } catch (error) {
-    console.error('Error fetching articles:', error);
-    throw error;
-  }
+  });
 };
 
 export const fetchArticleById = async (id) => {
-  try {
-    const { data, error } = await supabase
-      .from('articles')
-      .select('*')
-      .eq('id', id)
-      .eq('published', true)
-      .single();
+  const cacheKey = cache.generateKey('articleById', id);
+  
+  return await cache.getOrFetch(cacheKey, async () => {
+    try {
+      const { data, error } = await supabase
+        .from('articles')
+        .select('*')
+        .eq('id', id)
+        .eq('published', true)
+        .single();
 
-    if (error) throw error;
-    return data ? transformArticle(data) : null;
-  } catch (error) {
-    console.error('Error fetching article:', error);
-    throw error;
-  }
+      if (error) throw error;
+      return data ? transformArticle(data) : null;
+    } catch (error) {
+      console.error('Error fetching article:', error);
+      throw error;
+    }
+  });
 };
 
 export const fetchProjects = async (status = null) => {
-  try {
-    let query = supabase
-      .from('projects')
-      .select('*')
-      .order('start_date', { ascending: false });
+  const cacheKey = cache.generateKey('projects', status);
+  
+  return await cache.getOrFetch(cacheKey, async () => {
+    try {
+      let query = supabase
+        .from('projects')
+        .select('*')
+        .order('start_date', { ascending: false });
 
-    if (status) {
-      query = query.eq('status', status);
+      if (status) {
+        query = query.eq('status', status);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+      return data.map(transformProject);
+    } catch (error) {
+      console.error('Error fetching projects:', error);
+      throw error;
     }
-
-    const { data, error } = await query;
-
-    if (error) throw error;
-    return data.map(transformProject);
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    throw error;
-  }
+  });
 };
 
 export const fetchProjectById = async (id) => {
-  try {
-    const { data, error } = await supabase
-      .from('projects')
-      .select('*')
-      .eq('id', id)
-      .single();
+  const cacheKey = cache.generateKey('projectById', id);
+  
+  return await cache.getOrFetch(cacheKey, async () => {
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('id', id)
+        .single();
 
-    if (error) throw error;
-    return data ? transformProject(data) : null;
-  } catch (error) {
-    console.error('Error fetching project:', error);
-    throw error;
-  }
+      if (error) throw error;
+      return data ? transformProject(data) : null;
+    } catch (error) {
+      console.error('Error fetching project:', error);
+      throw error;
+    }
+  });
 };
 
 export const fetchOffices = async (category = null) => {
-  try {
-    let query = supabase
-      .from('offices')
-      .select('*')
-      .order('order_index', { ascending: true })
-      .order('id', { ascending: true });
+  const cacheKey = cache.generateKey('offices', category);
+  
+  return await cache.getOrFetch(cacheKey, async () => {
+    try {
+      let query = supabase
+        .from('offices')
+        .select('*')
+        .order('order_index', { ascending: true })
+        .order('id', { ascending: true });
 
-    if (category) {
-      query = query.eq('category', category);
+      if (category) {
+        query = query.eq('category', category);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+      return data.map(transformOffice);
+    } catch (error) {
+      console.error('Error fetching offices:', error);
+      throw error;
     }
-
-    const { data, error } = await query;
-
-    if (error) throw error;
-    return data.map(transformOffice);
-  } catch (error) {
-    console.error('Error fetching offices:', error);
-    throw error;
-  }
+  });
 };
 

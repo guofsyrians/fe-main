@@ -5,19 +5,22 @@ import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Target, CheckCircle, Users, Globe, Calendar, User, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { fetchProjects } from '../services/database';
+import { fetchProjects, getCachedData } from '../services/database';
 import { toast } from 'sonner';
 
 const Projects = () => {
   const { t, language, direction } = useLanguage();
   const [filter, setFilter] = useState('all');
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [projects, setProjects] = useState(() => getCachedData('projects', null) || []);
+  const [loading, setLoading] = useState(() => !getCachedData('projects', null));
 
   useEffect(() => {
     const loadProjects = async () => {
       try {
-        setLoading(true);
+        // Only show loading if cache is empty
+        if (!getCachedData('projects', null)) {
+          setLoading(true);
+        }
         const data = await fetchProjects();
         setProjects(data);
       } catch (error) {

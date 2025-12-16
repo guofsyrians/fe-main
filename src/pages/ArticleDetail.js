@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { ArrowLeft, Calendar, Clock } from 'lucide-react';
-import { fetchArticleById, fetchArticles } from '../services/database';
+import { fetchArticleById, fetchArticles, getCachedData } from '../services/database';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
 
@@ -16,14 +16,29 @@ const ArticleDetail = () => {
   
   useEffect(() => {
     const loadArticle = async () => {
-      try {
+      if (!id) return;
+      
+      const articleId = parseInt(id);
+      
+      // Check cache first for immediate rendering
+      const cachedArticle = getCachedData('articleById', articleId);
+      const cachedArticles = getCachedData('articles', null) || [];
+      
+      if (cachedArticle) {
+        setArticle(cachedArticle);
+        setRelatedArticles(cachedArticles.filter(a => a.id !== articleId).slice(0, 3));
+        setLoading(false);
+      } else {
         setLoading(true);
-        const articleData = await fetchArticleById(parseInt(id));
+      }
+      
+      try {
+        const articleData = await fetchArticleById(articleId);
         setArticle(articleData);
         
         // Load related articles
         const allArticles = await fetchArticles();
-        setRelatedArticles(allArticles.filter(a => a.id !== parseInt(id)).slice(0, 3));
+        setRelatedArticles(allArticles.filter(a => a.id !== articleId).slice(0, 3));
       } catch (error) {
         console.error('Error loading article:', error);
         toast.error(
@@ -38,9 +53,7 @@ const ArticleDetail = () => {
       }
     };
 
-    if (id) {
-      loadArticle();
-    }
+    loadArticle();
   }, [id, language]);
   
   if (loading) {

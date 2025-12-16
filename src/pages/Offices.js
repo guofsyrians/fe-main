@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ProfileCard from '../components/ProfileCard';
-import { fetchOffices } from '../services/database';
+import { fetchOffices, getCachedData } from '../services/database';
 import { toast } from 'sonner';
 
 const Offices = () => {
   const { t, language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState('board');
-  const [offices, setOffices] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [offices, setOffices] = useState(() => getCachedData('offices', null) || []);
+  const [loading, setLoading] = useState(() => !getCachedData('offices', null));
 
   // Categories matching the reference website structure
   const categories = [
@@ -23,7 +23,10 @@ const Offices = () => {
   useEffect(() => {
     const loadOffices = async () => {
       try {
-        setLoading(true);
+        // Only show loading if cache is empty
+        if (!getCachedData('offices', null)) {
+          setLoading(true);
+        }
         const data = await fetchOffices();
         setOffices(data);
       } catch (error) {

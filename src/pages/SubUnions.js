@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Mail, Phone, Users, X, MapPin, Calendar, ExternalLink, ArrowLeft, Loader2 } from 'lucide-react';
-import { fetchCities, fetchSubUnions, fetchSubUnionById } from '../services/database';
+import { fetchCities, fetchSubUnions, fetchSubUnionById, getCachedData } from '../services/database';
 import { toast } from 'sonner';
 import TurkeyMap from '../components/TurkeyMap';
 
@@ -10,15 +10,22 @@ const SubUnions = () => {
   const { t, language } = useLanguage();
   const [selectedCity, setSelectedCity] = useState(null);
   const [selectedUnion, setSelectedUnion] = useState(null);
-  const [cities, setCities] = useState([]);
-  const [subUnions, setSubUnions] = useState([]);
-  const [loadingUnions, setLoadingUnions] = useState(true);
+  const [cities, setCities] = useState(() => getCachedData('cities', null) || []);
+  const [subUnions, setSubUnions] = useState(() => getCachedData('subUnions', null) || []);
+  const [loadingUnions, setLoadingUnions] = useState(() => {
+    const hasCache = getCachedData('cities', null) && getCachedData('subUnions', null);
+    return !hasCache;
+  });
   const mapEndRef = useRef(null);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        setLoadingUnions(true);
+        // Only show loading if cache is empty
+        const hasCache = getCachedData('cities', null) && getCachedData('subUnions', null);
+        if (!hasCache) {
+          setLoadingUnions(true);
+        }
         
         // Load cities first so the map can be interactive quickly
         const citiesData = await fetchCities();
